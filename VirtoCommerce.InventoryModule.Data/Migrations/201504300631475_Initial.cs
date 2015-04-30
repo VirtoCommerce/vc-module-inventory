@@ -11,7 +11,7 @@ namespace VirtoCommerce.InventoryModule.Data.Migrations
                 "dbo.Inventory",
                 c => new
                     {
-                        InventoryId = c.String(nullable: false, maxLength: 128),
+                        Id = c.String(nullable: false, maxLength: 128),
                         FulfillmentCenterId = c.String(nullable: false, maxLength: 128),
                         InStockQuantity = c.Decimal(nullable: false, precision: 18, scale: 2),
                         ReservedQuantity = c.Decimal(nullable: false, precision: 18, scale: 2),
@@ -26,11 +26,11 @@ namespace VirtoCommerce.InventoryModule.Data.Migrations
                         Sku = c.String(nullable: false, maxLength: 128),
                         CreatedDate = c.DateTime(nullable: false),
                         ModifiedDate = c.DateTime(),
-                        CreatedBy = c.String(),
-                        ModifiedBy = c.String(),
+                        CreatedBy = c.String(maxLength: 64),
+                        ModifiedBy = c.String(maxLength: 64),
                         Discriminator = c.String(maxLength: 128),
                     })
-                .PrimaryKey(t => t.InventoryId);
+                .PrimaryKey(t => t.Id);
             
         }
         
