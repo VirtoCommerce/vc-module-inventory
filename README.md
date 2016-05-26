@@ -1,6 +1,7 @@
 # VirtoCommerce.Inventory
 VirtoCommerce.Inventory module represents a store inventory management system.
 
+![Inventory management UI](https://cloud.githubusercontent.com/assets/5801549/15571240/01a76534-233a-11e6-8cd1-1281c7de22f9.png)
 
 # Documentation
 User guide: <a href="http://docs.virtocommerce.com/x/zAHr" target="_blank">Fulfillment</a>
