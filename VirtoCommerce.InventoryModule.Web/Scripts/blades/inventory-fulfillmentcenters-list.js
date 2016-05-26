@@ -29,7 +29,7 @@
             itemId: blade.itemId,
             data: data,
             title: data.fulfillmentCenter.name,
-            subtitle: 'inventory.blades.inventory-detail.subtatle',
+            subtitle: 'inventory.blades.inventory-detail.subtitle',
             controller: 'virtoCommerce.inventoryModule.inventoryDetailController',
             template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/blades/inventory-detail.tpl.html'
         };
