@@ -15,7 +15,7 @@ Installing the module:
 
 # Available resources
 * Module related service implementations as a <a href="https://www.nuget.org/packages/VirtoCommerce.InventoryModule.Data" target="_blank">NuGet package</a>
-* API client as a <a href="" target="_blank">NuGet package **place url here**</a>
+* API client as a <a href="https://www.nuget.org/packages/VirtoCommerce.InventoryModule.Client" target="_blank">NuGet package</a>
 * API client documentation http://demo.virtocommerce.com/admin/docs/ui/index#!/Inventory_module
 
 # License
