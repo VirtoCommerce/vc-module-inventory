@@ -82,6 +82,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Converters\InventoryConverter.cs" />
     <Compile Include="Migrations\201504300631475_Initial.cs" />
     <Compile Include="Migrations\201504300631475_Initial.Designer.cs">
@@ -90,7 +93,6 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Inventory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\CommonAssemblyInfo.cs" />
     <Compile Include="Repositories\InventoryRepositoryImpl.cs" />
     <Compile Include="Repositories\IInventoryRepository.cs" />
     <Compile Include="Services\InventoryServiceImpl.cs" />
