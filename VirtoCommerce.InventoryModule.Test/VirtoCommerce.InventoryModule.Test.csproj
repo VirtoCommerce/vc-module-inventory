@@ -60,11 +60,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.Domain, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Domain.2.10.1\lib\net451\VirtoCommerce.Domain.dll</HintPath>
+      <HintPath>..\packages\VirtoCommerce.Domain.2.10.3\lib\net451\VirtoCommerce.Domain.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.Platform.Core, Version=2.10.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Platform.Core.2.10.1\lib\net451\VirtoCommerce.Platform.Core.dll</HintPath>
+      <HintPath>..\packages\VirtoCommerce.Platform.Core.2.10.3\lib\net451\VirtoCommerce.Platform.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InventoryControllerTest.cs" />
+    <Compile Include="Properties\CommonAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

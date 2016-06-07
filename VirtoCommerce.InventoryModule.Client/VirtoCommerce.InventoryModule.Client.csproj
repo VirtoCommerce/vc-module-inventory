@@ -57,6 +57,7 @@
     <Compile Include="Client\ApiResponse.cs" />
     <Compile Include="Client\Configuration.cs" />
     <Compile Include="Client\IApiAccessor.cs" />
+    <Compile Include="Properties\CommonAssemblyInfo.cs" />
     <Compile Include="Model\FulfillmentCenter.cs" />
     <Compile Include="Model\InventoryInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
