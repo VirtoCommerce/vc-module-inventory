@@ -18,7 +18,7 @@
     <projectUrl>http://virtocommerce.com/</projectUrl>
     <iconUrl>Modules/$(VirtoCommerce.Inventory)/Content/logo.png</iconUrl>
     <releaseNotes>First version.</releaseNotes>
-    <copyright>Copyright © 2011-2015 Virto Commerce. All rights reserved</copyright>
+    <copyright>Copyright © 2011-2016 Virto Commerce. All rights reserved</copyright>
     <tags>order system</tags>
 
     <assemblyFile>VirtoCommerce.InventoryModule.Web.dll</assemblyFile>
