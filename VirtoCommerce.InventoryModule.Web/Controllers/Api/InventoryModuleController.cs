@@ -81,7 +81,6 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         public IHttpActionResult UpsertProductInventory(webModel.InventoryInfo inventory)
         {
             var result = _inventoryService.UpsertInventory(inventory.ToCoreModel());
-
             return Ok(result);
         }
     }
