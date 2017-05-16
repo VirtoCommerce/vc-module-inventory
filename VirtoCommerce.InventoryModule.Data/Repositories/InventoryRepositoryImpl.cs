@@ -25,7 +25,7 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            MapEntity<Inventory>(modelBuilder, toTable: "Inventory");
+            modelBuilder.Entity<Inventory>().ToTable("Inventory").HasKey(x => x.Id).Property(x => x.Id);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.Platform.Core.Common;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VirtoCommerce.InventoryModule.Data.Model
 {
@@ -49,6 +50,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
 
 		[Required]
 		[StringLength(128)]
+        [Index]
 		public string Sku { get; set; }
 	}
 }
