@@ -31,10 +31,10 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         /// <remarks>Get inventory of products for each fulfillment center.</remarks>
         /// <param name="ids">Products ids</param>
-		[HttpGet]
+		[HttpPost]
         [Route("~/api/inventory/products")]
         [ResponseType(typeof(webModel.InventoryInfo[]))]
-        public IHttpActionResult GetProductsInventories([ModelBinder(typeof(IdsStringArrayBinder))] string[] ids)
+        public IHttpActionResult GetProductsInventories([FromBody] string[] ids)
         {
             var result = new List<webModel.InventoryInfo>();
             var allFulfillments = _commerceService.GetAllFulfillmentCenters().ToArray();
