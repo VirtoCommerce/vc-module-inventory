@@ -31,10 +31,10 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         /// <remarks>Get inventory of products for each fulfillment center.</remarks>
         /// <param name="ids">Products ids</param>
-		[HttpPost]
+		[HttpGet]
         [Route("~/api/inventory/products")]
         [ResponseType(typeof(webModel.InventoryInfo[]))]
-        public IHttpActionResult GetProductsInventories([FromBody] string[] ids)
+        public IHttpActionResult GetProductsInventories([ModelBinder(typeof(IdsStringArrayBinder))] string[] ids)
         {
             var result = new List<webModel.InventoryInfo>();
             var allFulfillments = _commerceService.GetAllFulfillmentCenters().ToArray();
@@ -54,6 +54,19 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
             }
 
             return Ok(result.ToArray());
+        }
+
+        /// <summary>
+        /// Get inventories of products
+        /// </summary>
+        /// <remarks>Get inventory of products for each fulfillment center.</remarks>
+        /// <param name="ids">Products ids</param>
+		[HttpPost]
+        [Route("~/api/inventory/products/plenty")]
+        [ResponseType(typeof(webModel.InventoryInfo[]))]
+        public IHttpActionResult GetProductsInventoriesByPlentyIds([FromBody] string[] ids)
+        {
+            return GetProductsInventories(ids);
         }
 
         /// <summary>
