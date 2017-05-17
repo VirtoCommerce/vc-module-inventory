@@ -90,6 +90,10 @@
     <Compile Include="Migrations\201504300631475_Initial.Designer.cs">
       <DependentUpon>201504300631475_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705121220219_AddSkuIndex.cs" />
+    <Compile Include="Migrations\201705121220219_AddSkuIndex.Designer.cs">
+      <DependentUpon>201705121220219_AddSkuIndex.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Inventory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -105,6 +109,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201504300631475_Initial.resx">
       <DependentUpon>201504300631475_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705121220219_AddSkuIndex.resx">
+      <DependentUpon>201705121220219_AddSkuIndex.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

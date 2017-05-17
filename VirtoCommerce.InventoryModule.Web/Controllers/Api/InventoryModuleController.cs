@@ -57,6 +57,19 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         }
 
         /// <summary>
+        /// Get inventories of products
+        /// </summary>
+        /// <remarks>Get inventory of products for each fulfillment center.</remarks>
+        /// <param name="ids">Products ids</param>
+		[HttpPost]
+        [Route("~/api/inventory/products/plenty")]
+        [ResponseType(typeof(webModel.InventoryInfo[]))]
+        public IHttpActionResult GetProductsInventoriesByPlentyIds([FromBody] string[] ids)
+        {
+            return GetProductsInventories(ids);
+        }
+
+        /// <summary>
         /// Get inventories of product
         /// </summary>
         /// <remarks>Get inventories of product for each fulfillment center.</remarks>
