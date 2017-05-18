@@ -162,7 +162,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Binders\IdsStringArrayBinder.cs" />
     <Compile Include="Controllers\Api\InventoryModuleController.cs" />
     <Compile Include="Security\InventoryPredefinedPermissions.cs" />
     <Compile Include="Converters\FulfillmentCenterConverter.cs" />
