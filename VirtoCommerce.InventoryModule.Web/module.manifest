@@ -39,6 +39,7 @@
             </setting>
         </group>
     </settings>
+    
     <permissions>
         <group name="Inventory">
             <permission id="inventory:update" name="Update inventory related data" description="Permission to update inventory related data."/>
