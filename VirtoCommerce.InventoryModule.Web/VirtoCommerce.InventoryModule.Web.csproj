@@ -135,6 +135,7 @@
     <None Include="app.config" />
     <Content Include="Content\logo.png" />
     <Content Include="Localizations\en.VirtoCommerce.Inventory.json" />
+    <Content Include="Localizations\de.VirtoCommerce.Inventory.json" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -161,7 +162,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Binders\IdsStringArrayBinder.cs" />
     <Compile Include="Controllers\Api\InventoryModuleController.cs" />
     <Compile Include="Security\InventoryPredefinedPermissions.cs" />
     <Compile Include="Converters\FulfillmentCenterConverter.cs" />
