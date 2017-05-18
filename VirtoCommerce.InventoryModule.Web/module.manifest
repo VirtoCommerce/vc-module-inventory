@@ -38,8 +38,7 @@
                 <description>Module description in platform export/import wizard</description>
             </setting>
         </group>
-    </settings>
-    
+    </settings>    
     <permissions>
         <group name="Inventory">
             <permission id="inventory:update" name="Update inventory related data" description="Permission to update inventory related data."/>
