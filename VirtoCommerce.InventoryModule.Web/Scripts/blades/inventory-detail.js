@@ -85,14 +85,6 @@
         $scope.datepickers[which] = true;
     };
 
-    $scope.dateOptions = {
-        'year-format': "'yyyy'",
-    };
-
-    $scope.formats = ['shortDate', 'dd-MMMM-yyyy', 'yyyy/MM/dd'];
-    $scope.format = $scope.formats[0];
-
-
     // on load
     initializeBlade(blade.data);
 }]);
