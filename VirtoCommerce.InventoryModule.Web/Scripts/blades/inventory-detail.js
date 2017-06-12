@@ -8,14 +8,6 @@
         blade.parentBlade.refresh().then(function (results) {
             var data = _.findWhere(results, { fulfillmentCenterId: blade.data.fulfillmentCenterId });
 
-            // parse date fields
-            if (data.preorderAvailabilityDate) {
-                data.preorderAvailabilityDate = new Date(data.preorderAvailabilityDate);
-            }
-            if (data.backorderAvailabilityDate) {
-                data.backorderAvailabilityDate = new Date(data.backorderAvailabilityDate);
-            }
-
             initializeBlade(data);
         });
     }
@@ -40,8 +32,7 @@
         blade.isLoading = true;
         inventories.update({ id: blade.itemId }, blade.currentEntity, function () {
             blade.refresh();
-        },
-        function (error) { bladeNavigationService.setError('Error ' + error.status, blade); });
+        });
     };
 
     blade.onClose = function (closeCallback) {
@@ -65,15 +56,11 @@
             permission: blade.updatePermission
         }
     ];
+
     // datepicker
     $scope.datepickers = {
         pod: false,
         bod: false
-    }
-
-    // Disable weekend selection
-    $scope.disabled = function (date, mode) {
-        return (mode === 'day' && (date.getDay() === 0 || date.getDay() === 6));
     };
 
     $scope.today = new Date();
@@ -84,14 +71,6 @@
 
         $scope.datepickers[which] = true;
     };
-
-    $scope.dateOptions = {
-        'year-format': "'yyyy'",
-    };
-
-    $scope.formats = ['shortDate', 'dd-MMMM-yyyy', 'yyyy/MM/dd'];
-    $scope.format = $scope.formats[0];
-
 
     // on load
     initializeBlade(blade.data);

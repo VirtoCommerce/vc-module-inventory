@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Omu.ValueInjecter;
-using System.Collections.ObjectModel;
-using dataModel = VirtoCommerce.InventoryModule.Data.Model;
-using coreModel = VirtoCommerce.Domain.Inventory.Model;
 using VirtoCommerce.Platform.Data.Common.ConventionInjections;
+using coreModel = VirtoCommerce.Domain.Inventory.Model;
+using dataModel = VirtoCommerce.InventoryModule.Data.Model;
 
 namespace VirtoCommerce.InventoryModule.Data.Converters
 {
-	public static class InventoryConverter
+    public static class InventoryConverter
 	{
 		/// <summary>
 		/// Converting to model type
@@ -73,13 +68,15 @@ namespace VirtoCommerce.InventoryModule.Data.Converters
 			if (target == null)
 				throw new ArgumentNullException("target");
 			var patchInjection = new PatchInjection<dataModel.Inventory>(x => x.Sku, x => x.Status,
-																			   x => x.AllowBackorder, x => x.AllowPreorder,
-																			   x => x.BackorderAvailabilityDate, x => x.BackorderQuantity,
-																			   x => x.FulfillmentCenterId, x => x.InStockQuantity, x => x.PreorderAvailabilityDate,
-																			   x => x.PreorderQuantity, x => x.ReorderMinQuantity, x => x.ReservedQuantity);
+																	x => x.AllowBackorder, x => x.AllowPreorder,
+																	x => x.BackorderQuantity,
+																	x => x.FulfillmentCenterId, x => x.InStockQuantity,
+																	x => x.PreorderQuantity, x => x.ReorderMinQuantity, x => x.ReservedQuantity);
 			target.InjectFrom(patchInjection, source);
-		}
-
-
+            
+            // manual assign as PatchInjection skips null values by default
+            target.BackorderAvailabilityDate = source.BackorderAvailabilityDate;
+            target.PreorderAvailabilityDate = source.PreorderAvailabilityDate;
+        }
 	}
 }
