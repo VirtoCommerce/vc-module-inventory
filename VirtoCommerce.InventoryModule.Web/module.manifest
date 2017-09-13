@@ -6,7 +6,6 @@
     <dependencies>
         <dependency id="VirtoCommerce.Core" version="2.17.0" />
     </dependencies>
-
     <title>Inventory module</title>
     <description>Simplify inventory management functionality</description>
     <authors>
