@@ -1,15 +1,14 @@
 ﻿using System.Linq;
 using System.Web.Http.Results;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using VirtoCommerce.InventoryModule.Web.Controllers.Api;
 using VirtoCommerce.InventoryModule.Web.Model;
+using Xunit;
 
 namespace VirtoCommerce.InventoryModule.Test
 {
-    [TestClass]
     public class InventoryControllerTest
     {
-        [TestMethod]
+        [Fact]
         public void ChangeProductInventory()
         {
             //Get product inventory
