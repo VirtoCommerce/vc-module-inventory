@@ -74,6 +74,7 @@ namespace VirtoCommerce.InventoryModule.Data.Converters
 																	x => x.PreorderQuantity, x => x.ReorderMinQuantity, x => x.ReservedQuantity);
 			target.InjectFrom(patchInjection, source);
             
+            //TODO: Convert to virtual methods in conceptual model as it done in other modules
             // manual assign as PatchInjection skips null values by default
             target.BackorderAvailabilityDate = source.BackorderAvailabilityDate;
             target.PreorderAvailabilityDate = source.PreorderAvailabilityDate;
