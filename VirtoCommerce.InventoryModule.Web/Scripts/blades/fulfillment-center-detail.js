@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.inventoryModule')
+angular.module('virtoCommerce.inventoryModule')
     .controller('virtoCommerce.inventoryModule.fulfillmentCenterDetailController', ['$scope', 'platformWebApp.dialogService', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.fulfillments', 'platformWebApp.common.countries', function ($scope, dialogService, bladeNavigationService, fulfillments, countries) {
         var blade = $scope.blade;
         blade.updatePermission = 'inventory:fulfillment:edit';
@@ -71,8 +71,8 @@
         function deleteEntry() {
             var dialog = {
                 id: "confirmDelete",
-                title: "core.dialogs.fulfillment-delete.title",
-                message: "core.dialogs.fulfillment-delete.message",
+                title: "inventory.dialogs.fulfillment-delete.title",
+                message: "inventory.dialogs.fulfillment-delete.message",
                 callback: function (remove) {
                     if (remove) {
                         blade.isLoading = true;

@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.inventoryModule')
+angular.module('virtoCommerce.inventoryModule')
     .controller('virtoCommerce.inventoryModule.fulfillmentAddressesWidgetController', ['$scope', 'platformWebApp.bladeNavigationService', function ($scope, bladeNavigationService) {
         var blade = $scope.widget.blade;
 
@@ -10,33 +10,33 @@
                 priority: 4
             }, {
                 name: 'regionName',
-                title: 'core.blades.address-detail.labels.region',
+                title: 'inventory.widgets.fulfillmentWidget.address-detail.region',
                 valueType: 'ShortText',
                 priority: 5
             }, {
                 name: 'city',
-                title: 'core.blades.address-detail.labels.city',
+                title: 'inventory.widgets.fulfillmentWidget.address-detail.city',
                 valueType: 'ShortText',
                  priority: 6
             }, {
                 name: 'line1',
-                title: 'core.blades.address-detail.labels.address1',
+                title: 'inventory.widgets.fulfillmentWidget.address-detail..address1',
                 valueType: 'ShortText',
                 priority: 7
             },
             {
                 name: 'postalCode',
-                title: 'core.blades.address-detail.labels.zip-code',
+                title: 'inventory.widgets.fulfillmentWidget.address-detail.zip-code',
                 valueType: 'ShortText',
                 priority: 9
             }, {
                 name: 'email',
-                title: 'core.blades.address-detail.labels.email',
+                title: 'inventory.widgets.fulfillmentWidget.address-detail.email',
                 valueType: 'Email',
                 priority: 10
             }, {
                 name: 'phone',
-                title: 'core.blades.address-detail.labels.phone',
+                title: 'inventory.widgets.fulfillmentWidget.address-detail.phone',
                 valueType: 'ShortText',
                 priority: 11
             }];
@@ -47,7 +47,7 @@
                 currentEntity: $scope.address ? $scope.address : { isNew: true  },
                 metaFields : addressMetaFields,
                 title: blade.title,
-                subtitle: 'core.blades.address-detail.subtitle',
+                subtitle: 'inventory.widgets.fulfillmentWidget.address-detail.subtitle',
                 controller: 'virtoCommerce.coreModule.common.coreAddressDetailController',
                 confirmChangesFn: function (address) {
 
