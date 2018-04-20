@@ -1,28 +1,28 @@
-﻿<div class="blade-content">
+<div class="blade-content">
     <div class="blade-inner">
         <div class="inner-block clearfix">
             <form class="form" name="detailForm">
                 <div class="form-group" ng-init="setForm(detailForm)">
-                    <label class="form-label">{{ 'core.blades.fulfillment-center-detail.labels.name' | translate }}</label>
+                    <label class="form-label">{{ 'inventory.blades.fulfillment-center-detail.labels.name' | translate }}</label>
                     <div class="form-input">
-                        <input ng-model="blade.currentEntity.name" focus-on="" placeholder="Enter fulfillment center name" required />
-                        <span class="table-descr">fulfillment center name</span>
+                        <input ng-model="blade.currentEntity.name" focus-on="" placeholder="{{ 'inventory.blades.fulfillment-center-detail.placeholders.name' | translate }}" required />
+                        <span class="table-descr">{{ 'inventory.blades.fulfillment-center-detail.description.name' | translate }}</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">{{ 'core.blades.fulfillment-center-detail.labels.description' | translate }}</label>
+                    <label class="form-label">{{ 'inventory.blades.fulfillment-center-detail.labels.description' | translate }}</label>
                     <div class="form-input">
-                        <textarea class="form-control" cols="30" rows="3" placeholder="Enter fulfillment center description" ng-model="blade.currentEntity.description"></textarea>
-                        <span class="table-descr">fulfillment center description</span>
+                        <textarea class="form-control" cols="30" rows="3" placeholder="{{ 'inventory.blades.fulfillment-center-detail.placeholders.description' | translate }}"  ng-model="blade.currentEntity.description"></textarea>
+                        <span class="table-descr">{{ 'inventory.blades.fulfillment-center-detail.description.description' | translate }}</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">{{ 'Geo location' | translate }}</label>
+                    <label class="form-label">{{ 'inventory.properties.geoPoint.title' | translate }}</label>
                     <div class="form-input">
                         <input ng-model="blade.currentEntity.geoLocation"
                                name="geoLocation"
                                ng-pattern="/^(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)$/"
-                               placeholder="{{ 'catalog.properties.geoPoint.placeholder' | translate }}"                             
+                               placeholder="{{ 'inventory.properties.geoPoint.placeholder' | translate }}"                             
                                type="text">
                         <span class="table-descr">{{ 'catalog.properties.geoPoint.description' | translate }}</span>
                     </div>

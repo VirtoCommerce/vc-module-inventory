@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.inventoryModule')
+angular.module('virtoCommerce.inventoryModule')
     .controller('virtoCommerce.inventoryModule.fulfillmentListController', ['$scope', 'virtoCommerce.inventoryModule.fulfillments', 'platformWebApp.bladeNavigationService', 'platformWebApp.bladeUtils', 'uiGridConstants', 'platformWebApp.uiGridHelper', 'platformWebApp.dialogService',
         function ($scope, fulfillments, bladeNavigationService, bladeUtils, uiGridConstants, uiGridHelper, dialogService) {
             $scope.uiGridConstants = uiGridConstants;
@@ -35,7 +35,7 @@
                     currentEntityId: node.id,
                     currentEntity: node,
                     title: title,
-                    subtitle: 'core.blades.fulfillment-center-detail.subtitle',
+                    subtitle: 'inventory.blades.fulfillment-center-detail.subtitle',
                     controller: 'virtoCommerce.inventoryModule.fulfillmentCenterDetailController',
                     template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/blades/fulfillment-center-detail.tpl.html'
                 };
@@ -72,8 +72,8 @@
             $scope.delete = function (item) {
                 var dialog = {
                     id: "confirmDelete",
-                    title: "core.dialogs.fulfillment-delete.title",
-                    message: "core.dialogs.fulfillment-delete.message",
+                    title: "inventory.dialogs.fulfillment-delete.title",
+                    message: "inventory.dialogs.fulfillment-delete.message",
                     callback: function (remove) {
                         if (remove) {
                             blade.isLoading = true;
