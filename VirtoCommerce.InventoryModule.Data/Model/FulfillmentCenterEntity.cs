@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.Domain.Inventory.Model;
 using VirtoCommerce.Domain.Search;
 using VirtoCommerce.Platform.Core.Common;
@@ -11,7 +11,6 @@ namespace VirtoCommerce.InventoryModule.Data.Model
         [StringLength(128)]
         public string Name { get; set; }
 
-        [StringLength(256)]
         public string Description { get; set; }     
 
         [StringLength(1024)]

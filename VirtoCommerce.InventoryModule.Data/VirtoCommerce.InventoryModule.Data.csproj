@@ -95,6 +95,10 @@
     <Compile Include="Migrations\201804191201469_FulfillementCenter.Designer.cs">
       <DependentUpon>201804191201469_FulfillementCenter.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804200830147_DescriptionNewSize.cs" />
+    <Compile Include="Migrations\201804200830147_DescriptionNewSize.Designer.cs">
+      <DependentUpon>201804200830147_DescriptionNewSize.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\FulfillmentCenterEntity.cs" />
     <Compile Include="Model\InventoryEntity.cs" />
@@ -122,6 +126,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804191201469_FulfillementCenter.resx">
       <DependentUpon>201804191201469_FulfillementCenter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804200830147_DescriptionNewSize.resx">
+      <DependentUpon>201804200830147_DescriptionNewSize.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
