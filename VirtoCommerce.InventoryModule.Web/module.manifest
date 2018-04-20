@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <module>
     <id>VirtoCommerce.Inventory</id>
-    <version>2.12.2</version>
-    <platformVersion>2.12.0</platformVersion>
+    <version>2.13.0</version>
+    <platformVersion>2.13.26</platformVersion>
     <dependencies>
-        <dependency id="VirtoCommerce.Core" version="2.17.0" />
+        <dependency id="VirtoCommerce.Core" version="2.25.0" />
     </dependencies>
     <title>Inventory module</title>
     <description>Simplify inventory management functionality</description>
@@ -17,7 +17,7 @@
     <projectUrl>https://virtocommerce.com/apps/extensions/virto-inventory-module</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-inventory/master/VirtoCommerce.InventoryModule.Web/Content/logo.png</iconUrl>
     <releaseNotes>First version.</releaseNotes>
-    <copyright>Copyright © 2011-2017 Virto Commerce. All rights reserved</copyright>
+    <copyright>Copyright © 2011-2018 Virto Commerce. All rights reserved</copyright>
     <tags>order system</tags>
 
     <assemblyFile>VirtoCommerce.InventoryModule.Web.dll</assemblyFile>
@@ -37,10 +37,12 @@
                 <description>Module description in platform export/import wizard</description>
             </setting>
         </group>
-    </settings>    
+    </settings>
     <permissions>
         <group name="Inventory">
             <permission id="inventory:update" name="Update inventory related data" description="Permission to update inventory related data."/>
+            <permission id="inventory:fulfillment:edit" name="Manage fulfillment centers"/>
+            <permission id="inventory:fulfillment:delete" name="Delete fulfillment centers"/>
         </group>
     </permissions>
 </module>

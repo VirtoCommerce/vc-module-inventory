@@ -2,27 +2,87 @@
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
-using VirtoCommerce.Domain.Commerce.Services;
+using VirtoCommerce.Domain.Commerce.Model.Search;
+using VirtoCommerce.Domain.Inventory.Model;
+using VirtoCommerce.Domain.Inventory.Model.Search;
 using VirtoCommerce.Domain.Inventory.Services;
-using VirtoCommerce.InventoryModule.Web.Converters;
 using VirtoCommerce.InventoryModule.Web.Security;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Web.Security;
-using coreModel = VirtoCommerce.Domain.Inventory.Model;
-using webModel = VirtoCommerce.InventoryModule.Web.Model;
 
 namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
 {
-    [RoutePrefix("")]
+    [RoutePrefix("api/inventory")]
     public class InventoryModuleController : ApiController
     {
         private readonly IInventoryService _inventoryService;
-        private readonly ICommerceService _commerceService;
+        private readonly IInventorySearchService _inventorySearchService;
+        private readonly IFulfillmentCenterSearchService _fulfillmentCenterSearchService;
+        private readonly IFulfillmentCenterService _fulfillmentCenterService;
 
-        public InventoryModuleController(IInventoryService inventoryService, ICommerceService commerceService)
+        public InventoryModuleController(IInventoryService inventoryService, IFulfillmentCenterSearchService fulfillmentCenterSearchService, 
+                                          IInventorySearchService inventorySearchService, IFulfillmentCenterService fulfillmentCenterService)
         {
             _inventoryService = inventoryService;
-            _commerceService = commerceService;
+            _fulfillmentCenterSearchService = fulfillmentCenterSearchService;
+            _fulfillmentCenterService = fulfillmentCenterService;
+            _inventorySearchService = inventorySearchService;
         }
+
+        /// <summary>
+        /// Search fulfillment centers registered in the system
+        /// </summary>
+        [HttpPost]
+        [AllowAnonymous]
+        [ResponseType(typeof(GenericSearchResult<FulfillmentCenter>))]
+        [Route("fulfillmentcenters/search")]
+        public IHttpActionResult SearchFulfillmentCenters([FromBody] FulfillmentCenterSearchCriteria searchCriteria)
+        {
+            var retVal = _fulfillmentCenterSearchService.SearchCenters(searchCriteria);
+            return Ok(retVal);
+        }
+      
+
+        /// <summary>
+        /// Find fulfillment center by id
+        /// </summary>
+        /// <param name="id">fulfillment center id</param>
+        [HttpGet]
+        [ResponseType(typeof(FulfillmentCenter))]
+        [Route("fulfillmentcenters/{id}")]
+        public IHttpActionResult GetFulfillmentCenter(string id)
+        {
+            var retVal = _fulfillmentCenterService.GetByIds(new[] { id }).FirstOrDefault();
+            return Ok(retVal);
+        }
+
+        /// <summary>
+        ///  Save fulfillment center 
+        /// </summary>
+        /// <param name="center">fulfillment center</param>
+        [HttpPut]
+        [ResponseType(typeof(FulfillmentCenter))]
+        [Route("fulfillmentcenters")]
+        [CheckPermission(Permission = InventoryPredefinedPermissions.FulfillmentEdit)]
+        public IHttpActionResult SaveFulfillmentCenter(FulfillmentCenter center)
+        {
+            _fulfillmentCenterService.SaveChanges(new[] { center });
+            return Ok(center);
+        }
+
+        /// <summary>
+        /// Delete  fulfillment centers registered in the system
+        /// </summary>
+        [HttpDelete]
+        [ResponseType(typeof(void))]
+        [Route("fulfillmentcenters")]
+        [CheckPermission(Permission = InventoryPredefinedPermissions.FulfillmentDelete)]
+        public IHttpActionResult DeleteFulfillmentCenters([FromUri] string[] ids)
+        {
+            _fulfillmentCenterService.Delete(ids);
+            return Ok();
+        }
+
 
         /// <summary>
         /// Get inventories of products
@@ -30,24 +90,26 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <remarks>Get inventory of products for each fulfillment center.</remarks>
         /// <param name="ids">Products ids</param>
 		[HttpGet]
-        [Route("~/api/inventory/products")]
-        [ResponseType(typeof(webModel.InventoryInfo[]))]
+        [Route("products")]
+        [ResponseType(typeof(InventoryInfo[]))]
         public IHttpActionResult GetProductsInventories([FromUri] string[] ids)
         {
-            var result = new List<webModel.InventoryInfo>();
-            var allFulfillments = _commerceService.GetAllFulfillmentCenters().ToArray();
-            var inventories = _inventoryService.GetProductsInventoryInfos(ids).ToList();
-
+            var result = new List<InventoryInfo>();
+            var allFulfillments = _fulfillmentCenterSearchService.SearchCenters(new FulfillmentCenterSearchCriteria { Take = int.MaxValue }).Results;
+            var inventories = _inventoryService.GetProductsInventoryInfos(ids);
             foreach (var productId in ids)
             {
                 foreach (var fulfillment in allFulfillments)
                 {
-                    var productInventory = inventories.FirstOrDefault(x => x.ProductId == productId && x.FulfillmentCenterId == fulfillment.Id)
-                        ?? new coreModel.InventoryInfo { FulfillmentCenterId = fulfillment.Id, ProductId = productId };
-
-                    var webModelInventory = productInventory.ToWebModel();
-                    webModelInventory.FulfillmentCenter = fulfillment.ToWebModel();
-                    result.Add(webModelInventory);
+                    var inventory = inventories.FirstOrDefault(x => x.ProductId == productId && x.FulfillmentCenterId == fulfillment.Id);
+                    if(inventory == null)
+                    {
+                        inventory = AbstractTypeFactory<InventoryInfo>.TryCreateInstance();
+                        inventory.ProductId = productId;
+                        inventory.FulfillmentCenter = fulfillment;
+                        inventory.FulfillmentCenterId = fulfillment.Id;
+                    }
+                    result.Add(inventory);
                 }
             }
 
@@ -60,8 +122,8 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <remarks>Get inventory of products for each fulfillment center.</remarks>
         /// <param name="ids">Products ids</param>
 		[HttpPost]
-        [Route("~/api/inventory/products/plenty")]
-        [ResponseType(typeof(webModel.InventoryInfo[]))]
+        [Route("products/plenty")]
+        [ResponseType(typeof(InventoryInfo[]))]
         public IHttpActionResult GetProductsInventoriesByPlentyIds([FromBody] string[] ids)
         {
             return GetProductsInventories(ids);
@@ -73,8 +135,8 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <remarks>Get inventories of product for each fulfillment center.</remarks>
         /// <param name="productId">Product id</param>
         [HttpGet]
-        [Route("~/api/inventory/products/{productId}")]
-        [ResponseType(typeof(webModel.InventoryInfo[]))]
+        [Route("products/{productId}")]
+        [ResponseType(typeof(InventoryInfo[]))]
         public IHttpActionResult GetProductInventories(string productId)
         {
             return GetProductsInventories(new[] { productId });
@@ -86,12 +148,12 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <remarks>Upsert (add or update) given inventory of product.</remarks>
         /// <param name="inventory">Inventory to upsert</param>
 		[HttpPut]
-        [Route("~/api/inventory/products/{productId}")]
-        [ResponseType(typeof(webModel.InventoryInfo))]
+        [Route("products/{productId}")]
+        [ResponseType(typeof(InventoryInfo))]
         [CheckPermission(Permission = InventoryPredefinedPermissions.Update)]
-        public IHttpActionResult UpsertProductInventory(webModel.InventoryInfo inventory)
+        public IHttpActionResult UpsertProductInventory(InventoryInfo inventory)
         {
-            var result = _inventoryService.UpsertInventory(inventory.ToCoreModel());
+            var result = _inventoryService.UpsertInventory(inventory);
             return Ok(result);
         }
     }

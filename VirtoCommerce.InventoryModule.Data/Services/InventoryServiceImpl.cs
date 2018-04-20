@@ -2,96 +2,104 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using VirtoCommerce.Domain.Common.Events;
+using VirtoCommerce.Domain.Inventory.Events;
+using VirtoCommerce.Domain.Inventory.Model;
 using VirtoCommerce.Domain.Inventory.Services;
-using VirtoCommerce.InventoryModule.Data.Converters;
+using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.InventoryModule.Data.Repositories;
-using VirtoCommerce.Platform.Data.Infrastructure;
-using coreModel = VirtoCommerce.Domain.Inventory.Model;
-using dataModel = VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.InventoryModule.Data.Services
 {
     public class InventoryServiceImpl : ServiceBase, IInventoryService
     {
         private readonly Func<IInventoryRepository> _repositoryFactory;
-        public InventoryServiceImpl(Func<IInventoryRepository> repositoryFactory)
+        private readonly IEventPublisher _eventPublisher;
+        public InventoryServiceImpl(Func<IInventoryRepository> repositoryFactory, IEventPublisher eventPublisher)
         {
             _repositoryFactory = repositoryFactory;
+            _eventPublisher = eventPublisher;
         }
 
-        #region IInventoryService Members
-
-        public coreModel.InventoryInfo GetById(string itemId)
+        public InventoryInfo GetById(string itemId)
         {
             var result = GetProductsInventoryInfos(new[] { itemId }).FirstOrDefault();
             return result;
         }
 
+        #region IInventoryService Members
 
-        public IEnumerable<coreModel.InventoryInfo> GetAllInventoryInfos()
+
+        [Obsolete]
+        public IEnumerable<InventoryInfo> GetAllInventoryInfos()
         {
             using (var repository = _repositoryFactory())
             {
-                var result = repository.Inventories.ToArray().Select(x => x.ToCoreModel());
+                repository.DisableChangesTracking();
+                var result = repository.Inventories.ToArray().Select(x => x.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance()));
                 return result;
             }
         }
 
-        public IEnumerable<coreModel.InventoryInfo> GetProductsInventoryInfos(IEnumerable<string> productIds)
+        public IEnumerable<InventoryInfo> GetProductsInventoryInfos(IEnumerable<string> productIds)
         {
-            var retVal = new List<coreModel.InventoryInfo>();
+            var retVal = new List<InventoryInfo>();
             using (var repository = _repositoryFactory())
             {
+                repository.DisableChangesTracking();
                 var entities = repository.GetProductsInventories(productIds.ToArray());
-                retVal.AddRange(entities.Select(x => x.ToCoreModel()));
+                retVal.AddRange(entities.Select(x => x.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance())));
             }
             return retVal;
         }
 
-        public void UpsertInventories(IEnumerable<coreModel.InventoryInfo> inventoryInfos)
+        public void UpsertInventories(IEnumerable<InventoryInfo> inventoryInfos)
         {
+            if (inventoryInfos == null)
+            {
+                throw new ArgumentNullException(nameof(inventoryInfos));
+            }
+
+            var changedEntries = new List<GenericChangedEntry<InventoryInfo>>();
             using (var repository = _repositoryFactory())
             {
-                var sourceEntities = inventoryInfos.Select(x => x.ToDataModel()).ToList();
-                var changedProductIds = inventoryInfos.Select(x => x.ProductId).ToArray();
-                var targetEntities = repository.GetProductsInventories(changedProductIds).ToList();
+                var dataExistInventories = repository.GetProductsInventories(inventoryInfos.Select(x=>x.ProductId));
+                foreach (var changedInventory in inventoryInfos)
+                {               
+                    var originalEntity = dataExistInventories.FirstOrDefault(x => x.Sku == changedInventory.ProductId && x.FulfillmentCenterId == changedInventory.FulfillmentCenterId);
+            
+                    var modifiedEntity = AbstractTypeFactory<InventoryEntity>.TryCreateInstance().FromModel(changedInventory);
+                    if (originalEntity != null)
+                    {
+                        changedEntries.Add(new GenericChangedEntry<InventoryInfo>(changedInventory, originalEntity.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance()), EntryState.Modified));
+                        modifiedEntity?.Patch(originalEntity);
+                    }
+                    else
+                    {
+                        repository.Add(modifiedEntity);
+                        changedEntries.Add(new GenericChangedEntry<InventoryInfo>(changedInventory, EntryState.Added));
+                    }
+                }
 
-                var targetCollection = new ObservableCollection<dataModel.Inventory>(targetEntities);
-                targetCollection.ObserveCollection(x => repository.Add(x), null);
-                var inventoryComparer = AnonymousComparer.Create((dataModel.Inventory x) => x.FulfillmentCenterId + "-" + x.Sku);
-                sourceEntities.Patch(targetCollection, inventoryComparer, (source, target) => source.Patch(target));
-
+                //Raise domain events
+                _eventPublisher.Publish(new InventoryChangingEvent(changedEntries));
                 CommitChanges(repository);
+                _eventPublisher.Publish(new InventoryChangedEvent(changedEntries));
             }
         }
 
 
-        public coreModel.InventoryInfo UpsertInventory(coreModel.InventoryInfo inventoryInfo)
+        public InventoryInfo UpsertInventory(InventoryInfo inventoryInfo)
         {
             if (inventoryInfo == null)
-                throw new ArgumentNullException("inventoryInfo");
-
-            coreModel.InventoryInfo retVal = null;
-            using (var repository = _repositoryFactory())
             {
-                var sourceInventory = inventoryInfo.ToDataModel();
-
-                var alreadyExistInventories = repository.GetProductsInventories(new string[] { inventoryInfo.ProductId });
-                var targetInventory = alreadyExistInventories.FirstOrDefault(x => x.FulfillmentCenterId == sourceInventory.FulfillmentCenterId);
-                if (targetInventory == null)
-                {
-                    targetInventory = sourceInventory;
-                    repository.Add(targetInventory);
-                }
-                else
-                {
-                    sourceInventory.Patch(targetInventory);
-                }
-                CommitChanges(repository);
-                retVal = targetInventory.ToCoreModel();
+                throw new ArgumentNullException(nameof(inventoryInfo));
             }
-            return retVal;
+            UpsertInventories(new[] { inventoryInfo });
+            return inventoryInfo;
         }
 
         #endregion

@@ -6,45 +6,19 @@ if (AppDependencies != undefined) {
 }
 
 angular.module(moduleName, [])
-//.config(
-//  ['$stateProvider', function ($stateProvider) {
-//      $stateProvider
-//          .state('workspace.inventoryModule', {
-//              url: '/inventory',
-//              templateUrl: '$(Platform)/Scripts/common/templates/home.tpl.html',
-//              controller: [
-//                  '$scope', 'platformWebApp.bladeNavigationService', function ($scope, bladeNavigationService) {
-//                      var blade = {
-//                          id: 'inventory',
-//                          title: 'inventory',
-//                          controller: 'virtoCommerce.inventoryModule.inventoryListController',
-//                          template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/blades/ -list.tpl.html',
-//                          isClosingDisabled: true
-//                      };
-//                      bladeNavigationService.showBlade(blade);
-//                  }
-//              ]
-//          });
-//  }]
-//)
-.run(
-  ['$rootScope', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.authService', function ($rootScope, mainMenuService, widgetService, authService) {
-      //Register module in main menu
-      //var menuItem = {
-      //    path: 'browse/inventory',
-      //    icon: 'fa fa-shopping-cart',
-      //    title: 'inventorys',
-      //    priority: 110,
-      //    action: function () { $state.go('workspace.inventoryModule'); },
-      //    permission: 'inventory:update'
-      //};
-      //mainMenuService.addMenuItem(menuItem);
+    .run(
+    ['$rootScope', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.authService', function ($rootScope, mainMenuService, widgetService, authService) {
 
-      //Register widgets in catalog item details
-      widgetService.registerWidget({
-          isVisible: function (blade) { return blade.productType !== 'Digital' && authService.checkPermission('inventory:update'); },
-          controller: 'virtoCommerce.inventoryModule.inventoryWidgetController',
-          template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/widgets/inventoryWidget.tpl.html'
-      }, 'itemDetail');
-  }])
-;
+        //Register widgets in catalog item details
+        widgetService.registerWidget({
+            isVisible: function (blade) { return blade.productType !== 'Digital' && authService.checkPermission('inventory:update'); },
+            controller: 'virtoCommerce.inventoryModule.inventoryWidgetController',
+            template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/widgets/inventoryWidget.tpl.html'
+        }, 'itemDetail');
+
+        widgetService.registerWidget({    
+            size: [2, 1],
+            controller: 'virtoCommerce.inventoryModule.fulfillmentAddressesWidgetController',
+            template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/widgets/fulfillmentAddressesWidget.tpl.html'
+        }, 'fulfillmentCenterDetail');
+    }]);
