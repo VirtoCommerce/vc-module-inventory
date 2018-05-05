@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.inventoryModule')
+angular.module('virtoCommerce.inventoryModule')
 .controller('virtoCommerce.inventoryModule.inventoryFulfillmentcentersListController', ['$scope', '$timeout', 'platformWebApp.bladeNavigationService', function ($scope, $timeout, bladeNavigationService) {
     var blade = $scope.blade;
 
@@ -50,13 +50,13 @@
 		    executeMethod: function () {
 		        var newBlade = {
 		            id: 'fulfillmentCenterList',
-		            controller: 'virtoCommerce.coreModule.fulfillment.fulfillmentListController',
-		            template: 'Modules/$(VirtoCommerce.Core)/Scripts/fulfillment/blades/fulfillment-center-list.tpl.html'
+		            controller: 'virtoCommerce.inventoryModule.fulfillmentListController',
+		            template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/blades/fulfillment-center-list.tpl.html'
 		        };
 		        bladeNavigationService.showBlade(newBlade, blade.parentBlade);
 		    },
 		    canExecuteMethod: function () { return true; },
-		    permission: 'core:fulfillment:create'
+		    permission: 'inventory:fulfillment:edit'
 		}
     ];
 

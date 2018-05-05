@@ -20,7 +20,7 @@ angular.module('virtoCommerce.inventoryModule')
                  priority: 6
             }, {
                 name: 'line1',
-                title: 'inventory.widgets.fulfillmentWidget.address-detail..address1',
+                title: 'inventory.widgets.fulfillmentWidget.address-detail.address1',
                 valueType: 'ShortText',
                 priority: 7
             },
