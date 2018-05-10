@@ -1,4 +1,4 @@
-﻿//Call this to register our module to main application
+//Call this to register our module to main application
 var moduleName = "virtoCommerce.inventoryModule";
 
 if (AppDependencies != undefined) {
@@ -7,7 +7,7 @@ if (AppDependencies != undefined) {
 
 angular.module(moduleName, [])
     .run(
-    ['$rootScope', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.authService', function ($rootScope, mainMenuService, widgetService, authService) {
+    ['$rootScope', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.authService', 'platformWebApp.metaFormsService', function ($rootScope, mainMenuService, widgetService, authService, metaFormsService) {
 
         //Register widgets in catalog item details
         widgetService.registerWidget({
@@ -21,4 +21,6 @@ angular.module(moduleName, [])
             controller: 'virtoCommerce.inventoryModule.fulfillmentAddressesWidgetController',
             template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/widgets/fulfillmentAddressesWidget.tpl.html'
         }, 'fulfillmentCenterDetail');
+
+        metaFormsService.registerMetaFields('inventoryDetails', []);
     }]);
