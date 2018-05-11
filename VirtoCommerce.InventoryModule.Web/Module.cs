@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Http;
 using Microsoft.Practices.Unity;
 using VirtoCommerce.Domain.Inventory.Services;
 using VirtoCommerce.Domain.Search;
@@ -9,6 +10,7 @@ using VirtoCommerce.InventoryModule.Data.Repositories;
 using VirtoCommerce.InventoryModule.Data.Search.Indexing;
 using VirtoCommerce.InventoryModule.Data.Services;
 using VirtoCommerce.InventoryModule.Web.ExportImport;
+using VirtoCommerce.InventoryModule.Web.JsonConverters;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
@@ -79,6 +81,10 @@ namespace VirtoCommerce.InventoryModule.Web
             }
 
             #endregion
+
+            // enable polymorphic types in API controller methods
+            var httpConfiguration = _container.Resolve<HttpConfiguration>();
+            httpConfiguration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new PolymorphicInventoryJsonConverter());
         }
 
         #endregion
