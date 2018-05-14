@@ -167,6 +167,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Controllers\Api\InventoryModuleController.cs" />
+    <Compile Include="JsonConverters\PolymorphicInventoryJsonConverter.cs" />
     <Compile Include="Security\InventoryPredefinedPermissions.cs" />
     <Compile Include="ExportImport\InventoryExportImport.cs" />
     <Compile Include="Module.cs" />
