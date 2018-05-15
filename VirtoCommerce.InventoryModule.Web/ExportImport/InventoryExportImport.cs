@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.IO;
 using System.Linq;
 using VirtoCommerce.Domain.Inventory.Model;
@@ -28,8 +27,12 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
         private readonly IFulfillmentCenterSearchService _fulfillmentCenterSearchService;
         private readonly IFulfillmentCenterService _fulfillmentCenterService;
 
-        public InventoryExportImport(IInventoryService inventoryService, IFulfillmentCenterSearchService fulfillmentCenterSearchService,
-                                          IInventorySearchService inventorySearchService, IFulfillmentCenterService fulfillmentCenterService)
+        public InventoryExportImport(
+            IInventoryService inventoryService,
+            IFulfillmentCenterSearchService fulfillmentCenterSearchService,
+            IInventorySearchService inventorySearchService,
+            IFulfillmentCenterService fulfillmentCenterService
+            )
         {
             _inventoryService = inventoryService;
             _fulfillmentCenterSearchService = fulfillmentCenterSearchService;
