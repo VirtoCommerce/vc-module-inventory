@@ -6,6 +6,7 @@ using VirtoCommerce.Domain.Inventory.Model.Search;
 using VirtoCommerce.Domain.Inventory.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
+using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.InventoryModule.Web.ExportImport
 {
@@ -26,18 +27,36 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
         private readonly IInventorySearchService _inventorySearchService;
         private readonly IFulfillmentCenterSearchService _fulfillmentCenterSearchService;
         private readonly IFulfillmentCenterService _fulfillmentCenterService;
+        private readonly ISettingsManager _settingsManager;
+
+        private int? _batchSize;
+
+        private int BatchSize
+        {
+            get
+            {
+                if (_batchSize == null)
+                {
+                    _batchSize = _settingsManager.GetValue("Inventory.ExportImport.PageSize", 50);
+                }
+
+                return (int) _batchSize;
+            }
+        }
 
         public InventoryExportImport(
             IInventoryService inventoryService,
             IFulfillmentCenterSearchService fulfillmentCenterSearchService,
             IInventorySearchService inventorySearchService,
-            IFulfillmentCenterService fulfillmentCenterService
+            IFulfillmentCenterService fulfillmentCenterService,
+            ISettingsManager settingsManager
             )
         {
             _inventoryService = inventoryService;
             _fulfillmentCenterSearchService = fulfillmentCenterSearchService;
             _fulfillmentCenterService = fulfillmentCenterService;
             _inventorySearchService = inventorySearchService;
+            _settingsManager = settingsManager;
         }
 
         public void DoExport(Stream backupStream, Action<ExportImportProgressInfo> progressCallback)
@@ -54,13 +73,12 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
             progressCallback(new ExportImportProgressInfo($"The {backupObject.FulfillmentCenters.Count()} fulfilmentCenters are importing"));
             _fulfillmentCenterService.SaveChanges(backupObject.FulfillmentCenters);
             progressCallback(new ExportImportProgressInfo($"The {backupObject.FulfillmentCenters.Count()} fulfilmentCenters has been imported"));
-
-            const int batchSize = 50;
+            
             var totalCount = backupObject.InventoryInfos.Count();
             progressCallback(new ExportImportProgressInfo($"The {totalCount} inventories are importing"));
-            for (int i = 0; i < totalCount; i += batchSize)
+            for (int i = 0; i < totalCount; i += BatchSize)
             {               
-                _inventoryService.UpsertInventories(backupObject.InventoryInfos.Skip(i).Take(batchSize));
+                _inventoryService.UpsertInventories(backupObject.InventoryInfos.Skip(i).Take(BatchSize));
                 progressCallback(new ExportImportProgressInfo($"{i} of {totalCount} inventories records have been imported"));
             }
             progressCallback(new ExportImportProgressInfo("The inventory module data has been imported"));
@@ -72,15 +90,14 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
             var centers = _fulfillmentCenterSearchService.SearchCenters(new FulfillmentCenterSearchCriteria { Take = int.MaxValue }).Results;
             
             progressCallback(new ExportImportProgressInfo("Evaluation the number of inventory records"));
-
-            const int batchSize = 50;
-            var searchResult = _inventorySearchService.SearchInventories(new InventorySearchCriteria { Take = batchSize });
+            
+            var searchResult = _inventorySearchService.SearchInventories(new InventorySearchCriteria { Take = BatchSize });
             var totalCount = searchResult.TotalCount;
             var inventories = searchResult.Results.ToList();
-            for (int i = batchSize; i < totalCount; i += batchSize)
+            for (int i = BatchSize; i < totalCount; i += BatchSize)
             {
                 progressCallback(new ExportImportProgressInfo($"{i} of {totalCount} inventories have been loaded"));
-                searchResult = _inventorySearchService.SearchInventories(new InventorySearchCriteria { Skip = i,  Take = batchSize });
+                searchResult = _inventorySearchService.SearchInventories(new InventorySearchCriteria { Skip = i,  Take = BatchSize });
                 inventories.AddRange(searchResult.Results);
             }
 
