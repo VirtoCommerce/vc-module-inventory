@@ -126,7 +126,7 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
 
                             var fulfillmentCenters = _jsonSerializer.Deserialize<FulfillmentCenter[]>(reader);
 
-                            progressInfo.Description = $"The {fulfillmentCenters.Count()} fulfilmentCenters has been imported";
+                            progressInfo.Description = $"The {fulfillmentCenters.Count()} fulfillmentCenters has been imported";
                             progressCallback(progressInfo);
 
                             _fulfillmentCenterService.SaveChanges(fulfillmentCenters);
@@ -134,21 +134,6 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
                     }
                 }
             }
-
-            //var backupObject = backupStream.DeserializeJson<BackupObject>();
-
-            //progressCallback(new ExportImportProgressInfo($"The {backupObject.FulfillmentCenters.Count()} fulfilmentCenters are importing"));
-            //_fulfillmentCenterService.SaveChanges(backupObject.FulfillmentCenters);
-            //progressCallback(new ExportImportProgressInfo($"The {backupObject.FulfillmentCenters.Count()} fulfilmentCenters has been imported"));
-            
-            //var totalCount = backupObject.InventoryInfos.Count();
-            //progressCallback(new ExportImportProgressInfo($"The {totalCount} inventories are importing"));
-            //for (int i = 0; i < totalCount; i += BatchSize)
-            //{               
-            //    _inventoryService.UpsertInventories(backupObject.InventoryInfos.Skip(i).Take(BatchSize));
-            //    progressCallback(new ExportImportProgressInfo($"{i} of {totalCount} inventories records have been imported"));
-            //}
-            //progressCallback(new ExportImportProgressInfo("The inventory module data has been imported"));
         }
 
         private BackupObject GetBackupObject(Action<ExportImportProgressInfo> progressCallback)
