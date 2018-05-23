@@ -1,16 +1,18 @@
-﻿angular.module('virtoCommerce.inventoryModule')
-.controller('virtoCommerce.inventoryModule.inventoryDetailController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.inventories', function ($scope, bladeNavigationService, inventories) {
+angular.module('virtoCommerce.inventoryModule')
+    .controller('virtoCommerce.inventoryModule.inventoryDetailController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.inventories', 'platformWebApp.metaFormsService', function ($scope, bladeNavigationService, inventories, metaFormsService) {
     var blade = $scope.blade;
     blade.updatePermission = 'inventory:update';
 
-    blade.refresh = function () {
+    blade.refresh = function() {
         blade.isLoading = true;
-        blade.parentBlade.refresh().then(function (results) {
+        blade.parentBlade.refresh().then(function(results) {
             var data = _.findWhere(results, { fulfillmentCenterId: blade.data.fulfillmentCenterId });
 
             initializeBlade(data);
         });
-    }
+    };
+
+    blade.metaFields = blade.metaFields ? blade.metaFields : metaFormsService.getMetaFields('inventoryDetails');
 
     function initializeBlade(data) {
         blade.currentEntity = angular.copy(data);
