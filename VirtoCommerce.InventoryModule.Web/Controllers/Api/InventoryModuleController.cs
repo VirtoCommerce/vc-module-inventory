@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -20,7 +20,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         private readonly IFulfillmentCenterSearchService _fulfillmentCenterSearchService;
         private readonly IFulfillmentCenterService _fulfillmentCenterService;
 
-        public InventoryModuleController(IInventoryService inventoryService, IFulfillmentCenterSearchService fulfillmentCenterSearchService, 
+        public InventoryModuleController(IInventoryService inventoryService, IFulfillmentCenterSearchService fulfillmentCenterSearchService,
                                           IInventorySearchService inventorySearchService, IFulfillmentCenterService fulfillmentCenterService)
         {
             _inventoryService = inventoryService;
@@ -41,10 +41,9 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
             var retVal = _fulfillmentCenterSearchService.SearchCenters(searchCriteria);
             return Ok(retVal);
         }
-      
 
         /// <summary>
-        /// Find fulfillment center by id
+        /// Get fulfillment center by id
         /// </summary>
         /// <param name="id">fulfillment center id</param>
         [HttpGet]
@@ -53,6 +52,19 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         public IHttpActionResult GetFulfillmentCenter(string id)
         {
             var retVal = _fulfillmentCenterService.GetByIds(new[] { id }).FirstOrDefault();
+            return Ok(retVal);
+        }
+
+        /// <summary>
+        /// Get fulfillment centers by ids
+        /// </summary>
+        /// <param name="ids">fulfillment center ids</param>
+        [HttpGet]
+        [ResponseType(typeof(FulfillmentCenter[]))]
+        [Route("fulfillmentcentersbulk")]
+        public IHttpActionResult GetFulfillmentCenters([FromUri] string[] ids)
+        {
+            var retVal = _fulfillmentCenterService.GetByIds(ids);
             return Ok(retVal);
         }
 
@@ -71,7 +83,21 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         }
 
         /// <summary>
-        /// Delete  fulfillment centers registered in the system
+        /// Bulk save fulfillment centers
+        /// </summary>
+        /// <param name="centers">fulfillment centers</param>
+        [HttpPut]
+        [ResponseType(typeof(void))]
+        [Route("fulfillmentcentersbulk")]
+        [CheckPermission(Permission = InventoryPredefinedPermissions.FulfillmentEdit)]
+        public IHttpActionResult SaveFulfillmentCentersBulk(FulfillmentCenter[] centers)
+        {
+            _fulfillmentCenterService.SaveChanges(centers);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Delete fulfillment centers registered in the system
         /// </summary>
         [HttpDelete]
         [ResponseType(typeof(void))]
@@ -102,7 +128,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
                 foreach (var fulfillment in allFulfillments)
                 {
                     var inventory = inventories.FirstOrDefault(x => x.ProductId == productId && x.FulfillmentCenterId == fulfillment.Id);
-                    if(inventory == null)
+                    if (inventory == null)
                     {
                         inventory = AbstractTypeFactory<InventoryInfo>.TryCreateInstance();
                         inventory.ProductId = productId;
