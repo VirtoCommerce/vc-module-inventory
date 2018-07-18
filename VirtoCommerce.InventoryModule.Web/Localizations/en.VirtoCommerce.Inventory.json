@@ -12,7 +12,8 @@
           "preorder-availability-date": "Preorder availability date",
           "allow-backorder": "Allow backorder",
           "backorder-quantity": "Backorder qty.",
-          "backorder-availability-date": "Backorder availability date"
+          "backorder-availability-date": "Backorder availability date",
+          "status": "Status"
         }
       },
       "inventory-fulfillmentcenters-list": {
