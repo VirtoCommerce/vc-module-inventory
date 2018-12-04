@@ -23,4 +23,5 @@ angular.module(moduleName, [])
         }, 'fulfillmentCenterDetail');
 
         metaFormsService.registerMetaFields('inventoryDetails', []);
+        metaFormsService.registerMetaFields('fulfillmentCenterDetails', []);
     }]);

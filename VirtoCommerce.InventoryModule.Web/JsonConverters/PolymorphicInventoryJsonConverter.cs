@@ -9,7 +9,7 @@ namespace VirtoCommerce.InventoryModule.Web.JsonConverters
 {
     public class PolymorphicInventoryJsonConverter : JsonConverter
     {
-        private readonly Type[] _knowTypes = new[] { typeof(InventoryInfo) };
+        private readonly Type[] _knowTypes = new[] { typeof(InventoryInfo), typeof(FulfillmentCenter) };
 
         public override bool CanWrite => false;
         public override bool CanRead => true;
