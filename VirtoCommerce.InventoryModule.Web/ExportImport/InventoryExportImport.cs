@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using VirtoCommerce.Domain.Inventory.Model;
 using VirtoCommerce.Domain.Inventory.Model.Search;
 using VirtoCommerce.Domain.Inventory.Services;
@@ -28,6 +30,7 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
         private readonly IFulfillmentCenterSearchService _fulfillmentCenterSearchService;
         private readonly IFulfillmentCenterService _fulfillmentCenterService;
         private readonly ISettingsManager _settingsManager;
+        private readonly JsonSerializer _jsonSerializer;
 
         private int? _batchSize;
 
@@ -57,6 +60,13 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
             _fulfillmentCenterService = fulfillmentCenterService;
             _inventorySearchService = inventorySearchService;
             _settingsManager = settingsManager;
+
+            _jsonSerializer = new JsonSerializer
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore
+            };
         }
 
         public void DoExport(Stream backupStream, Action<ExportImportProgressInfo> progressCallback)
@@ -68,20 +78,62 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
 
         public void DoImport(Stream backupStream, Action<ExportImportProgressInfo> progressCallback)
         {
-            var backupObject = backupStream.DeserializeJson<BackupObject>();
+            var progressInfo = new ExportImportProgressInfo();
 
-            progressCallback(new ExportImportProgressInfo($"The {backupObject.FulfillmentCenters.Count()} fulfilmentCenters are importing"));
-            _fulfillmentCenterService.SaveChanges(backupObject.FulfillmentCenters);
-            progressCallback(new ExportImportProgressInfo($"The {backupObject.FulfillmentCenters.Count()} fulfilmentCenters has been imported"));
-            
-            var totalCount = backupObject.InventoryInfos.Count();
-            progressCallback(new ExportImportProgressInfo($"The {totalCount} inventories are importing"));
-            for (int i = 0; i < totalCount; i += BatchSize)
-            {               
-                _inventoryService.UpsertInventories(backupObject.InventoryInfos.Skip(i).Take(BatchSize));
-                progressCallback(new ExportImportProgressInfo($"{i} of {totalCount} inventories records have been imported"));
+            using (var streamReader = new StreamReader(backupStream))
+            using (var reader = new JsonTextReader(streamReader))
+            {
+                while (reader.Read())
+                {
+                    if (reader.TokenType == JsonToken.PropertyName)
+                    {
+                        var readerValue = reader.Value.ToString();
+
+                        if (readerValue == "InventoryInfos")
+                        {
+                            reader.Read();
+
+                            if (reader.TokenType == JsonToken.StartArray)
+                            {
+                                reader.Read();
+
+                                var inventoryInfoChunk = new List<InventoryInfo>();
+
+                                while (reader.TokenType != JsonToken.EndArray)
+                                {
+                                    var inventoryInfo = _jsonSerializer.Deserialize<InventoryInfo>(reader);
+                                    inventoryInfoChunk.Add(inventoryInfo);
+
+                                    reader.Read();
+
+                                    if (inventoryInfoChunk.Count >= BatchSize || reader.TokenType == JsonToken.EndArray)
+                                    {
+
+                                        progressInfo.ProcessedCount += inventoryInfoChunk.Count;
+                                        progressInfo.Description = $"{progressInfo.ProcessedCount} inventories records have been imported";
+                                        progressCallback(progressInfo);
+
+                                        _inventoryService.UpsertInventories(inventoryInfoChunk);
+
+                                        inventoryInfoChunk.Clear();
+                                    }
+                                }
+                            }
+
+                        } else if (readerValue == "FulfillmentCenters")
+                        {
+                            reader.Read();
+
+                            var fulfillmentCenters = _jsonSerializer.Deserialize<FulfillmentCenter[]>(reader);
+
+                            progressInfo.Description = $"The {fulfillmentCenters.Count()} fulfillmentCenters has been imported";
+                            progressCallback(progressInfo);
+
+                            _fulfillmentCenterService.SaveChanges(fulfillmentCenters);
+                        }
+                    }
+                }
             }
-            progressCallback(new ExportImportProgressInfo("The inventory module data has been imported"));
         }
 
         private BackupObject GetBackupObject(Action<ExportImportProgressInfo> progressCallback)
