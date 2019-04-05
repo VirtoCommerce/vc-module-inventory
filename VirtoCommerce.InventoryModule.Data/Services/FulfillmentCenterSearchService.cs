@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Inventory.Model;
@@ -30,14 +30,14 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 {
                     query = query.Where(x => x.Name.Contains(criteria.SearchPhrase));
                 }
-               
+
                 var sortInfos = criteria.SortInfos;
                 if (sortInfos.IsNullOrEmpty())
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = "Name" } };
                 }
 
-                query = query.OrderBySortInfos(sortInfos);
+                query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id);
 
                 result.TotalCount = query.Count();
                 result.Results = query.Skip(criteria.Skip)
