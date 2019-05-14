@@ -1,13 +1,16 @@
-﻿angular.module('virtoCommerce.inventoryModule')
-    .controller('virtoCommerce.inventoryModule.fulfillmentWidgetController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.coreModule.fulfillment.fulfillments', function ($scope, bladeNavigationService, fulfillments) {
+angular.module('virtoCommerce.inventoryModule')
+    .controller('virtoCommerce.inventoryModule.fulfillmentWidgetController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.fulfillments', function ($scope, bladeNavigationService, fulfillments) {
     var blade = $scope.widget.blade;
 
     $scope.widget.refresh = function () {
         $scope.currentNumberInfo = '...';
-        fulfillments.query({}, function (results) {
-            $scope.currentNumberInfo = results.length;
-        }, function (error) {
-            //bladeNavigationService.setError('Error ' + error.status, $scope.blade);
+        fulfillments.search({
+            searchPhrase: undefined,
+            sort: null,
+            skip: 0,
+            take: 0
+        }, function (response) {
+            $scope.currentNumberInfo = response.totalCount;
         });
     }
 
@@ -15,7 +18,7 @@
         var newBlade = {
             id: 'fulfillmentCenterList',
             controller: 'virtoCommerce.inventoryModule.fulfillmentListController',
-            template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/fulfillment/blades/fulfillment-center-list.tpl.html'
+            template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/blades/fulfillment-center-list.tpl.html'
         };
         bladeNavigationService.showBlade(newBlade, blade);
     };

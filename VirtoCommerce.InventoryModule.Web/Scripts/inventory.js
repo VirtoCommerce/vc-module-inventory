@@ -7,21 +7,28 @@ if (AppDependencies != undefined) {
 
 angular.module(moduleName, [])
     .run(
-    ['$rootScope', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.authService', 'platformWebApp.metaFormsService', function ($rootScope, mainMenuService, widgetService, authService, metaFormsService) {
+        ['$rootScope', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', 'platformWebApp.authService', 'platformWebApp.metaFormsService', function ($rootScope, mainMenuService, widgetService, authService, metaFormsService) {
 
-        //Register widgets in catalog item details
-        widgetService.registerWidget({
-            isVisible: function (blade) { return blade.productType !== 'Digital' && authService.checkPermission('inventory:update'); },
-            controller: 'virtoCommerce.inventoryModule.inventoryWidgetController',
-            template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/widgets/inventoryWidget.tpl.html'
-        }, 'itemDetail');
+            //Register widgets in catalog item details
+            widgetService.registerWidget({
+                isVisible: function (blade) { return blade.productType !== 'Digital' && authService.checkPermission('inventory:update'); },
+                controller: 'virtoCommerce.inventoryModule.inventoryWidgetController',
+                template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/widgets/inventoryWidget.tpl.html'
+            }, 'itemDetail');
 
-        widgetService.registerWidget({    
-            size: [2, 1],
-            controller: 'virtoCommerce.inventoryModule.fulfillmentAddressesWidgetController',
-            template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/widgets/fulfillmentAddressesWidget.tpl.html'
-        }, 'fulfillmentCenterDetail');
+            widgetService.registerWidget({
+                size: [2, 1],
+                controller: 'virtoCommerce.inventoryModule.fulfillmentAddressesWidgetController',
+                template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/widgets/fulfillmentAddressesWidget.tpl.html'
+            }, 'fulfillmentCenterDetail');
 
-        metaFormsService.registerMetaFields('inventoryDetails', []);
-        metaFormsService.registerMetaFields('fulfillmentCenterDetails', []);
-    }]);
+
+            widgetService.registerWidget({
+                isVisible: function (blade) { return blade.currentEntity.id == 'VirtoCommerce.Core'; },
+                controller: 'virtoCommerce.inventoryModule.fulfillmentWidgetController',
+                template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/widgets/fulfillmentWidget.tpl.html'
+            }, 'moduleDetail');
+
+            metaFormsService.registerMetaFields('inventoryDetails', []);
+            metaFormsService.registerMetaFields('fulfillmentCenterDetails', []);
+        }]);
