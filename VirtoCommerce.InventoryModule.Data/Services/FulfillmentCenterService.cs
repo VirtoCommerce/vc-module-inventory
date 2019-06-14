@@ -52,6 +52,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             var pkMap = new PrimaryKeyResolvingMap();
             var changedEntries = new List<GenericChangedEntry<FulfillmentCenter>>();
             using (var repository = _repositoryFactory())
+            using (var changeTracker = GetChangeTracker(repository))
             {
                 var existEntities = repository.GetFulfillmentCenters(fulfillmentCenters.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
                 foreach (var changedCenter in fulfillmentCenters)
@@ -60,6 +61,8 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                     var modifiedEntity = AbstractTypeFactory<FulfillmentCenterEntity>.TryCreateInstance().FromModel(changedCenter, pkMap);
                     if (existEntity != null)
                     {
+                        changeTracker.Attach(existEntity);
+
                         changedEntries.Add(new GenericChangedEntry<FulfillmentCenter>(changedCenter, existEntity.ToModel(AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance()), EntryState.Modified));
                         modifiedEntity.Patch(existEntity);
                     }
