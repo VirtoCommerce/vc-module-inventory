@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Inventory.Model;
@@ -40,7 +40,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                     sortInfos = new[] { new SortInfo { SortColumn = "ModifiedDate" } };
                 }
 
-                query = query.OrderBySortInfos(sortInfos);
+                query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id);
 
                 result.TotalCount = query.Count();
                 result.Results = query.Skip(criteria.Skip)
