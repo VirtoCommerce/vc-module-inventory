@@ -43,7 +43,7 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
                     _batchSize = _settingsManager.GetValue("Inventory.ExportImport.PageSize", 50);
                 }
 
-                return (int) _batchSize;
+                return (int)_batchSize;
             }
         }
 
@@ -101,7 +101,10 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
 
                                 while (reader.TokenType != JsonToken.EndArray)
                                 {
-                                    var inventoryInfo = _jsonSerializer.Deserialize<InventoryInfo>(reader);
+                                    var inventoryInfo = AbstractTypeFactory<InventoryInfo>.TryCreateInstance();
+
+                                    inventoryInfo = _jsonSerializer.Deserialize(reader, inventoryInfo.GetType()) as InventoryInfo;
+
                                     inventoryInfoChunk.Add(inventoryInfo);
 
                                     reader.Read();
@@ -120,11 +123,13 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
                                 }
                             }
 
-                        } else if (readerValue == "FulfillmentCenters")
+                        }
+                        else if (readerValue == "FulfillmentCenters")
                         {
                             reader.Read();
 
-                            var fulfillmentCenters = _jsonSerializer.Deserialize<FulfillmentCenter[]>(reader);
+                            var fulfillmentCentersType = AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance().GetType().MakeArrayType();
+                            var fulfillmentCenters = _jsonSerializer.Deserialize(reader, fulfillmentCentersType) as FulfillmentCenter[];
 
                             progressInfo.Description = $"The {fulfillmentCenters.Count()} fulfillmentCenters has been imported";
                             progressCallback(progressInfo);
@@ -140,16 +145,16 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
         {
             progressCallback(new ExportImportProgressInfo("The fulfilmentCenters are loading"));
             var centers = _fulfillmentCenterSearchService.SearchCenters(new FulfillmentCenterSearchCriteria { Take = int.MaxValue }).Results;
-            
+
             progressCallback(new ExportImportProgressInfo("Evaluation the number of inventory records"));
-            
+
             var searchResult = _inventorySearchService.SearchInventories(new InventorySearchCriteria { Take = BatchSize });
             var totalCount = searchResult.TotalCount;
             var inventories = searchResult.Results.ToList();
             for (int i = BatchSize; i < totalCount; i += BatchSize)
             {
                 progressCallback(new ExportImportProgressInfo($"{i} of {totalCount} inventories have been loaded"));
-                searchResult = _inventorySearchService.SearchInventories(new InventorySearchCriteria { Skip = i,  Take = BatchSize });
+                searchResult = _inventorySearchService.SearchInventories(new InventorySearchCriteria { Skip = i, Take = BatchSize });
                 inventories.AddRange(searchResult.Results);
             }
 
