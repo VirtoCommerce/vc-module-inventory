@@ -79,6 +79,7 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
         public void DoImport(Stream backupStream, Action<ExportImportProgressInfo> progressCallback)
         {
             var progressInfo = new ExportImportProgressInfo();
+            var inventoryInfos = new List<InventoryInfo>();
 
             using (var streamReader = new StreamReader(backupStream))
             using (var reader = new JsonTextReader(streamReader))
@@ -97,29 +98,14 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
                             {
                                 reader.Read();
 
-                                var inventoryInfoChunk = new List<InventoryInfo>();
-
                                 while (reader.TokenType != JsonToken.EndArray)
                                 {
                                     var inventoryInfo = AbstractTypeFactory<InventoryInfo>.TryCreateInstance();
 
                                     inventoryInfo = _jsonSerializer.Deserialize(reader, inventoryInfo.GetType()) as InventoryInfo;
-
-                                    inventoryInfoChunk.Add(inventoryInfo);
+                                    inventoryInfos.Add(inventoryInfo);
 
                                     reader.Read();
-
-                                    if (inventoryInfoChunk.Count >= BatchSize || reader.TokenType == JsonToken.EndArray)
-                                    {
-
-                                        progressInfo.ProcessedCount += inventoryInfoChunk.Count;
-                                        progressInfo.Description = $"{progressInfo.ProcessedCount} inventories records have been imported";
-                                        progressCallback(progressInfo);
-
-                                        _inventoryService.UpsertInventories(inventoryInfoChunk);
-
-                                        inventoryInfoChunk.Clear();
-                                    }
                                 }
                             }
 
@@ -131,12 +117,23 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
                             var fulfillmentCentersType = AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance().GetType().MakeArrayType();
                             var fulfillmentCenters = _jsonSerializer.Deserialize(reader, fulfillmentCentersType) as FulfillmentCenter[];
 
-                            progressInfo.Description = $"The {fulfillmentCenters.Count()} fulfillmentCenters has been imported";
+                            progressInfo.Description = $"The {fulfillmentCenters.Count()} fulfillmentCenters have been imported";
                             progressCallback(progressInfo);
 
                             _fulfillmentCenterService.SaveChanges(fulfillmentCenters);
                         }
                     }
+                }
+
+                // TODO: Need to handle saving inventories some way different as stream import does not make sense when all objects are in memory.
+                var totalCount = inventoryInfos.Count;
+                for (var i = 0; i < totalCount; i += BatchSize)
+                {
+                    progressInfo.ProcessedCount += Math.Min(BatchSize, totalCount - i);
+                    progressInfo.Description = $"{progressInfo.ProcessedCount} inventories records have been imported";
+                    progressCallback(progressInfo);
+
+                    _inventoryService.UpsertInventories(inventoryInfos.Skip(i).Take(BatchSize).ToArray());
                 }
             }
         }
