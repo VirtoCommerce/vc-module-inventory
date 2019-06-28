@@ -19,7 +19,7 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
             InventoryInfos = Array.Empty<InventoryInfo>();
             FulfillmentCenters = Array.Empty<FulfillmentCenter>();
         }
-        // Important to set such property order as FulfillmentCenters should be saved before InventoryInfos when importing
+        // Important to set such property order - FulfillmentCenters before InventoryInfos - as FulfillmentCenters should be saved before InventoryInfos when importing
         public FulfillmentCenter[] FulfillmentCenters { get; set; }
         public InventoryInfo[] InventoryInfos { get; set; }
     }
@@ -112,7 +112,6 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
 
                                     if (inventoryInfoChunk.Count >= BatchSize || reader.TokenType == JsonToken.EndArray)
                                     {
-
                                         progressInfo.ProcessedCount += inventoryInfoChunk.Count;
                                         progressInfo.Description = $"{progressInfo.ProcessedCount} inventories records have been imported";
                                         progressCallback(progressInfo);
@@ -132,7 +131,7 @@ namespace VirtoCommerce.InventoryModule.Web.ExportImport
                             var fulfillmentCentersType = AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance().GetType().MakeArrayType();
                             var fulfillmentCenters = _jsonSerializer.Deserialize(reader, fulfillmentCentersType) as FulfillmentCenter[];
 
-                            progressInfo.Description = $"The {fulfillmentCenters.Count()} fulfillmentCenters has been imported";
+                            progressInfo.Description = $"The {fulfillmentCenters.Count()} fulfillmentCenters have been imported";
                             progressCallback(progressInfo);
 
                             _fulfillmentCenterService.SaveChanges(fulfillmentCenters);
