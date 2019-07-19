@@ -39,7 +39,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 result.TotalCount = query.Count();
                 result.Results = query.Skip(criteria.Skip)
                                  .Take(criteria.Take)
-                                 .ToArray()
+                                 .AsEnumerable()
                                  .Select(x => x.ToModel(AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance()))
                                  .ToList();
             }
