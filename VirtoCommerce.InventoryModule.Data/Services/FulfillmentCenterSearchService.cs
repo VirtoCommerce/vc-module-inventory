@@ -43,6 +43,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                                  .Select(x => x.ToModel(AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance()))
                                  .ToList();
             }
+
             return result;
         }
 
