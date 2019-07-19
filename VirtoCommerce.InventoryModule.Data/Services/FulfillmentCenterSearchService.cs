@@ -4,6 +4,7 @@ using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Inventory.Model;
 using VirtoCommerce.Domain.Inventory.Model.Search;
 using VirtoCommerce.Domain.Inventory.Services;
+using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.InventoryModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Data.Infrastructure;
@@ -18,18 +19,14 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             _repositoryFactory = repositoryFactory;
         }
 
-        public GenericSearchResult<FulfillmentCenter> SearchCenters(FulfillmentCenterSearchCriteria criteria)
+        public virtual GenericSearchResult<FulfillmentCenter> SearchCenters(FulfillmentCenterSearchCriteria criteria)
         {
             var result = new GenericSearchResult<FulfillmentCenter>();
             using (var repository = _repositoryFactory())
             {
                 repository.DisableChangesTracking();
 
-                var query = repository.FulfillmentCenters;
-                if (!string.IsNullOrEmpty(criteria.SearchPhrase))
-                {
-                    query = query.Where(x => x.Name.Contains(criteria.SearchPhrase));
-                }
+                var query = GetFulfillmentCentersQuery(repository, criteria);
 
                 var sortInfos = criteria.SortInfos;
                 if (sortInfos.IsNullOrEmpty())
@@ -47,6 +44,19 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                                  .ToList();
             }
             return result;
+        }
+
+        protected virtual IQueryable<FulfillmentCenterEntity> GetFulfillmentCentersQuery(IInventoryRepository repository,
+            FulfillmentCenterSearchCriteria criteria)
+        {
+            var query = repository.FulfillmentCenters;
+
+            if (!string.IsNullOrEmpty(criteria.SearchPhrase))
+            {
+                query = query.Where(x => x.Name.Contains(criteria.SearchPhrase));
+            }
+
+            return query;
         }
     }
 }
