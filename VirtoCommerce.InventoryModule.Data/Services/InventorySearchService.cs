@@ -14,6 +14,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
     public class InventorySearchService : IInventorySearchService
     {
         private readonly Func<IInventoryRepository> _repositoryFactory;
+
         public InventorySearchService(Func<IInventoryRepository> repositoryFactory)
         {
             _repositoryFactory = repositoryFactory;
@@ -47,8 +48,8 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             return result;
         }
 
-        protected virtual IQueryable<InventoryEntity> GetInventoriesQuery(IInventoryRepository repository,
-            InventorySearchCriteria criteria)
+
+        protected virtual IQueryable<InventoryEntity> GetInventoriesQuery(IInventoryRepository repository, InventorySearchCriteria criteria)
         {
             var query = repository.Inventories;
 
