@@ -24,6 +24,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.0.0-beta0001" />
         <PackageReference Include="VirtoCommerce.SearchModule.Core" Version="3.0.0-beta.1" />
     </ItemGroup>
