@@ -21,20 +21,15 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
 
         public IQueryable<FulfillmentCenterEntity> FulfillmentCenters => DbContext.Set<FulfillmentCenterEntity>();
 
-        public virtual async Task<IEnumerable<InventoryEntity>> GetProductsInventoriesAsync(IEnumerable<string> productIds, string responseGroup)
+        public virtual async Task<IEnumerable<InventoryEntity>> GetProductsInventoriesAsync(IEnumerable<string> productIds, string responseGroup = null)
         {
-            var inventories = await Inventories.Where(x => productIds.Contains(x.Sku)).ToListAsync();
-
+            var query = Inventories.Where(x => productIds.Contains(x.Sku));
             var inventoryResponseGroup = EnumUtility.SafeParseFlags(responseGroup, InventoryResponseGroup.Full);
-
-            foreach (var inventory in inventories)
+            if (inventoryResponseGroup.HasFlag(InventoryResponseGroup.WithFulfillmentCenter))
             {
-                if (inventoryResponseGroup.HasFlag(InventoryResponseGroup.WithFulfillmentCenter))
-                {
-                    var fulfillmentCenter = await DbContext.Set<FulfillmentCenterEntity>().FirstOrDefaultAsync(t => t.Id.Equals(inventory.FulfillmentCenterId));
-                }
+                query.Include(x => x.FulfillmentCenter);
             }
-
+            var inventories = await query.ToListAsync();
             return inventories;
         }
 
@@ -43,24 +38,21 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             return await FulfillmentCenters.Where(x => ids.Contains(x.Id)).ToListAsync();
         }
 
-        public async Task<IEnumerable<InventoryEntity>> GetByIdsAsync(string[] ids, string responseGroup)
+        public async Task<IEnumerable<InventoryEntity>> GetByIdsAsync(string[] ids, string responseGroup = null)
         {
-            var inventories = await Inventories.Where(x => ids.Contains(x.Id)).ToListAsync();
-
+            var query = Inventories.Where(x => ids.Contains(x.Id));
+          
             var inventoryResponseGroup = EnumUtility.SafeParseFlags(responseGroup, InventoryResponseGroup.Full);
-
-            foreach (var inventory in inventories)
+            if (inventoryResponseGroup.HasFlag(InventoryResponseGroup.WithFulfillmentCenter))
             {
-                if (inventoryResponseGroup.HasFlag(InventoryResponseGroup.WithFulfillmentCenter))
-                {
-                    var fulfillmentCenter = await DbContext.Set<FulfillmentCenterEntity>().FirstOrDefaultAsync(t => t.Id.Equals(inventory.FulfillmentCenterId));
-                }
+                query.Include(x => x.FulfillmentCenter);
             }
-
+            var inventories = await query.ToListAsync();
             return inventories;
         }
 
         #endregion
+
     }
 
 }
