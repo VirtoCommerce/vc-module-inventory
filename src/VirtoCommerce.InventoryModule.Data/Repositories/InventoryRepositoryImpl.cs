@@ -27,7 +27,7 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             var inventoryResponseGroup = EnumUtility.SafeParseFlags(responseGroup, InventoryResponseGroup.Full);
             if (inventoryResponseGroup.HasFlag(InventoryResponseGroup.WithFulfillmentCenter))
             {
-                query.Include(x => x.FulfillmentCenter);
+                query = query.Include(x => x.FulfillmentCenter);
             }
             var inventories = await query.ToListAsync();
             return inventories;
@@ -41,18 +41,16 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
         public async Task<IEnumerable<InventoryEntity>> GetByIdsAsync(string[] ids, string responseGroup = null)
         {
             var query = Inventories.Where(x => ids.Contains(x.Id));
-          
+
             var inventoryResponseGroup = EnumUtility.SafeParseFlags(responseGroup, InventoryResponseGroup.Full);
             if (inventoryResponseGroup.HasFlag(InventoryResponseGroup.WithFulfillmentCenter))
             {
-                query.Include(x => x.FulfillmentCenter);
+                query = query.Include(x => x.FulfillmentCenter);
             }
             var inventories = await query.ToListAsync();
             return inventories;
         }
 
         #endregion
-
     }
-
 }

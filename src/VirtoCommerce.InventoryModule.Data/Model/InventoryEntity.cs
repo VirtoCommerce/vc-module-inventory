@@ -49,7 +49,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
         #region Navigation properties
 
         public string FulfillmentCenterId { get; set; }
-        public FulfillmentCenterEntity FulfillmentCenter { get; set; }
+        public virtual FulfillmentCenterEntity FulfillmentCenter { get; set; }
 
         #endregion
 

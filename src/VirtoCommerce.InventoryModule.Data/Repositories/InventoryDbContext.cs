@@ -28,7 +28,6 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             modelBuilder.Entity<FulfillmentCenterEntity>().ToTable("FulfillmentCenter").HasKey(x => x.Id);
             modelBuilder.Entity<FulfillmentCenterEntity>().Property(x => x.Id).HasMaxLength(128);
 
-
             base.OnModelCreating(modelBuilder);
         }
     }
