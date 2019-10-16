@@ -50,6 +50,7 @@ namespace VirtoCommerce.InventoryModule.Web
             serviceCollection.AddTransient<ProductAvailabilityChangesProvider>();
             serviceCollection.AddTransient<ProductAvailabilityDocumentBuilder>();
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
+            serviceCollection.AddTransient<IndexInventoryChangedEventHandler>();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)
@@ -101,6 +102,7 @@ namespace VirtoCommerce.InventoryModule.Web
 
             var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
             inProcessBus.RegisterHandler<InventoryChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
+            inProcessBus.RegisterHandler<InventoryChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<IndexInventoryChangedEventHandler>().Handle(message));
         }
 
         public void Uninstall()
