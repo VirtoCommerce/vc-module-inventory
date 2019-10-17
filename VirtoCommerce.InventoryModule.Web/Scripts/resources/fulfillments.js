@@ -4,6 +4,6 @@ angular.module('virtoCommerce.inventoryModule')
             get: { url: 'api/inventory/fulfillmentcenters/:id' },
             update: { method: 'PUT', isArray: true},
             search: { url: 'api/inventory/fulfillmentcenters/search', method: 'POST' },
-            getByIds: { method: 'POST', isArray: true}
+            getByIds: { url: 'api/inventory/fulfillmentcenters/plenty', method: 'POST', isArray: true}
         });
     }]);
