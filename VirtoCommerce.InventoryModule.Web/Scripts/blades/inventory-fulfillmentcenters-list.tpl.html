@@ -1,16 +1,29 @@
+<div class="bc blade-static">
+    <div class="form-group">
+        <div class="form-input __other">
+            <input placeholder="{{ 'platform.placeholders.search-keyword' | translate }}" ng-model="blade.searchKeyword" ng-keyup="$event.which === 13 && blade.refresh()" />
+            <button class="btn __other" type="button">
+                <i class="btn-ico fa fa-times-circle" title="Clear" ng-click="blade.clearKeyword()"></i>
+            </button>
+        </div>
+        <p class="form-count">{{'platform.list.count' | translate}}: <span class="count">{{blade.count | number:0}}</span></p>
+    </div>
+</div>
+
 <div class="blade-content">
-	<div class="blade-inner">
-		<div class="inner-block">
-			<ul class="list __items" ng-if="blade.currentEntities.length">
+    <div class="blade-inner">
+        <div class="inner-block">
+            <ul class="list __items" ng-if="blade.currentEntities.length">
                 <li class="list-item" ng-click="openBlade(data)" ng-repeat="data in blade.currentEntities" ng-class="{'__selected': data.fulfillmentCenterId === selectedItem.fulfillmentCenterId}">
                     <!--<i class="list-ico fa fa-wrench"></i>-->
-                    <span class="list-t">
+                    <span class="list-t" ng-style="{'color': data.inStockQuantity === 0 ? '#8c8c8c' : '#333'}">
                         {{data.fulfillmentCenter.name}}
                     </span>
-                    <span class="list-descr">{{data.fulfillmentCenter.description | limitTo:50}}</span>
+                    <span class="list-descr">{{data.fulfillmentCenter.description | limitTo:50}}                   
+                    </span>
                 </li>
-			</ul>
-			<p class="note" ng-if="!blade.currentEntities.length">{{ 'inventory.blades.inventory-fulfillmentcenters-list.labels.no-fulfillment-centers' | translate }}</p>
-		</div>
-	</div>
+            </ul>
+            <p class="note" ng-if="!blade.currentEntities.length">{{ 'inventory.blades.inventory-fulfillmentcenters-list.labels.no-fulfillment-centers' | translate }}</p>
+        </div>
+    </div>
 </div>

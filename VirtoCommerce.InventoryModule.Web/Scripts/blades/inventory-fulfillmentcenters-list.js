@@ -10,12 +10,32 @@ angular.module('virtoCommerce.inventoryModule')
             }, 0, false);
     });
 
+    blade.clearKeyword = function() {
+        blade.searchKeyword = undefined;
+        blade.refresh();
+    };
+
     blade.refresh = function () {
         blade.isLoading = true;
         return blade.parentWidgetRefresh().$promise.then(function (results) {
             blade.isLoading = false;
             blade.currentEntities = results;
 
+            var grouped = _.groupBy(blade.currentEntities,
+                function(entity) {
+                    return entity.inStockQuantity > 0 ? 'inStock' : 'empty';
+                });
+            blade.currentEntities = grouped.inStock.sort($scope.sortByName)
+                .concat(grouped.empty.sort($scope.sortByName));
+
+            if (blade.searchKeyword) {
+                blade.currentEntities = _.filter(blade.currentEntities,
+                    function(entity) {
+                        return entity.fulfillmentCenter.name.contains(blade.searchKeyword);
+                    });
+            }
+
+            blade.count = blade.currentEntities.length || 0;
             openFirstEntityDetailsOnce();
             return results;
         });
@@ -61,4 +81,11 @@ angular.module('virtoCommerce.inventoryModule')
     ];
 
     blade.refresh();
+
+    $scope.sortByName = function (a, b) {
+        if (a.fulfillmentCenter.name !== b.fulfillmentCenter.name) {
+            return a.fulfillmentCenter.name > b.fulfillmentCenter.name ? 1 : -1;
+        }
+        return 0;
+    };
 }]);
