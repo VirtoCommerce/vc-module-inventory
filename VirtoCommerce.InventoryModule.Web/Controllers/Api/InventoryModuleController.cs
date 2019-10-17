@@ -61,7 +61,6 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Route("fulfillmentcenters")]
         public IHttpActionResult GetFulfillmentCenters([FromBody] string[] ids)
         {
-
             var retVal = _fulfillmentCenterService.GetByIds(ids);
             return Ok(retVal);
         }
