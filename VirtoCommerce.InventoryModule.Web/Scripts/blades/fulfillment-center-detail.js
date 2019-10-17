@@ -37,9 +37,11 @@ angular.module('virtoCommerce.inventoryModule')
 
         function saveChanges() {
             blade.isLoading = true;
-            fulfillments.update({}, blade.currentEntity, function (center) {
-                blade.currentEntityId = center.id;
-                blade.refresh(true);
+            fulfillments.update({}, [blade.currentEntity], function (centers) {
+                if (centers.length) {
+                    blade.currentEntityId = centers[0].id;
+                    blade.refresh(true);
+                }
             });
         }
 

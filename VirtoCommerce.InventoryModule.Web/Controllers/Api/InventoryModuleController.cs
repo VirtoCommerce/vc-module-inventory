@@ -16,17 +16,14 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
     public class InventoryModuleController : ApiController
     {
         private readonly IInventoryService _inventoryService;
-        private readonly IInventorySearchService _inventorySearchService;
         private readonly IFulfillmentCenterSearchService _fulfillmentCenterSearchService;
         private readonly IFulfillmentCenterService _fulfillmentCenterService;
 
-        public InventoryModuleController(IInventoryService inventoryService, IFulfillmentCenterSearchService fulfillmentCenterSearchService,
-                                          IInventorySearchService inventorySearchService, IFulfillmentCenterService fulfillmentCenterService)
+        public InventoryModuleController(IInventoryService inventoryService, IFulfillmentCenterSearchService fulfillmentCenterSearchService, IFulfillmentCenterService fulfillmentCenterService)
         {
             _inventoryService = inventoryService;
             _fulfillmentCenterSearchService = fulfillmentCenterSearchService;
             _fulfillmentCenterService = fulfillmentCenterService;
-            _inventorySearchService = inventorySearchService;
         }
 
         /// <summary>
@@ -59,11 +56,12 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// Get fulfillment centers by ids
         /// </summary>
         /// <param name="ids">fulfillment center ids</param>
-        [HttpGet]
+        [HttpPost]
         [ResponseType(typeof(FulfillmentCenter[]))]
-        [Route("fulfillmentcentersbulk")]
-        public IHttpActionResult GetFulfillmentCenters([FromUri] string[] ids)
+        [Route("fulfillmentcenters")]
+        public IHttpActionResult GetFulfillmentCenters([FromBody] string[] ids)
         {
+
             var retVal = _fulfillmentCenterService.GetByIds(ids);
             return Ok(retVal);
         }
@@ -71,29 +69,15 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <summary>
         ///  Save fulfillment center 
         /// </summary>
-        /// <param name="center">fulfillment center</param>
+        /// <param name="centers">fulfillment center</param>
         [HttpPut]
-        [ResponseType(typeof(FulfillmentCenter))]
+        [ResponseType(typeof(FulfillmentCenter[]))]
         [Route("fulfillmentcenters")]
         [CheckPermission(Permission = InventoryPredefinedPermissions.FulfillmentEdit)]
-        public IHttpActionResult SaveFulfillmentCenter(FulfillmentCenter center)
-        {
-            _fulfillmentCenterService.SaveChanges(new[] { center });
-            return Ok(center);
-        }
-
-        /// <summary>
-        /// Bulk save fulfillment centers
-        /// </summary>
-        /// <param name="centers">fulfillment centers</param>
-        [HttpPut]
-        [ResponseType(typeof(void))]
-        [Route("fulfillmentcentersbulk")]
-        [CheckPermission(Permission = InventoryPredefinedPermissions.FulfillmentEdit)]
-        public IHttpActionResult SaveFulfillmentCentersBulk(FulfillmentCenter[] centers)
+        public IHttpActionResult SaveFulfillmentCenter(FulfillmentCenter[] centers)
         {
             _fulfillmentCenterService.SaveChanges(centers);
-            return Ok();
+            return Ok(centers);
         }
 
         /// <summary>
