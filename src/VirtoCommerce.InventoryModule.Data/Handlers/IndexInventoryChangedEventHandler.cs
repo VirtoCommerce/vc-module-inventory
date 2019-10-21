@@ -14,6 +14,7 @@ namespace VirtoCommerce.InventoryModule.Data.Handlers
     public class IndexInventoryChangedEventHandler : IEventHandler<InventoryChangedEvent>
     {
         private readonly IIndexingManager _indexingManager;
+        private static readonly EntryState[] _entityStates = new[] { EntryState.Added, EntryState.Modified, EntryState.Deleted };
 
         public IndexInventoryChangedEventHandler(IIndexingManager indexingManager)
         {
@@ -27,7 +28,7 @@ namespace VirtoCommerce.InventoryModule.Data.Handlers
                 throw new ArgumentNullException(nameof(message));
             }
 
-            var indexProductIds = message.ChangedEntries.Where(x => (x.EntryState == EntryState.Modified || x.EntryState == EntryState.Added)
+            var indexProductIds = message.ChangedEntries.Where(x => _entityStates.Any(s => s == x.EntryState)
                                                                     && x.OldEntry.ProductId != null)
                                                           .Select(x => x.OldEntry.ProductId)
                                                           .Distinct().ToArray();
