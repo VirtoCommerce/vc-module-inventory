@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.InventoryModule.Core.Events;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Data.BackgroundJobs;
@@ -18,7 +19,7 @@ namespace VirtoCommerce.InventoryModule.Data.Handlers
             }
 
             var indexEntries = message.ChangedEntries
-                .Select(x => new IndexEntry { Id = x.OldEntry.ProductId, EntryState = x.EntryState, Type = KnownDocumentTypes.Product })
+                .Select(x => new IndexEntry { Id = x.OldEntry.ProductId, EntryState = EntryState.Modified, Type = KnownDocumentTypes.Product })
                 .ToArray();
 
             IndexingJobs.EnqueueIndexAndDeleteDocuments(indexEntries);
