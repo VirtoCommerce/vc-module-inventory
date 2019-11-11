@@ -15,9 +15,9 @@ angular.module('virtoCommerce.inventoryModule')
         blade.refresh();
     };
 
-    blade.refresh = function () {
+    blade.refresh = function() {
         blade.isLoading = true;
-        return blade.parentWidgetRefresh().$promise.then(function (results) {
+        return blade.parentWidgetRefresh().$promise.then(function(results) {
             blade.isLoading = false;
             blade.currentEntities = results;
 
@@ -31,7 +31,7 @@ angular.module('virtoCommerce.inventoryModule')
             if (blade.searchKeyword) {
                 blade.currentEntities = _.filter(blade.currentEntities,
                     function(entity) {
-                        return entity.fulfillmentCenter.name.contains(blade.searchKeyword);
+                        return entity.fulfillmentCenter.name.toLowerCase().contains(blade.searchKeyword.toLowerCase());
                     });
             }
 
@@ -39,7 +39,7 @@ angular.module('virtoCommerce.inventoryModule')
             openFirstEntityDetailsOnce();
             return results;
         });
-    }
+    };
 
     $scope.openBlade = function (data) {
         $scope.selectedItem = data;
