@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Microsoft.Practices.Unity;
+using VirtoCommerce.Domain.Inventory.Events;
 using VirtoCommerce.Domain.Inventory.Services;
 using VirtoCommerce.Domain.Search;
+using VirtoCommerce.InventoryModule.Data.Handlers;
 using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.InventoryModule.Data.Repositories;
 using VirtoCommerce.InventoryModule.Data.Search.Indexing;
 using VirtoCommerce.InventoryModule.Data.Services;
 using VirtoCommerce.InventoryModule.Web.ExportImport;
 using VirtoCommerce.InventoryModule.Web.JsonConverters;
+using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
@@ -52,6 +55,9 @@ namespace VirtoCommerce.InventoryModule.Web
             _container.RegisterType<IInventorySearchService, InventorySearchService>();
             _container.RegisterType<IFulfillmentCenterSearchService, FulfillmentCenterSearchService>();
             _container.RegisterType<IFulfillmentCenterService, FulfillmentCenterService>();
+
+            var eventHandlerRegistrar = _container.Resolve<IHandlerRegistrar>();
+            eventHandlerRegistrar.RegisterHandler<InventoryChangedEvent>(async (message, token) => await _container.Resolve<IndexInventoryChangedEventHandler>().Handle(message));
         }
 
         public override void PostInitialize()

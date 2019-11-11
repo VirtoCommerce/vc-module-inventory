@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using VirtoCommerce.InventoryModule.Data.Model;
@@ -45,17 +45,16 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             get { return GetAsQueryable<FulfillmentCenterEntity>(); }
         }
 
-        public IEnumerable<InventoryEntity> GetProductsInventories(IEnumerable<string> productIds)
+        public virtual IEnumerable<InventoryEntity> GetProductsInventories(IEnumerable<string> productIds)
         {
             return Inventories.Where(x => productIds.Contains(x.Sku)).Include(x => x.FulfillmentCenter).ToArray();
         }
 
-        public IEnumerable<FulfillmentCenterEntity> GetFulfillmentCenters(IEnumerable<string> ids)
+        public virtual IEnumerable<FulfillmentCenterEntity> GetFulfillmentCenters(IEnumerable<string> ids)
         {
             return FulfillmentCenters.Where(x => ids.Contains(x.Id)).ToArray();
         }
 
         #endregion
     }
-
 }

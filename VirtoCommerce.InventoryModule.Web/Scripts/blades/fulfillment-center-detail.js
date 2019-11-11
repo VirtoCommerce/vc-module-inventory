@@ -1,21 +1,24 @@
 angular.module('virtoCommerce.inventoryModule')
-    .controller('virtoCommerce.inventoryModule.fulfillmentCenterDetailController', ['$scope', 'platformWebApp.dialogService', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.fulfillments', 'platformWebApp.common.countries', function ($scope, dialogService, bladeNavigationService, fulfillments, countries) {
+    .controller('virtoCommerce.inventoryModule.fulfillmentCenterDetailController', ['$scope', 'platformWebApp.dialogService', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.fulfillments', 'platformWebApp.common.countries', 'platformWebApp.metaFormsService', function ($scope, dialogService, bladeNavigationService, fulfillments, countries, metaFormsService) {
         var blade = $scope.blade;
         blade.updatePermission = 'inventory:fulfillment:edit';
+
         blade.refresh = function (parentRefresh) {
             if (blade.currentEntityId) {
                 blade.isLoading = true;
-                fulfillments.get({ id: blade.currentEntityId }, function (data) {
-                    initializeBlade(data);
-                    if (parentRefresh) {
-                        blade.parentBlade.refresh();
-                    }
-                });
-            }
-            else {
+                fulfillments.get({ id: blade.currentEntityId },
+                    function (data) {
+                        initializeBlade(data);
+                        if (parentRefresh) {
+                            blade.parentBlade.refresh();
+                        }
+                    });
+            } else {
                 initializeBlade(blade.currentEntity);
             }
-        }
+        };
+
+        blade.metaFields = blade.metaFields ? blade.metaFields : metaFormsService.getMetaFields('fulfillmentCenterDetail');
 
         function initializeBlade(data) {
             blade.currentEntity = angular.copy(data);
@@ -37,7 +40,7 @@ angular.module('virtoCommerce.inventoryModule')
 
         function saveChanges() {
             blade.isLoading = true;
-            fulfillments.update({}, [blade.currentEntity], function (centers) {
+            fulfillments.update([blade.currentEntity], function (centers) {
                 if (centers.length) {
                     blade.currentEntityId = centers[0].id;
                 }
