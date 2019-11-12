@@ -24,7 +24,7 @@ angular.module('virtoCommerce.inventoryModule')
             blade.currentEntity = angular.copy(data);
             blade.origEntity = data;
             blade.isLoading = false;
-        };
+        }
 
         $scope.setForm = function (form) {
             $scope.formScope = form;
