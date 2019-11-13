@@ -16,7 +16,7 @@
             <ul class="list __items" ng-if="blade.currentEntities.length">
                 <li class="list-item" ng-click="openBlade(data)" ng-repeat="data in blade.currentEntities" ng-class="{'__selected': data.fulfillmentCenterId === selectedItem.fulfillmentCenterId}">
                     <!--<i class="list-ico fa fa-wrench"></i>-->
-                    <span class="list-t" ng-style="{'color': data.inStockQuantity === 0 ? '#8c8c8c' : '#333'}">
+                    <span class="list-t" ng-class="{'white-gray' : data.inStockQuantity === 0}">
                         {{data.fulfillmentCenter.name}}
                     </span>
                     <span class="list-descr">{{data.fulfillmentCenter.description | limitTo:50}}                   
