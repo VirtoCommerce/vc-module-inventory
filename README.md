@@ -1,4 +1,14 @@
 # VirtoCommerce.Inventory
+
+Inventory management is a system of stock level controlling.
+
+Inventory is often the largest item a business has in its current assets, meaning it must be accurately monitored. Inventory is counted and valued at the end of each accounting period to determine the company's profits or losses.
+
+In the ecommerce sector, a day-to-day management of inventory helps increase business intelligence and visibility. Ecommerce business owners have better ongoing control when they have constant eyes on inventory.
+
+
+
+
 VirtoCommerce.Inventory module represents a store inventory management system.
 
 ![Inventory management UI](https://cloud.githubusercontent.com/assets/5801549/15571240/01a76534-233a-11e6-8cd1-1281c7de22f9.png)
@@ -16,7 +26,7 @@ Installing the module:
 # Available resources
 * Module related service implementations as a <a href="https://www.nuget.org/packages/VirtoCommerce.InventoryModule.Data" target="_blank">NuGet package</a>
 * API client as a <a href="https://www.nuget.org/packages/VirtoCommerce.InventoryModule.Client" target="_blank">NuGet package</a>
-* API client documentation http://demo.virtocommerce.com/admin/docs/ui/index#!/Inventory_module
+* API client documentation https://admin-demo.virtocommerce.com/docs/ui/index#/Inventory%2520module
 
 # License
 Copyright (c) Virtosoftware Ltd.  All rights reserved.
