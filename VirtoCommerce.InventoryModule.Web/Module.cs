@@ -56,8 +56,7 @@ namespace VirtoCommerce.InventoryModule.Web
             _container.RegisterType<IFulfillmentCenterSearchService, FulfillmentCenterSearchService>();
             _container.RegisterType<IFulfillmentCenterService, FulfillmentCenterService>();
 
-            var eventHandlerRegistrar = _container.Resolve<IHandlerRegistrar>();
-            eventHandlerRegistrar.RegisterHandler<InventoryChangedEvent>(async (message, token) => await _container.Resolve<IndexInventoryChangedEventHandler>().Handle(message));
+          
         }
 
         public override void PostInitialize()
@@ -87,6 +86,13 @@ namespace VirtoCommerce.InventoryModule.Web
             }
 
             #endregion
+
+            var settingManager = _container.Resolve<ISettingsManager>();
+            if (settingManager.GetValue("Inventory.Search.EventBasedIndexation.Enable", false))
+            {
+                var eventHandlerRegistrar = _container.Resolve<IHandlerRegistrar>();
+                eventHandlerRegistrar.RegisterHandler<InventoryChangedEvent>(async (message, token) => await _container.Resolve<IndexInventoryChangedEventHandler>().Handle(message));
+            }
 
             // enable polymorphic types in API controller methods
             var httpConfiguration = _container.Resolve<HttpConfiguration>();

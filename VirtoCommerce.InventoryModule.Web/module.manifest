@@ -18,7 +18,7 @@
     <projectUrl>https://virtocommerce.com/apps/extensions/virto-inventory-module</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-inventory/master/VirtoCommerce.InventoryModule.Web/Content/logo.png</iconUrl>
     <releaseNotes>First version.</releaseNotes>
-    <copyright>Copyright © 2011-2018 Virto Commerce. All rights reserved</copyright>
+    <copyright>Copyright © 2011-2019 Virto Commerce. All rights reserved</copyright>
     <tags>order system</tags>
 
     <assemblyFile>VirtoCommerce.InventoryModule.Web.dll</assemblyFile>
@@ -39,6 +39,13 @@
                 <defaultValue>Export/Import inventory information</defaultValue>
                 <title>Export/Import description</title>
                 <description>Module description in platform export/import wizard</description>
+            </setting>
+            <setting>
+                <name>Inventory.Search.EventBasedIndexation.Enable</name>
+                <valueType>boolean</valueType>
+                <defaultValue>false</defaultValue>
+                <title>Set to True to enable event-based indexation for inventories (Restart required)</title>
+                <description>Any changes to the inventory will trigger a background task that will apply these changes to the inventory object in the search index.</description>
             </setting>
             <setting>
                 <name>Inventory.ExportImport.PageSize</name>
