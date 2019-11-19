@@ -53,7 +53,7 @@
                 <name>Inventory.Search.EventBasedIndexation.Enable</name>
                 <valueType>boolean</valueType>
                 <defaultValue>false</defaultValue>
-                <title>Set to True to enable event-based indexation for inventories (Restart required)</title>
+                <title>Enable event-based indexation for inventories (Restart required)</title>
                 <description>Any changes to the inventory will trigger a background task that will apply these changes to the inventory object in the search index.</description>
             </setting>
         </group>
