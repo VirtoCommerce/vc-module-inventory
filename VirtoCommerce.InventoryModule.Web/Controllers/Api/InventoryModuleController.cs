@@ -27,6 +27,19 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         }
 
         /// <summary>
+        /// Search inventories by given criteria
+        /// </summary>
+        [HttpPost]
+        [AllowAnonymous]
+        [ResponseType(typeof(GenericSearchResult<InventoryInfo>))]
+        [Route("inventories/search")]
+        public IHttpActionResult SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
+        {
+            var result = _inventorySearchService.SearchInventories(searchCriteria);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Search fulfillment centers registered in the system
         /// </summary>
         [HttpPost]
@@ -35,8 +48,8 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Route("fulfillmentcenters/search")]
         public IHttpActionResult SearchFulfillmentCenters([FromBody] FulfillmentCenterSearchCriteria searchCriteria)
         {
-            var retVal = _fulfillmentCenterSearchService.SearchCenters(searchCriteria);
-            return Ok(retVal);
+            var result = _fulfillmentCenterSearchService.SearchCenters(searchCriteria);
+            return Ok(result);
         }
 
         /// <summary>
@@ -113,31 +126,19 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         /// <remarks>Get inventory of products for each fulfillment center.</remarks>
         /// <param name="ids">Products ids</param>
+        /// <param name="fulfillmentCenterIds">The fulfillment centers that will be used to filter product inventories</param>
 		[HttpGet]
         [Route("products")]
         [ResponseType(typeof(InventoryInfo[]))]
-        public IHttpActionResult GetProductsInventories([FromUri] string[] ids)
+        public IHttpActionResult GetProductsInventories([FromUri] string[] ids, string[] fulfillmentCenterIds = null)
         {
-            var result = new List<InventoryInfo>();
-            var allFulfillments = _fulfillmentCenterSearchService.SearchCenters(new FulfillmentCenterSearchCriteria { Take = int.MaxValue }).Results;
-            var inventories = _inventoryService.GetProductsInventoryInfos(ids);
-            foreach (var productId in ids)
-            {
-                foreach (var fulfillment in allFulfillments)
-                {
-                    var inventory = inventories.FirstOrDefault(x => x.ProductId == productId && x.FulfillmentCenterId == fulfillment.Id);
-                    if (inventory == null)
-                    {
-                        inventory = AbstractTypeFactory<InventoryInfo>.TryCreateInstance();
-                        inventory.ProductId = productId;
-                        inventory.FulfillmentCenter = fulfillment;
-                        inventory.FulfillmentCenterId = fulfillment.Id;
-                    }
-                    result.Add(inventory);
-                }
-            }
+            var criteria = AbstractTypeFactory<InventorySearchCriteria>.TryCreateInstance();
+            criteria.FulfillmentCenterIds = fulfillmentCenterIds;
+            criteria.ProductIds = ids;
 
-            return Ok(result.ToArray());
+            var result = _inventorySearchService.SearchInventories(criteria);
+           
+            return Ok(result.Results);
         }
 
         /// <summary>
@@ -145,10 +146,11 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         /// <remarks>Get inventory of products for each fulfillment center.</remarks>
         /// <param name="ids">Products ids</param>
+        /// <param name="fulfillmentCenterIds">The fulfillment centers that will be used to filter product inventories</param>
 		[HttpPost]
         [Route("products/plenty")]
         [ResponseType(typeof(InventoryInfo[]))]
-        public IHttpActionResult GetProductsInventoriesByPlentyIds([FromBody] string[] ids)
+        public IHttpActionResult GetProductsInventoriesByPlentyIds([FromBody] string[] ids, string[] fulfillmentCenterIds = null)
         {
             return GetProductsInventories(ids);
         }
