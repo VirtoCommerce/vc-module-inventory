@@ -130,7 +130,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
 		[HttpGet]
         [Route("products")]
         [ResponseType(typeof(InventoryInfo[]))]
-        public IHttpActionResult GetProductsInventories([FromUri] string[] ids, string[] fulfillmentCenterIds = null)
+        public IHttpActionResult GetProductsInventories([FromUri] string[] ids, [FromUri] string[] fulfillmentCenterIds = null)
         {
             var criteria = AbstractTypeFactory<InventorySearchCriteria>.TryCreateInstance();
             criteria.FulfillmentCenterIds = fulfillmentCenterIds;
@@ -150,7 +150,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
 		[HttpPost]
         [Route("products/plenty")]
         [ResponseType(typeof(InventoryInfo[]))]
-        public IHttpActionResult GetProductsInventoriesByPlentyIds([FromBody] string[] ids, string[] fulfillmentCenterIds = null)
+        public IHttpActionResult GetProductsInventoriesByPlentyIds([FromBody] string[] ids, [FromUri] string[] fulfillmentCenterIds = null)
         {
             return GetProductsInventories(ids);
         }
