@@ -133,6 +133,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
             criteria.FulfillmentCenterIds = fulfillmentCenterIds;
             criteria.ProductIds = ids;
             criteria.Take = int.MaxValue;
+
             var result = _inventorySearchService.SearchInventories(criteria);
             return Ok(result.Results);
         }
@@ -148,7 +149,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [ResponseType(typeof(InventoryInfo[]))]
         public IHttpActionResult GetProductsInventoriesByPlentyIds([FromBody] string[] ids, [FromUri] string[] fulfillmentCenterIds = null)
         {
-            return GetProductsInventories(ids);
+            return GetProductsInventories(ids, fulfillmentCenterIds);
         }
 
         /// <summary>
