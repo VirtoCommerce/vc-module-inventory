@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -30,7 +29,6 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// Search inventories by given criteria
         /// </summary>
         [HttpPost]
-        [AllowAnonymous]
         [ResponseType(typeof(GenericSearchResult<InventoryInfo>))]
         [Route("inventories/search")]
         public IHttpActionResult SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
@@ -43,7 +41,6 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// Search fulfillment centers registered in the system
         /// </summary>
         [HttpPost]
-        [AllowAnonymous]
         [ResponseType(typeof(GenericSearchResult<FulfillmentCenter>))]
         [Route("fulfillmentcenters/search")]
         public IHttpActionResult SearchFulfillmentCenters([FromBody] FulfillmentCenterSearchCriteria searchCriteria)
@@ -135,9 +132,8 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
             var criteria = AbstractTypeFactory<InventorySearchCriteria>.TryCreateInstance();
             criteria.FulfillmentCenterIds = fulfillmentCenterIds;
             criteria.ProductIds = ids;
-
+            criteria.Take = int.MaxValue;
             var result = _inventorySearchService.SearchInventories(criteria);
-           
             return Ok(result.Results);
         }
 

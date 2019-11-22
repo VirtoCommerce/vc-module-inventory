@@ -26,7 +26,7 @@ namespace VirtoCommerce.InventoryModule.Web
 {
     public class Module : ModuleBase, ISupportExportImportModule
     {
-        private readonly string _connectionString = ConfigurationHelper.GetConnectionStringValue("VirtoCommerce.Inventory") 
+        private readonly string _connectionString = ConfigurationHelper.GetConnectionStringValue("VirtoCommerce.Inventory")
                                                         ?? ConfigurationHelper.GetConnectionStringValue("VirtoCommerce");
         private readonly IUnityContainer _container;
 
@@ -48,15 +48,13 @@ namespace VirtoCommerce.InventoryModule.Web
 
         public override void Initialize()
         {
-            _container.RegisterType<IInventoryRepository>(new InjectionFactory(c => new InventoryRepositoryImpl(_connectionString, new EntityPrimaryKeyGeneratorInterceptor(), 
+            _container.RegisterType<IInventoryRepository>(new InjectionFactory(c => new InventoryRepositoryImpl(_connectionString, new EntityPrimaryKeyGeneratorInterceptor(),
                                                           _container.Resolve<AuditableInterceptor>(), new ChangeLogInterceptor(_container.Resolve<Func<IPlatformRepository>>(), ChangeLogPolicy.Cumulative, new[] { nameof(InventoryEntity) }))));
 
             _container.RegisterType<IInventoryService, InventoryServiceImpl>();
             _container.RegisterType<IInventorySearchService, InventorySearchService>();
             _container.RegisterType<IFulfillmentCenterSearchService, FulfillmentCenterSearchService>();
             _container.RegisterType<IFulfillmentCenterService, FulfillmentCenterService>();
-
-          
         }
 
         public override void PostInitialize()
@@ -87,8 +85,8 @@ namespace VirtoCommerce.InventoryModule.Web
 
             #endregion
 
-            var settingManager = _container.Resolve<ISettingsManager>();
-            if (settingManager.GetValue("Inventory.Search.EventBasedIndexation.Enable", false))
+            var settingsManager = _container.Resolve<ISettingsManager>();
+            if (settingsManager.GetValue("Inventory.Search.EventBasedIndexation.Enable", false))
             {
                 var eventHandlerRegistrar = _container.Resolve<IHandlerRegistrar>();
                 eventHandlerRegistrar.RegisterHandler<InventoryChangedEvent>(async (message, token) => await _container.Resolve<IndexInventoryChangedEventHandler>().Handle(message));
