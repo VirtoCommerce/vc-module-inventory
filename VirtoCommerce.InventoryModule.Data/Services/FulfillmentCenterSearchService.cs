@@ -29,6 +29,8 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
                 var query = GetFulfillmentCentersQuery(repository, criteria);
 
+                result.TotalCount = query.Count();
+
                 var sortInfos = criteria.SortInfos;
                 if (sortInfos.IsNullOrEmpty())
                 {
@@ -37,7 +39,6 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
                 query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id);
 
-                result.TotalCount = query.Count();
                 result.Results = query.Skip(criteria.Skip)
                                  .Take(criteria.Take)
                                  .AsEnumerable()
