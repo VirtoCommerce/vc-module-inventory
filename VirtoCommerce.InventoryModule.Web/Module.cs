@@ -26,8 +26,8 @@ namespace VirtoCommerce.InventoryModule.Web
 {
     public class Module : ModuleBase, ISupportExportImportModule
     {
-        private readonly string _connectionString = ConfigurationHelper.GetConnectionStringValue("VirtoCommerce.Inventory")
-                                                        ?? ConfigurationHelper.GetConnectionStringValue("VirtoCommerce");
+        private readonly string _connectionString = ConfigurationHelper.GetConnectionStringValue("VirtoCommerce.Inventory") ??
+                                                    ConfigurationHelper.GetConnectionStringValue("VirtoCommerce");
         private readonly IUnityContainer _container;
 
         public Module(IUnityContainer container)
@@ -41,7 +41,7 @@ namespace VirtoCommerce.InventoryModule.Web
         {
             using (var context = new InventoryRepositoryImpl(_connectionString, _container.Resolve<AuditableInterceptor>()))
             {
-                var initializer = new SetupDatabaseInitializer<InventoryRepositoryImpl, VirtoCommerce.InventoryModule.Data.Migrations.Configuration>();
+                var initializer = new SetupDatabaseInitializer<InventoryRepositoryImpl, Data.Migrations.Configuration>();
                 initializer.InitializeDatabase(context);
             }
         }
@@ -67,7 +67,7 @@ namespace VirtoCommerce.InventoryModule.Web
             var productIndexingConfigurations = _container.Resolve<IndexDocumentConfiguration[]>();
             if (productIndexingConfigurations != null)
             {
-                var productAvaibilitySource = new IndexDocumentSource
+                var productAvailabilitySource = new IndexDocumentSource
                 {
                     ChangesProvider = _container.Resolve<ProductAvailabilityChangesProvider>(),
                     DocumentBuilder = _container.Resolve<ProductAvailabilityDocumentBuilder>(),
@@ -79,7 +79,7 @@ namespace VirtoCommerce.InventoryModule.Web
                     {
                         configuration.RelatedSources = new List<IndexDocumentSource>();
                     }
-                    configuration.RelatedSources.Add(productAvaibilitySource);
+                    configuration.RelatedSources.Add(productAvailabilitySource);
                 }
             }
 
@@ -118,11 +118,10 @@ namespace VirtoCommerce.InventoryModule.Web
             get
             {
                 var settingManager = _container.Resolve<ISettingsManager>();
-                return settingManager.GetValue("Inventory.ExportImport.Description", String.Empty);
+                return settingManager.GetValue("Inventory.ExportImport.Description", string.Empty);
             }
         }
+
         #endregion
-
-
     }
 }

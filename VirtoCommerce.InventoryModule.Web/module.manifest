@@ -39,7 +39,7 @@
                 <defaultValue>Export/Import inventory information</defaultValue>
                 <title>Export/Import description</title>
                 <description>Module description in platform export/import wizard</description>
-            </setting>           
+            </setting>
             <setting>
                 <name>Inventory.ExportImport.PageSize</name>
                 <valueType>integer</valueType>

@@ -29,8 +29,8 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// Search inventories by given criteria
         /// </summary>
         [HttpPost]
-        [ResponseType(typeof(GenericSearchResult<InventoryInfo>))]
         [Route("inventories/search")]
+        [ResponseType(typeof(GenericSearchResult<InventoryInfo>))]
         public IHttpActionResult SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
         {
             var result = _inventorySearchService.SearchInventories(searchCriteria);
@@ -41,8 +41,8 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// Search fulfillment centers registered in the system
         /// </summary>
         [HttpPost]
-        [ResponseType(typeof(GenericSearchResult<FulfillmentCenter>))]
         [Route("fulfillmentcenters/search")]
+        [ResponseType(typeof(GenericSearchResult<FulfillmentCenter>))]
         public IHttpActionResult SearchFulfillmentCenters([FromBody] FulfillmentCenterSearchCriteria searchCriteria)
         {
             var result = _fulfillmentCenterSearchService.SearchCenters(searchCriteria);
@@ -54,8 +54,8 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         /// <param name="id">fulfillment center id</param>
         [HttpGet]
-        [ResponseType(typeof(FulfillmentCenter))]
         [Route("fulfillmentcenters/{id}")]
+        [ResponseType(typeof(FulfillmentCenter))]
         public IHttpActionResult GetFulfillmentCenter(string id)
         {
             var retVal = _fulfillmentCenterService.GetByIds(new[] { id }).FirstOrDefault();
@@ -80,8 +80,8 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         /// <param name="centers">fulfillment center</param>
         [HttpPut]
-        [ResponseType(typeof(FulfillmentCenter))]
         [Route("fulfillmentcenters")]
+        [ResponseType(typeof(FulfillmentCenter))]
         [CheckPermission(Permission = InventoryPredefinedPermissions.FulfillmentEdit)]
         public IHttpActionResult SaveFulfillmentCenter(FulfillmentCenter center)
         {
@@ -108,8 +108,8 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// Delete fulfillment centers registered in the system
         /// </summary>
         [HttpDelete]
-        [ResponseType(typeof(void))]
         [Route("fulfillmentcenters")]
+        [ResponseType(typeof(void))]
         [CheckPermission(Permission = InventoryPredefinedPermissions.FulfillmentDelete)]
         public IHttpActionResult DeleteFulfillmentCenters([FromUri] string[] ids)
         {
@@ -124,7 +124,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <remarks>Get inventory of products for each fulfillment center.</remarks>
         /// <param name="ids">Products ids</param>
         /// <param name="fulfillmentCenterIds">The fulfillment centers that will be used to filter product inventories</param>
-		[HttpGet]
+        [HttpGet]
         [Route("products")]
         [ResponseType(typeof(InventoryInfo[]))]
         public IHttpActionResult GetProductsInventories([FromUri] string[] ids, [FromUri] string[] fulfillmentCenterIds = null)
@@ -143,7 +143,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <remarks>Get inventory of products for each fulfillment center.</remarks>
         /// <param name="ids">Products ids</param>
         /// <param name="fulfillmentCenterIds">The fulfillment centers that will be used to filter product inventories</param>
-		[HttpPost]
+        [HttpPost]
         [Route("products/plenty")]
         [ResponseType(typeof(InventoryInfo[]))]
         public IHttpActionResult GetProductsInventoriesByPlentyIds([FromBody] string[] ids, [FromUri] string[] fulfillmentCenterIds = null)
@@ -169,7 +169,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         /// <remarks>Upsert (add or update) given inventory of product.</remarks>
         /// <param name="inventory">Inventory to upsert</param>
-		[HttpPut]
+        [HttpPut]
         [Route("products/{productId}")]
         [ResponseType(typeof(InventoryInfo))]
         [CheckPermission(Permission = InventoryPredefinedPermissions.Update)]
