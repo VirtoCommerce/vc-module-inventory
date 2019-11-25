@@ -70,10 +70,25 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         /// <param name="centers">fulfillment center</param>
         [HttpPut]
-        [ResponseType(typeof(FulfillmentCenter[]))]
+        [ResponseType(typeof(FulfillmentCenter))]
         [Route("fulfillmentcenters")]
         [CheckPermission(Permission = InventoryPredefinedPermissions.FulfillmentEdit)]
-        public IHttpActionResult SaveFulfillmentCenter(FulfillmentCenter[] centers)
+        public IHttpActionResult SaveFulfillmentCenter(FulfillmentCenter center)
+        {
+            _fulfillmentCenterService.SaveChanges(new[] { center });
+            return Ok(center);
+        }
+
+
+        /// <summary>
+        ///  Save fulfillment centers 
+        /// </summary>
+        /// <param name="centers">fulfillment centers</param>
+        [HttpPut]
+        [ResponseType(typeof(FulfillmentCenter[]))]
+        [Route("fulfillmentcenters/plenty")]
+        [CheckPermission(Permission = InventoryPredefinedPermissions.FulfillmentEdit)]
+        public IHttpActionResult SaveFulfillmentCenters(FulfillmentCenter[] centers)
         {
             _fulfillmentCenterService.SaveChanges(centers);
             return Ok(centers);
