@@ -24,7 +24,7 @@ angular.module('virtoCommerce.inventoryModule')
             blade.currentEntity = angular.copy(data);
             blade.origEntity = data;
             blade.isLoading = false;
-        }
+        };
 
         $scope.setForm = function (form) {
             $scope.formScope = form;
@@ -40,7 +40,7 @@ angular.module('virtoCommerce.inventoryModule')
 
         function saveChanges() {
             blade.isLoading = true;
-            fulfillments.update(blade.currentEntity, function (center) {
+            fulfillments.update({}, blade.currentEntity, function (center) {
                 blade.currentEntityId = center.id;
                 blade.refresh(true);
             });
