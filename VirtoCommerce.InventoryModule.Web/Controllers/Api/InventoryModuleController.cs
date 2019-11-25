@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -16,17 +16,14 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
     public class InventoryModuleController : ApiController
     {
         private readonly IInventoryService _inventoryService;
-        private readonly IInventorySearchService _inventorySearchService;
         private readonly IFulfillmentCenterSearchService _fulfillmentCenterSearchService;
         private readonly IFulfillmentCenterService _fulfillmentCenterService;
 
-        public InventoryModuleController(IInventoryService inventoryService, IFulfillmentCenterSearchService fulfillmentCenterSearchService, 
-                                          IInventorySearchService inventorySearchService, IFulfillmentCenterService fulfillmentCenterService)
+        public InventoryModuleController(IInventoryService inventoryService, IFulfillmentCenterSearchService fulfillmentCenterSearchService, IFulfillmentCenterService fulfillmentCenterService)
         {
             _inventoryService = inventoryService;
             _fulfillmentCenterSearchService = fulfillmentCenterSearchService;
             _fulfillmentCenterService = fulfillmentCenterService;
-            _inventorySearchService = inventorySearchService;
         }
 
         /// <summary>
@@ -41,10 +38,9 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
             var retVal = _fulfillmentCenterSearchService.SearchCenters(searchCriteria);
             return Ok(retVal);
         }
-      
 
         /// <summary>
-        /// Find fulfillment center by id
+        /// Get fulfillment center by id
         /// </summary>
         /// <param name="id">fulfillment center id</param>
         [HttpGet]
@@ -57,9 +53,22 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         }
 
         /// <summary>
+        /// Get fulfillment centers by ids
+        /// </summary>
+        /// <param name="ids">fulfillment center ids</param>
+        [HttpPost]
+        [ResponseType(typeof(FulfillmentCenter[]))]
+        [Route("fulfillmentcenters/plenty")]
+        public IHttpActionResult GetFulfillmentCenters([FromBody] string[] ids)
+        {
+            var retVal = _fulfillmentCenterService.GetByIds(ids);
+            return Ok(retVal);
+        }
+
+        /// <summary>
         ///  Save fulfillment center 
         /// </summary>
-        /// <param name="center">fulfillment center</param>
+        /// <param name="centers">fulfillment center</param>
         [HttpPut]
         [ResponseType(typeof(FulfillmentCenter))]
         [Route("fulfillmentcenters")]
@@ -70,8 +79,23 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
             return Ok(center);
         }
 
+
         /// <summary>
-        /// Delete  fulfillment centers registered in the system
+        ///  Save fulfillment centers 
+        /// </summary>
+        /// <param name="centers">fulfillment centers</param>
+        [HttpPost]
+        [ResponseType(typeof(FulfillmentCenter[]))]
+        [Route("fulfillmentcenters/batch")]
+        [CheckPermission(Permission = InventoryPredefinedPermissions.FulfillmentEdit)]
+        public IHttpActionResult SaveFulfillmentCenters([FromBody] FulfillmentCenter[] centers)
+        {
+            _fulfillmentCenterService.SaveChanges(centers);
+            return Ok(centers);
+        }
+
+        /// <summary>
+        /// Delete fulfillment centers registered in the system
         /// </summary>
         [HttpDelete]
         [ResponseType(typeof(void))]
@@ -102,7 +126,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
                 foreach (var fulfillment in allFulfillments)
                 {
                     var inventory = inventories.FirstOrDefault(x => x.ProductId == productId && x.FulfillmentCenterId == fulfillment.Id);
-                    if(inventory == null)
+                    if (inventory == null)
                     {
                         inventory = AbstractTypeFactory<InventoryInfo>.TryCreateInstance();
                         inventory.ProductId = productId;
