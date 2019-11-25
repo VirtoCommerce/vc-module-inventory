@@ -88,7 +88,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [ResponseType(typeof(FulfillmentCenter[]))]
         [Route("fulfillmentcenters/batch")]
         [CheckPermission(Permission = InventoryPredefinedPermissions.FulfillmentEdit)]
-        public IHttpActionResult SaveFulfillmentCenters(FulfillmentCenter[] centers)
+        public IHttpActionResult SaveFulfillmentCenters([FromBody] FulfillmentCenter[] centers)
         {
             _fulfillmentCenterService.SaveChanges(centers);
             return Ok(centers);
