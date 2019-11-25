@@ -40,12 +40,10 @@ angular.module('virtoCommerce.inventoryModule')
 
         function saveChanges() {
             blade.isLoading = true;
-            fulfillments.update(blade.currentEntity, function (centers) {
-                if (centers.length) {
-                    blade.currentEntityId = centers[0].id;
-                }
+            fulfillments.update(blade.currentEntity, function (center) {
+                blade.currentEntityId = center.id;
+                blade.refresh(true);
             });
-            blade.refresh(true);
         }
 
         blade.headIcon = 'fa-wrench';

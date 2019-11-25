@@ -84,9 +84,9 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         ///  Save fulfillment centers 
         /// </summary>
         /// <param name="centers">fulfillment centers</param>
-        [HttpPut]
+        [HttpPost]
         [ResponseType(typeof(FulfillmentCenter[]))]
-        [Route("fulfillmentcenters/plenty")]
+        [Route("fulfillmentcenters/batch")]
         [CheckPermission(Permission = InventoryPredefinedPermissions.FulfillmentEdit)]
         public IHttpActionResult SaveFulfillmentCenters(FulfillmentCenter[] centers)
         {
