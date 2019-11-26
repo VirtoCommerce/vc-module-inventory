@@ -34,7 +34,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// Search inventories by given criteria
         /// </summary>
         [HttpPost]
-        [Route("inventories/search")]
+        [Route("products/search")]
         [ResponseType(typeof(GenericSearchResult<InventoryInfo>))]
         public IHttpActionResult SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
         {
@@ -83,7 +83,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <summary>
         ///  Save fulfillment center 
         /// </summary>
-        /// <param name="centers">fulfillment center</param>
+        /// <param name="center">fulfillment center</param>
         [HttpPut]
         [Route("fulfillmentcenters")]
         [ResponseType(typeof(FulfillmentCenter))]
