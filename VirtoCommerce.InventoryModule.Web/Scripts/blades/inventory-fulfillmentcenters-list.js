@@ -1,6 +1,6 @@
 angular.module('virtoCommerce.inventoryModule')
-    .controller('virtoCommerce.inventoryModule.inventoryFulfillmentcentersListController', ['$scope', '$timeout', 'platformWebApp.bladeUtils', 'uiGridConstants', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.fulfillments',
-        function($scope, $timeout, bladeUtils, uiGridConstants, uiGridHelper, bladeNavigationService, fulfillments) {
+    .controller('virtoCommerce.inventoryModule.inventoryFulfillmentcentersListController', ['$scope', '$q', '$timeout', 'platformWebApp.bladeUtils', 'uiGridConstants', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.fulfillments',
+        function ($scope, $q, $timeout, bladeUtils, uiGridConstants, uiGridHelper, bladeNavigationService, fulfillments) {
             $scope.uiGridConstants = uiGridConstants;
             var blade = $scope.blade;
 
@@ -13,6 +13,7 @@ angular.module('virtoCommerce.inventoryModule')
 
             blade.refresh = function() {
                 blade.isLoading = true;
+                var deferred = $q.defer()
 
                 if ($scope.pageSettings.currentPage !== 1)
                     $scope.pageSettings.currentPage = 1;
@@ -32,12 +33,15 @@ angular.module('virtoCommerce.inventoryModule')
                             }
                         });
                     }).$promise.finally(function () {
-                    blade.isLoading = false;
+                        blade.isLoading = false;
+                        deferred.resolve($scope.items);
                 });
                 //reset state grid
                 resetStateGrid();
 
                 openFirstEntityDetailsOnce();
+
+                return deferred.promise;
             };
 
 
