@@ -129,6 +129,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <Content Include="Content\logo.png" />
+    <Content Include="Content\css\inventory.css" />
     <Content Include="Localizations\en.VirtoCommerce.Inventory.json" />
     <Content Include="Localizations\de.VirtoCommerce.Inventory.json" />
     <Content Include="Localizations\ru.VirtoCommerce.Inventory.json" />

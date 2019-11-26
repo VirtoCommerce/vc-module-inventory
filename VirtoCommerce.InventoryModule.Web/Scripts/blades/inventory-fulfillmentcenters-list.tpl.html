@@ -1,16 +1,51 @@
-<div class="blade-content">
-	<div class="blade-inner">
-		<div class="inner-block">
-			<ul class="list __items" ng-if="blade.currentEntities.length">
-                <li class="list-item" ng-click="openBlade(data)" ng-repeat="data in blade.currentEntities" ng-class="{'__selected': data.fulfillmentCenterId === selectedItem.fulfillmentCenterId}">
-                    <!--<i class="list-ico fa fa-wrench"></i>-->
-                    <span class="list-t">
-                        {{data.fulfillmentCenter.name}}
-                    </span>
-                    <span class="list-descr">{{data.fulfillmentCenter.description | limitTo:50}}</span>
-                </li>
-			</ul>
-			<p class="note" ng-if="!blade.currentEntities.length">{{ 'inventory.blades.inventory-fulfillmentcenters-list.labels.no-fulfillment-centers' | translate }}</p>
-		</div>
-	</div>
+<div class="blade-static">
+    <div class="form-group">
+        <div class="form-input __search">
+            <input placeholder="{{'platform.placeholders.search-keyword' | translate}}" ng-model="filter.keyword" ng-keyup="$event.which === 13 && filter.criteriaChanged()" />
+            <button class="btn __other" style="position: relative;right: 45px;">
+                <i class="btn-ico fa fa-times-circle" title="Clear" ng-click="filter.keyword=null;filter.criteriaChanged()"></i>
+            </button>
+        </div>
+        <p class="form-count">{{ 'platform.list.count' | translate }}: <span class="count">{{pageSettings.totalItems | number:0}}</span></p>
+    </div>
 </div>
+<div class="blade-static __bottom" ng-if="pageSettings.itemsPerPageCount < pageSettings.totalItems" ng-include="'pagerTemplate.html'"></div>
+
+<div class="blade-content">
+    <div class="blade-inner">
+        <div class="table-wrapper" ng-init="setGridOptions({
+            useExternalSorting: true,
+            virtualizationThreshold: 1000,
+            data: 'items',
+            rowTemplate: 'list.row.html',
+            columnDefs: [{name: 'actions',displayName: '',cellTemplate: 'list-actions.cell.html',enableColumnResizing: false,enableSorting: false,pinnedLeft: true,width: 30},
+                         {name: 'fulfillmentCenterName', displayName: 'inventory.blades.inventory-fulfillmentcenters-list.labels.fulfillment-center-name', width: 180},
+                         {name: 'inStockQuantity', displayName: 'inventory.blades.inventory-fulfillmentcenters-list.labels.in-stock-quantity', sort: { direction: uiGridConstants.DESC }}]
+        })">
+            <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-height ui-grid-infinite-scroll></div>
+            <ul class="menu __context" role="menu" id="fc-sto_menu">
+                <li class="menu-item" ng-click='blade.selectNode(contextMenuEntity)'>
+                    <i class="menu-ico fa fa-edit"></i> {{'platform.commands.manage' | translate}}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script id="list.row.html" type="text/ng-template">
+    <div class="ui-grid-cell"
+         role="{{col.isRowHeader ? 'rowheader' : 'gridcell' }}"
+         ng-class="{'ui-grid-row-header-cell': col.isRowHeader, '__hovered': grid.appScope.contextMenuEntity === row.entity, '__selected': row.entity.id===grid.appScope.selectedNodeId }"
+         ng-click="grid.appScope.blade.selectNode(row.entity)"
+         ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid"
+         ui-grid-one-bind-id-grid="rowRenderIndex + '-' + col.uid + '-cell'"
+         ui-grid-cell
+         context-menu="grid.appScope.contextMenuEntity = row.entity"
+         data-target="fc-sto_menu"></div>
+</script>
+
+<script id="list-actions.cell.html" type="text/ng-template">
+    <div class="ui-grid-actions" left-click-menu="grid.appScope.contextMenuEntity = row.entity" data-target="fc-sto_menu">
+        <i class="fa fa-ellipsis-v"></i>
+    </div>
+</script>
