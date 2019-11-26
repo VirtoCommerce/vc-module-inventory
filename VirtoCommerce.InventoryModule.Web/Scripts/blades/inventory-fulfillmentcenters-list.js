@@ -70,7 +70,7 @@ angular.module('virtoCommerce.inventoryModule')
 
 
 
-            openBlade = function openBlade(data) {
+            var openBlade = function openBlade(data) {
                 $scope.selectedNodeId = data.id;
 
                 var newBlade = {
@@ -157,6 +157,7 @@ angular.module('virtoCommerce.inventoryModule')
             function getSearchCriteria() {
                 var searchCriteria = {
                     searchPhrase: filter.keyword ? filter.keyword : undefined,
+                    productIds: [blade.itemId] ,
                     sort: uiGridHelper.getSortExpression($scope),
                     skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
                     take: $scope.pageSettings.itemsPerPageCount
