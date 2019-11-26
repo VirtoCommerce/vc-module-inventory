@@ -15,18 +15,14 @@
     <div class="blade-inner">
         <div class="table-wrapper" ng-init="setGridOptions({
             useExternalSorting: true,
+            virtualizationThreshold: 1000,
+            data: 'items',
             rowTemplate: 'list.row.html',
-            columnDefs: [{
-                name: 'actions',
-                displayName: '',
-                cellTemplate: 'list-actions.cell.html',
-                enableColumnResizing: false,
-                enableSorting: false,
-                pinnedLeft: true,
-                width: 30
-            }]
+            columnDefs: [{name: 'actions',displayName: '',cellTemplate: 'list-actions.cell.html',enableColumnResizing: false,enableSorting: false,pinnedLeft: true,width: 30},
+                         {name: 'fulfillmentCenterName', displayName: 'inventory.blades.inventory-fulfillmentcenters-list.labels.fulfillment-center-name', width: 180, sort: { direction: uiGridConstants.ASC }},
+                         {name: 'inStockQuantity', displayName: 'inventory.blades.inventory-fulfillmentcenters-list.labels.in-stock-quantity', }]
         })">
-            <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-height></div>
+            <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-height ui-grid-infinite-scroll></div>
             <ul class="menu __context" role="menu" id="fc-sto_menu">
                 <li class="menu-item" ng-click='blade.selectNode(contextMenuEntity)'>
                     <i class="menu-ico fa fa-edit"></i> {{'platform.commands.manage' | translate}}

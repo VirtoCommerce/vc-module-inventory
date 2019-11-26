@@ -1,55 +1,74 @@
 angular.module('virtoCommerce.inventoryModule')
-    .controller('virtoCommerce.inventoryModule.inventoryFulfillmentcentersListController', ['$scope', '$q', '$timeout', 'platformWebApp.bladeUtils', 'uiGridConstants', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.fulfillments',
-        function($scope, $q, $timeout, bladeUtils, uiGridConstants, uiGridHelper, bladeNavigationService, fulfillments) {
+    .controller('virtoCommerce.inventoryModule.inventoryFulfillmentcentersListController', ['$scope', '$timeout', 'platformWebApp.bladeUtils', 'uiGridConstants', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.fulfillments',
+        function($scope, $timeout, bladeUtils, uiGridConstants, uiGridHelper, bladeNavigationService, fulfillments) {
             $scope.uiGridConstants = uiGridConstants;
             var blade = $scope.blade;
 
             var openFirstEntityDetailsOnce = _.once(function() {
-                if (_.any(blade.currentEntities))
+                if (_.any($scope.items))
                     $timeout(function() {
-                        openBlade(blade.currentEntities[0]);
+                        openBlade($scope.items[0]);
                     }, 0, false);
             });
 
             blade.refresh = function() {
                 blade.isLoading = true;
-                var deferred = $q.defer();
-                blade.parentWidgetRefresh().$promise.then(function(productInventories) {
-                    fulfillments.search({ take: 10000, searchPhrase: filter.keyword }, function(data) {
-                        _.forEach(data.results, function(item) {
-                            var productInventory = _.find(productInventories, function(x) { return item.id === x.fulfillmentCenterId });
-                            if (!!productInventory) {
-                                item = Object.assign(item, productInventory);
-                                console.log(item);
-                            } else {
-                                item = Object.assign(item, {
-                                    fulfillmentCenterId: item.id,
-                                    productId: blade.itemId,
-                                    inStockQuantity: 0,
-                                    reservedQuantity: 0,
-                                    reorderMinQuantity: 0,
-                                    preorderQuantity: 0,
-                                    backorderQuantity: 0,
-                                    allowBackorder: false,
-                                    allowPreorder: false,
-                                    inTransit: 0,
-                                    status: "Disabled"
-                                });
+
+                if ($scope.pageSettings.currentPage !== 1)
+                    $scope.pageSettings.currentPage = 1;
+
+                var searchCriteria = getSearchCriteria();
+
+                fulfillments.searchProducts(searchCriteria,
+                    function (data) {
+                        $scope.items = data.results;
+                        $scope.pageSettings.totalItems = $scope.items.length;
+                        $scope.hasMore = data.results.length === $scope.pageSettings.itemsPerPageCount;
+
+                        $timeout(function () {
+                            // wait for grid to ingest data changes
+                            if ($scope.gridApi && $scope.gridApi.selection.getSelectAllState()) {
+                                $scope.gridApi.selection.selectAllRows();
                             }
                         });
-                        blade.currentEntities = data.results;
-                        console.log(blade.currentEntities);
-                        $scope.pageSettings.totalItems = blade.currentEntities.length;
-                        blade.isLoading = false;
-                        openFirstEntityDetailsOnce();
-                        deferred.resolve(blade.currentEntities);
-                    }, function(error) {
-                        deferred.reject(error);
-                        bladeNavigationService.setError('Error ' + error.status, $scope.blade);
-                    });
+                    }).$promise.finally(function () {
+                    blade.isLoading = false;
                 });
-                return deferred.promise;
+                //reset state grid
+                resetStateGrid();
+
+                openFirstEntityDetailsOnce();
             };
+
+
+            function showMore() {
+                if ($scope.hasMore) {
+                    ++$scope.pageSettings.currentPage;
+                    $scope.gridApi.infiniteScroll.saveScrollPercentage();
+                    blade.isLoading = true;
+                    var searchCriteria = getSearchCriteria();
+
+                    fulfillments.searchProducts(searchCriteria,
+                        function (data) {
+                            $scope.items = $scope.items.concat(data.results);
+                            $scope.pageSettings.totalItems = $scope.items.length;
+                            $scope.hasMore = data.results.length === $scope.pageSettings.itemsPerPageCount;
+                            $scope.gridApi.infiniteScroll.dataLoaded();
+
+                            $timeout(function () {
+                                // wait for grid to ingest data changes
+                                if ($scope.gridApi.selection.getSelectAllState()) {
+                                    $scope.gridApi.selection.selectAllRows();
+                                }
+                            });
+
+                        }).$promise.finally(function () {
+                        blade.isLoading = false;
+                    });
+                }
+            }
+
+
 
             openBlade = function openBlade(data) {
                 $scope.selectedNodeId = data.id;
@@ -106,10 +125,44 @@ angular.module('virtoCommerce.inventoryModule')
             };
 
             // ui-grid
-            $scope.setGridOptions = function(gridOptions) {
-                uiGridHelper.initialize($scope, gridOptions, function(gridApi) {
+            $scope.setGridOptions = function (gridOptions) {
+
+                //disable watched
+                bladeUtils.initializePagination($scope, true);
+                //сhoose the optimal amount that ensures the appearance of the scroll
+                $scope.pageSettings.itemsPerPageCount = 20;
+
+                uiGridHelper.initialize($scope, gridOptions, function (gridApi) {
+                    //update gridApi for current grid
+                    $scope.gridApi = gridApi;
+
                     uiGridHelper.bindRefreshOnSortChanged($scope);
+                    $scope.gridApi.infiniteScroll.on.needLoadMoreData($scope, showMore);
                 });
-                bladeUtils.initializePagination($scope);
+
+                blade.refresh();
             };
+
+            //reset state grid (header checkbox, scroll)
+            function resetStateGrid() {
+                if ($scope.gridApi) {
+                    $scope.items = [];
+                    $scope.gridApi.selection.clearSelectedRows();
+                    $scope.gridApi.infiniteScroll.resetScroll(true, true);
+                    $scope.gridApi.infiniteScroll.dataLoaded();
+                }
+            }
+
+            // Search Criteria
+            function getSearchCriteria() {
+                var searchCriteria = {
+                    searchPhrase: filter.keyword ? filter.keyword : undefined,
+                    sort: uiGridHelper.getSortExpression($scope),
+                    skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
+                    take: $scope.pageSettings.itemsPerPageCount
+                };
+                return searchCriteria;
+            }
+
+
         }]);
