@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <module>
     <id>VirtoCommerce.Inventory</id>
-    <version>2.13.6</version>
+    <version>2.13.7</version>
     <platformVersion>2.13.26</platformVersion>
     <dependencies>
         <dependency id="VirtoCommerce.Core" version="2.25.0" />
@@ -18,12 +18,15 @@
     <projectUrl>https://virtocommerce.com/apps/extensions/virto-inventory-module</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-inventory/master/VirtoCommerce.InventoryModule.Web/Content/logo.png</iconUrl>
     <releaseNotes>First version.</releaseNotes>
-    <copyright>Copyright © 2011-2018 Virto Commerce. All rights reserved</copyright>
+    <copyright>Copyright © 2011-2019 Virto Commerce. All rights reserved</copyright>
     <tags>order system</tags>
 
     <assemblyFile>VirtoCommerce.InventoryModule.Web.dll</assemblyFile>
     <moduleType>VirtoCommerce.InventoryModule.Web.Module, VirtoCommerce.InventoryModule.Web</moduleType>
 
+    <styles>
+        <directory virtualPath="$/Content/css" searchPattern="*.css" searchSubdirectories="true" />
+    </styles>
     <scripts>
         <directory virtualPath="$/Scripts" searchPattern="*.js" searchSubdirectories="true" />
     </scripts>
@@ -43,6 +46,15 @@
                 <defaultValue>50</defaultValue>
                 <title>The page size being used for Export / Import</title>
                 <description>High value may will cause slow performance</description>
+            </setting>
+        </group>
+        <group name="Search|Inventory">
+            <setting>
+                <name>Inventory.Search.EventBasedIndexation.Enable</name>
+                <valueType>boolean</valueType>
+                <defaultValue>false</defaultValue>
+                <title>Enable event-based indexation for inventories (Restart required)</title>
+                <description>Any changes to the inventory will trigger a background task that will apply these changes to the inventory object in the search index.</description>
             </setting>
         </group>
     </settings>

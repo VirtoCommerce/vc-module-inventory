@@ -8,7 +8,7 @@ angular.module('virtoCommerce.inventoryModule')
         blade.parentBlade.refresh().then(function(results) {
             var data = _.findWhere(results, { fulfillmentCenterId: blade.data.fulfillmentCenterId });
 
-            initializeBlade(data);
+            initializeBlade(angular.copy(data));
         });
     };
 

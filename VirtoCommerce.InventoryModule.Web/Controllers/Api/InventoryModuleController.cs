@@ -1,4 +1,3 @@
-﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -6,6 +5,8 @@ using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Inventory.Model;
 using VirtoCommerce.Domain.Inventory.Model.Search;
 using VirtoCommerce.Domain.Inventory.Services;
+using VirtoCommerce.InventoryModule.Data.Model;
+using VirtoCommerce.InventoryModule.Data.Services;
 using VirtoCommerce.InventoryModule.Web.Security;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Web.Security;
@@ -17,42 +18,82 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
     {
         private readonly IInventoryService _inventoryService;
         private readonly IInventorySearchService _inventorySearchService;
+        private readonly IFulfillmentCenterInventorySearchService _fulfillmentCenterInventorySearchService;
         private readonly IFulfillmentCenterSearchService _fulfillmentCenterSearchService;
         private readonly IFulfillmentCenterService _fulfillmentCenterService;
 
-        public InventoryModuleController(IInventoryService inventoryService, IFulfillmentCenterSearchService fulfillmentCenterSearchService, 
-                                          IInventorySearchService inventorySearchService, IFulfillmentCenterService fulfillmentCenterService)
+        public InventoryModuleController(IInventoryService inventoryService,
+            IInventorySearchService inventorySearchService,
+            IFulfillmentCenterInventorySearchService fulfillmentCenterInventorySearchService,
+            IFulfillmentCenterSearchService fulfillmentCenterSearchService,
+            IFulfillmentCenterService fulfillmentCenterService)
         {
             _inventoryService = inventoryService;
+            _inventorySearchService = inventorySearchService;
+            _fulfillmentCenterInventorySearchService = fulfillmentCenterInventorySearchService;
             _fulfillmentCenterSearchService = fulfillmentCenterSearchService;
             _fulfillmentCenterService = fulfillmentCenterService;
-            _inventorySearchService = inventorySearchService;
+        }
+
+        /// <summary>
+        /// Search inventories by given criteria
+        /// </summary>
+        [HttpPost]
+        [Route("inventories/search")]
+        [ResponseType(typeof(GenericSearchResult<FulfillmentCenterInventoryInfo>))]
+        public IHttpActionResult SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
+        {
+            var result = _inventorySearchService.SearchInventories(searchCriteria);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Search inventories by given criteria
+        /// </summary>
+        [HttpPost]
+        [Route("fulfillmentcenterinventories/search")]
+        [ResponseType(typeof(GenericSearchResult<FulfillmentCenterInventoryInfo>))]
+        public IHttpActionResult SearchFulfillmentCenterInventory([FromBody] InventorySearchCriteria searchCriteria)
+        {
+            var result = _fulfillmentCenterInventorySearchService.Search(searchCriteria);
+            return Ok(result);
         }
 
         /// <summary>
         /// Search fulfillment centers registered in the system
         /// </summary>
         [HttpPost]
-        [AllowAnonymous]
-        [ResponseType(typeof(GenericSearchResult<FulfillmentCenter>))]
         [Route("fulfillmentcenters/search")]
+        [ResponseType(typeof(GenericSearchResult<FulfillmentCenter>))]
         public IHttpActionResult SearchFulfillmentCenters([FromBody] FulfillmentCenterSearchCriteria searchCriteria)
         {
-            var retVal = _fulfillmentCenterSearchService.SearchCenters(searchCriteria);
-            return Ok(retVal);
+            var result = _fulfillmentCenterSearchService.SearchCenters(searchCriteria);
+            return Ok(result);
         }
-      
 
         /// <summary>
-        /// Find fulfillment center by id
+        /// Get fulfillment center by id
         /// </summary>
         /// <param name="id">fulfillment center id</param>
         [HttpGet]
-        [ResponseType(typeof(FulfillmentCenter))]
         [Route("fulfillmentcenters/{id}")]
+        [ResponseType(typeof(FulfillmentCenter))]
         public IHttpActionResult GetFulfillmentCenter(string id)
         {
             var retVal = _fulfillmentCenterService.GetByIds(new[] { id }).FirstOrDefault();
+            return Ok(retVal);
+        }
+
+        /// <summary>
+        /// Get fulfillment centers by ids
+        /// </summary>
+        /// <param name="ids">fulfillment center ids</param>
+        [HttpPost]
+        [ResponseType(typeof(FulfillmentCenter[]))]
+        [Route("fulfillmentcenters/plenty")]
+        public IHttpActionResult GetFulfillmentCenters([FromBody] string[] ids)
+        {
+            var retVal = _fulfillmentCenterService.GetByIds(ids);
             return Ok(retVal);
         }
 
@@ -61,8 +102,8 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         /// <param name="center">fulfillment center</param>
         [HttpPut]
-        [ResponseType(typeof(FulfillmentCenter))]
         [Route("fulfillmentcenters")]
+        [ResponseType(typeof(FulfillmentCenter))]
         [CheckPermission(Permission = InventoryPredefinedPermissions.FulfillmentEdit)]
         public IHttpActionResult SaveFulfillmentCenter(FulfillmentCenter center)
         {
@@ -70,12 +111,27 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
             return Ok(center);
         }
 
+
         /// <summary>
-        /// Delete  fulfillment centers registered in the system
+        ///  Save fulfillment centers 
+        /// </summary>
+        /// <param name="centers">fulfillment centers</param>
+        [HttpPost]
+        [ResponseType(typeof(FulfillmentCenter[]))]
+        [Route("fulfillmentcenters/batch")]
+        [CheckPermission(Permission = InventoryPredefinedPermissions.FulfillmentEdit)]
+        public IHttpActionResult SaveFulfillmentCenters([FromBody] FulfillmentCenter[] centers)
+        {
+            _fulfillmentCenterService.SaveChanges(centers);
+            return Ok(centers);
+        }
+
+        /// <summary>
+        /// Delete fulfillment centers registered in the system
         /// </summary>
         [HttpDelete]
-        [ResponseType(typeof(void))]
         [Route("fulfillmentcenters")]
+        [ResponseType(typeof(void))]
         [CheckPermission(Permission = InventoryPredefinedPermissions.FulfillmentDelete)]
         public IHttpActionResult DeleteFulfillmentCenters([FromUri] string[] ids)
         {
@@ -89,31 +145,19 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         /// <remarks>Get inventory of products for each fulfillment center.</remarks>
         /// <param name="ids">Products ids</param>
-		[HttpGet]
+        /// <param name="fulfillmentCenterIds">The fulfillment centers that will be used to filter product inventories</param>
+        [HttpGet]
         [Route("products")]
         [ResponseType(typeof(InventoryInfo[]))]
-        public IHttpActionResult GetProductsInventories([FromUri] string[] ids)
+        public IHttpActionResult GetProductsInventories([FromUri] string[] ids, [FromUri] string[] fulfillmentCenterIds = null)
         {
-            var result = new List<InventoryInfo>();
-            var allFulfillments = _fulfillmentCenterSearchService.SearchCenters(new FulfillmentCenterSearchCriteria { Take = int.MaxValue }).Results;
-            var inventories = _inventoryService.GetProductsInventoryInfos(ids);
-            foreach (var productId in ids)
-            {
-                foreach (var fulfillment in allFulfillments)
-                {
-                    var inventory = inventories.FirstOrDefault(x => x.ProductId == productId && x.FulfillmentCenterId == fulfillment.Id);
-                    if(inventory == null)
-                    {
-                        inventory = AbstractTypeFactory<InventoryInfo>.TryCreateInstance();
-                        inventory.ProductId = productId;
-                        inventory.FulfillmentCenter = fulfillment;
-                        inventory.FulfillmentCenterId = fulfillment.Id;
-                    }
-                    result.Add(inventory);
-                }
-            }
+            var criteria = AbstractTypeFactory<InventorySearchCriteria>.TryCreateInstance();
+            criteria.FulfillmentCenterIds = fulfillmentCenterIds;
+            criteria.ProductIds = ids;
+            criteria.Take = int.MaxValue;
 
-            return Ok(result.ToArray());
+            var result = _inventorySearchService.SearchInventories(criteria);
+            return Ok(result.Results);
         }
 
         /// <summary>
@@ -121,12 +165,13 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         /// <remarks>Get inventory of products for each fulfillment center.</remarks>
         /// <param name="ids">Products ids</param>
-		[HttpPost]
+        /// <param name="fulfillmentCenterIds">The fulfillment centers that will be used to filter product inventories</param>
+        [HttpPost]
         [Route("products/plenty")]
         [ResponseType(typeof(InventoryInfo[]))]
-        public IHttpActionResult GetProductsInventoriesByPlentyIds([FromBody] string[] ids)
+        public IHttpActionResult GetProductsInventoriesByPlentyIds([FromBody] string[] ids, [FromUri] string[] fulfillmentCenterIds = null)
         {
-            return GetProductsInventories(ids);
+            return GetProductsInventories(ids, fulfillmentCenterIds);
         }
 
         /// <summary>
@@ -147,7 +192,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         /// <remarks>Upsert (add or update) given inventory of product.</remarks>
         /// <param name="inventory">Inventory to upsert</param>
-		[HttpPut]
+        [HttpPut]
         [Route("products/{productId}")]
         [ResponseType(typeof(InventoryInfo))]
         [CheckPermission(Permission = InventoryPredefinedPermissions.Update)]

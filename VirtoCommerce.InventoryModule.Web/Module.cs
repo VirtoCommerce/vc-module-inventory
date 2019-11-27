@@ -26,8 +26,8 @@ namespace VirtoCommerce.InventoryModule.Web
 {
     public class Module : ModuleBase, ISupportExportImportModule
     {
-        private readonly string _connectionString = ConfigurationHelper.GetConnectionStringValue("VirtoCommerce.Inventory") 
-                                                        ?? ConfigurationHelper.GetConnectionStringValue("VirtoCommerce");
+        private readonly string _connectionString = ConfigurationHelper.GetConnectionStringValue("VirtoCommerce.Inventory") ??
+                                                    ConfigurationHelper.GetConnectionStringValue("VirtoCommerce");
         private readonly IUnityContainer _container;
 
         public Module(IUnityContainer container)
@@ -41,23 +41,21 @@ namespace VirtoCommerce.InventoryModule.Web
         {
             using (var context = new InventoryRepositoryImpl(_connectionString, _container.Resolve<AuditableInterceptor>()))
             {
-                var initializer = new SetupDatabaseInitializer<InventoryRepositoryImpl, VirtoCommerce.InventoryModule.Data.Migrations.Configuration>();
+                var initializer = new SetupDatabaseInitializer<InventoryRepositoryImpl, Data.Migrations.Configuration>();
                 initializer.InitializeDatabase(context);
             }
         }
 
         public override void Initialize()
         {
-            _container.RegisterType<IInventoryRepository>(new InjectionFactory(c => new InventoryRepositoryImpl(_connectionString, new EntityPrimaryKeyGeneratorInterceptor(), 
+            _container.RegisterType<IInventoryRepository>(new InjectionFactory(c => new InventoryRepositoryImpl(_connectionString, new EntityPrimaryKeyGeneratorInterceptor(),
                                                           _container.Resolve<AuditableInterceptor>(), new ChangeLogInterceptor(_container.Resolve<Func<IPlatformRepository>>(), ChangeLogPolicy.Cumulative, new[] { nameof(InventoryEntity) }))));
 
             _container.RegisterType<IInventoryService, InventoryServiceImpl>();
             _container.RegisterType<IInventorySearchService, InventorySearchService>();
             _container.RegisterType<IFulfillmentCenterSearchService, FulfillmentCenterSearchService>();
             _container.RegisterType<IFulfillmentCenterService, FulfillmentCenterService>();
-
-            var eventHandlerRegistrar = _container.Resolve<IHandlerRegistrar>();
-            eventHandlerRegistrar.RegisterHandler<InventoryChangedEvent>(async (message, token) => await _container.Resolve<IndexInventoryChangedEventHandler>().Handle(message));
+            _container.RegisterType<IFulfillmentCenterInventorySearchService, FulfillmentCenterInventorySearchService>();
         }
 
         public override void PostInitialize()
@@ -70,7 +68,7 @@ namespace VirtoCommerce.InventoryModule.Web
             var productIndexingConfigurations = _container.Resolve<IndexDocumentConfiguration[]>();
             if (productIndexingConfigurations != null)
             {
-                var productAvaibilitySource = new IndexDocumentSource
+                var productAvailabilitySource = new IndexDocumentSource
                 {
                     ChangesProvider = _container.Resolve<ProductAvailabilityChangesProvider>(),
                     DocumentBuilder = _container.Resolve<ProductAvailabilityDocumentBuilder>(),
@@ -82,11 +80,18 @@ namespace VirtoCommerce.InventoryModule.Web
                     {
                         configuration.RelatedSources = new List<IndexDocumentSource>();
                     }
-                    configuration.RelatedSources.Add(productAvaibilitySource);
+                    configuration.RelatedSources.Add(productAvailabilitySource);
                 }
             }
 
             #endregion
+
+            var settingsManager = _container.Resolve<ISettingsManager>();
+            if (settingsManager.GetValue("Inventory.Search.EventBasedIndexation.Enable", false))
+            {
+                var eventHandlerRegistrar = _container.Resolve<IHandlerRegistrar>();
+                eventHandlerRegistrar.RegisterHandler<InventoryChangedEvent>(async (message, token) => await _container.Resolve<IndexInventoryChangedEventHandler>().Handle(message));
+            }
 
             // enable polymorphic types in API controller methods
             var httpConfiguration = _container.Resolve<HttpConfiguration>();
@@ -114,11 +119,10 @@ namespace VirtoCommerce.InventoryModule.Web
             get
             {
                 var settingManager = _container.Resolve<ISettingsManager>();
-                return settingManager.GetValue("Inventory.ExportImport.Description", String.Empty);
+                return settingManager.GetValue("Inventory.ExportImport.Description", string.Empty);
             }
         }
+
         #endregion
-
-
     }
 }
