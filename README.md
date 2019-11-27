@@ -1,17 +1,21 @@
 # VirtoCommerce.Inventory
 
+## Overview
+
 Inventory management is a system of stock level controlling.
 
 Inventory is often the largest item a business has in its current assets, meaning it must be accurately monitored. Inventory is counted and valued at the end of each accounting period to determine the company's profits or losses.
 
 In the ecommerce sector, a day-to-day management of inventory helps increase business intelligence and visibility. Ecommerce business owners have better ongoing control when they have constant eyes on inventory.
 
+VirtoCommerce.Inventory module represents a store inventory management system. The main goal of the Inventory module is stock level controlling. In VirtoCommerce it consists of setting up the Inventory and tracking low stocks.
 
+![Inventory module](docs/media/screen-inventory.png)
 
+Some products may not require inventory tracking. For example, services, second hand or custom-made goods. In this case, a store owner can opt for no tracking, by choosing Don’t track inventory option in the Inventory on the Physical item details blade
 
-VirtoCommerce.Inventory module represents a store inventory management system.
+![Track Inventory](docs/media/screen-track-inventory.png)
 
-![Inventory management UI](https://cloud.githubusercontent.com/assets/5801549/15571240/01a76534-233a-11e6-8cd1-1281c7de22f9.png)
 
 # Documentation
 User guide: <a href="https://virtocommerce.com/docs/vc2userguide/fulfillment" target="_blank">Fulfillment</a>
