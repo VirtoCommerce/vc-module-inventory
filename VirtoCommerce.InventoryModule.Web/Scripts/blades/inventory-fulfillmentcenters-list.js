@@ -13,7 +13,7 @@ angular.module('virtoCommerce.inventoryModule')
 
             blade.refresh = function() {
                 blade.isLoading = true;
-                var deferred = $q.defer()
+                var deferred = $q.defer();
 
                 if ($scope.pageSettings.currentPage !== 1)
                     $scope.pageSettings.currentPage = 1;
@@ -22,6 +22,7 @@ angular.module('virtoCommerce.inventoryModule')
 
                 fulfillments.searchProducts(searchCriteria,
                     function (data) {
+                        _.each(data.results, fillProductIdIfEmpty);
                         $scope.items = data.results;
                         $scope.pageSettings.totalItems = $scope.items.length;
                         $scope.hasMore = data.results.length === $scope.pageSettings.itemsPerPageCount;
@@ -54,6 +55,7 @@ angular.module('virtoCommerce.inventoryModule')
 
                     fulfillments.searchProducts(searchCriteria,
                         function (data) {
+                            _.each(data.results, fillProductIdIfEmpty);
                             $scope.items = $scope.items.concat(data.results);
                             $scope.pageSettings.totalItems = $scope.items.length;
                             $scope.hasMore = data.results.length === $scope.pageSettings.itemsPerPageCount;
@@ -72,7 +74,11 @@ angular.module('virtoCommerce.inventoryModule')
                 }
             }
 
-
+            function fillProductIdIfEmpty(inventory) {
+                if (!inventory.productId) {
+                    inventory.productId = blade.itemId;
+                }
+            }
 
             var openBlade = function openBlade(data) {
                 $scope.selectedNodeId = data.id;
