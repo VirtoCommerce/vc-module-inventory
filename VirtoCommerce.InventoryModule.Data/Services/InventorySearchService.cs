@@ -34,7 +34,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 var sortInfos = criteria.SortInfos;
                 if (sortInfos.IsNullOrEmpty())
                 {
-                    sortInfos = new[] { new SortInfo { SortColumn = "ModifiedDate" } };
+                    sortInfos = new[] { new SortInfo { SortColumn = "Id" } };
                 }
 
                 query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id);

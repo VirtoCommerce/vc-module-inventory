@@ -20,7 +20,7 @@ angular.module('virtoCommerce.inventoryModule')
 
                 var searchCriteria = getSearchCriteria();
 
-                fulfillments.searchProducts(searchCriteria,
+                fulfillments.searchFulfillmentCenterInventories(searchCriteria,
                     function (data) {
                         _.each(data.results, fillProductIdIfEmpty);
                         $scope.items = data.results;
@@ -53,7 +53,7 @@ angular.module('virtoCommerce.inventoryModule')
                     blade.isLoading = true;
                     var searchCriteria = getSearchCriteria();
 
-                    fulfillments.searchProducts(searchCriteria,
+                    fulfillments.searchFulfillmentCenterInventories(searchCriteria,
                         function (data) {
                             _.each(data.results, fillProductIdIfEmpty);
                             $scope.items = $scope.items.concat(data.results);

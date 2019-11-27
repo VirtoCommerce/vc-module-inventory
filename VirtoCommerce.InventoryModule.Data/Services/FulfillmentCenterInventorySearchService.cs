@@ -46,13 +46,13 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 TryTransformSortingInfoColumnNames(_sortingAliases, sortInfos);
 
                 query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.FulfillmentCenter.Id);
-                var fulfilmentCenterids = query.Select(x => x.FulfillmentCenter.Id).ToList();
+                var fulfilmentCenterIds = query.Select(x => x.FulfillmentCenter.Id).ToList();
 
                 result.Results = query.Skip(criteria.Skip)
                                  .Take(criteria.Take)
                                  .AsEnumerable()
                                  .Select(x => x.ToModel(AbstractTypeFactory<FulfillmentCenterInventoryInfo>.TryCreateInstance()))
-                                 .OrderBy(x => fulfilmentCenterids.IndexOf(x.FulfillmentCenterId))
+                                 .OrderBy(x => fulfilmentCenterIds.IndexOf(x.FulfillmentCenterId))
                                  .ToList();
             }
 
