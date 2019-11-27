@@ -143,7 +143,9 @@ angular.module('virtoCommerce.inventoryModule')
             function resetStateGrid() {
                 if ($scope.gridApi) {
                     $scope.items = [];
-                    $scope.gridApi.selection.clearSelectedRows();
+                    if ($scope.gridApi.selection) {
+                        $scope.gridApi.selection.clearSelectedRows();
+                    }
                     $scope.gridApi.infiniteScroll.resetScroll(true, true);
                     $scope.gridApi.infiniteScroll.dataLoaded();
                 }
