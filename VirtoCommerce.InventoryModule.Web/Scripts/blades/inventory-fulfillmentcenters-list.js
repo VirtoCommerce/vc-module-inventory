@@ -6,7 +6,8 @@ angular.module('virtoCommerce.inventoryModule')
 
             var openFirstEntityDetailsOnce = _.once(function() {
                 if (_.any($scope.items))
-                    $timeout(function() {
+                    $timeout(function () {
+                        $scope.selectedNodeId = $scope.items[0];
                         openBlade($scope.items[0]);
                     }, 0, false);
             });
@@ -27,24 +28,16 @@ angular.module('virtoCommerce.inventoryModule')
                         $scope.pageSettings.totalItems = $scope.items.length;
                         $scope.hasMore = data.results.length === $scope.pageSettings.itemsPerPageCount;
 
-                        $timeout(function () {
-                            // wait for grid to ingest data changes
-                            if ($scope.gridApi && $scope.gridApi.selection.getSelectAllState()) {
-                                $scope.gridApi.selection.selectAllRows();
-                            }
-                        });
                     }).$promise.finally(function () {
                         blade.isLoading = false;
+                        openFirstEntityDetailsOnce();
                         deferred.resolve($scope.items);
                 });
                 //reset state grid
                 resetStateGrid();
 
-                openFirstEntityDetailsOnce();
-
                 return deferred.promise;
             };
-
 
             function showMore() {
                 if ($scope.hasMore) {
@@ -61,13 +54,6 @@ angular.module('virtoCommerce.inventoryModule')
                             $scope.hasMore = data.results.length === $scope.pageSettings.itemsPerPageCount;
                             $scope.gridApi.infiniteScroll.dataLoaded();
 
-                            $timeout(function () {
-                                // wait for grid to ingest data changes
-                                if ($scope.gridApi.selection.getSelectAllState()) {
-                                    $scope.gridApi.selection.selectAllRows();
-                                }
-                            });
-
                         }).$promise.finally(function () {
                         blade.isLoading = false;
                     });
@@ -81,7 +67,7 @@ angular.module('virtoCommerce.inventoryModule')
             }
 
             var openBlade = function openBlade(data) {
-                $scope.selectedNodeId = data.id;
+                $scope.selectedNodeId = data.fulfillmentCenterId;
 
                 var newBlade = {
                     id: "inventoryDetailBlade",
