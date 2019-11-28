@@ -2,19 +2,52 @@
 
 ## Overview
 
-Inventory management is a system of stock level controlling.
+Inventory management is a system of stock level controlling and fullfilment centers management. 
 
 Inventory is often the largest item a business has in its current assets, meaning it must be accurately monitored. Inventory is counted and valued at the end of each accounting period to determine the company's profits or losses.
 
 In the ecommerce sector, a day-to-day management of inventory helps increase business intelligence and visibility. Ecommerce business owners have better ongoing control when they have constant eyes on inventory.
 
-VirtoCommerce.Inventory module represents a store inventory management system. The main goal of the Inventory module is stock level controlling. In VirtoCommerce it consists of setting up the Inventory and tracking low stocks.
+## VirtoCommenrce Inventory Module description
+
+VirtoCommerce.Inventory module represents a store inventory management system. The main goal of the Inventory module is stock level controlling and managing of fullfilment centers. The VC Inventory module is customizable and supports metafields.
+The Inventory module content can be both exported and imported using the VC Export/Import functionality.
 
 ![Inventory module](docs/media/screen-inventory.png)
 
-Some products may not require inventory tracking. For example, services, second hand or custom-made goods. In this case, a store owner can opt for no tracking, by choosing Don’t track inventory option in the Inventory on the Physical item details blade
+Fields description :
+
+1. 'In stock' - total quantity of product items allowed in stock
+1. 'Reserved'- in VC this field has no logics and is simply a UI element.
+1. 'Reoder min. qty'- 
+1. 'Allow preoder' - if switched on means that the system will allow order products that are still not in stock. By using the calender, the admin can set up the time period for preoder availability.
+1. 'Preorder qty field'- the admin can specify the product quantity that can be preordered.  
+1. 'Allow backorder'- if switched on means that the system will allow order products that are no longer in stock. The admin can set up the time period for backorder availability.
+1. 'Backorder qty' field- the admin can specify the product quantity that can be backordered.
+
+Some products may not require inventory tracking. For example, services, second hand or custom-made goods. In this case, a store owner can select not to track inventory, by switching off the 'Track Inventory' option on the Physical item details blade
 
 ![Track Inventory](docs/media/screen-track-inventory.png)
+
+## Manage Fullfilment Centers
+
+VC fulfillment includes the steps involved in receiving, processing and delivering orders to end customers. Usually the process of fulfillment in ecommerce inlcudes receiving inventory from a supplier (including its counting, instecting, labeling and etc.), storage of the inventory, order processing (including preparing, packing and exchange if necessary) and shipping. There also may be returns that are counted according to the store rules and conditions. In Virto Commerce manager fulfillment lifecycle looks as follows:
+
+1. Shipment created-
+This is the first step of fulfillment. A shipment includes one or more products of the order. Order can contain one or more shipments.
+1. Inventory assigned-
+When shipment is created, it is checked if the inventory is available. Afterwards the inventory is being assigned.
+1. Released for Pick/Pack-
+Assigned inventory is released for pick or pack by a customer service representative (CSR). Then the inventory is being picked to the picklist and prepared to be packed
+1. Packing -
+On this step the shipment is packed according to shipping requirements (for instance, fragile items must be packed more accurately and the pack should be marked).
+1. Shipped-
+When the packed shipment is sent to delivery service to be shipped.
+
+
+
+
+
 
 
 # Documentation
