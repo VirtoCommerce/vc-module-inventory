@@ -29,7 +29,7 @@ Some products may not require inventory tracking. For example, services, second 
 
 ![Track Inventory](docs/media/screen-track-inventory.png)
 
-## Manage Fullfilment Centers
+## Fulfillment Centers
 
 VC fulfillment includes the steps involved in receiving, processing and delivering orders to end customers. Usually the process of fulfillment in ecommerce inlcudes receiving inventory from a supplier (including its counting, instecting, labeling and etc.), storage of the inventory, order processing (including preparing, packing and exchange if necessary) and shipping. There also may be returns that are counted according to the store rules and conditions. In Virto Commerce manager fulfillment lifecycle looks as follows:
 
@@ -43,6 +43,9 @@ Assigned inventory is released for pick or pack by a customer service representa
 On this step the shipment is packed according to shipping requirements (for instance, fragile items must be packed more accurately and the pack should be marked).
 1. Shipped-
 When the packed shipment is sent to delivery service to be shipped.
+
+[Manage Fulfillment Centers](/docs/manage-fullfilment.md)
+
 
 
 
@@ -63,7 +66,7 @@ Installing the module:
 # Available resources
 * Module related service implementations as a <a href="https://www.nuget.org/packages/VirtoCommerce.InventoryModule.Data" target="_blank">NuGet package</a>
 * API client as a <a href="https://www.nuget.org/packages/VirtoCommerce.InventoryModule.Client" target="_blank">NuGet package</a>
-* API client documentation https://admin-demo.virtocommerce.com/docs/ui/index#/Inventory%2520module
+* API client documentation https://admin-demo.virtocommerce.com/#/Inventory%2520module
 
 # License
 Copyright (c) Virtosoftware Ltd.  All rights reserved.
