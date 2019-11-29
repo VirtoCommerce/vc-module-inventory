@@ -8,28 +8,31 @@ Inventory is often the largest item a business has in its current assets, meanin
 
 In the ecommerce sector, a day-to-day management of inventory helps increase business intelligence and visibility. Ecommerce business owners have better ongoing control when they have constant eyes on inventory.
 
-## VirtoCommenrce Inventory Module description
+## VirtoCommenrce Inventory Module Description
 
-VirtoCommerce.Inventory module represents a store inventory management system. The main goal of the Inventory module is stock level controlling and managing of fullfilment centers. The VC Inventory module is customizable and supports metafields.
+VirtoCommerce.Inventory module represents a store inventory management system. The main goal of the Inventory module is stock level controlling and managing of fulfillment centers.
+
+The VC Inventory module is customizable and supports metafields.
+
 The Inventory module content can be both exported and imported using the VC Export/Import functionality.
 
 ![Inventory module](docs/media/screen-inventory.png)
 
 Fields description :
 
-1. 'In stock' - total quantity of product items allowed in stock
-1. 'Reserved'- in VC this field has no logics and is simply a UI element.
-1. 'Reoder min. qty'- 
-1. 'Allow preoder' - if switched on means that the system will allow order products that are still not in stock. By using the calender, the admin can set up the time period for preoder availability.
-1. 'Preorder qty field'- the admin can specify the product quantity that can be preordered.  
-1. 'Allow backorder'- if switched on means that the system will allow order products that are no longer in stock. The admin can set up the time period for backorder availability.
+1. 'In stock' - total quantity of product items allowed in stock;
+1. 'Reserved'- in VC this field has no logics and is simply a UI element;
+1. 'Reoder min. qty'- the minimum quantity of products that can be reordered;
+1. 'Allow preoder' - if switched on means that the system will allow order products that are still not in stock. By using the calender, the admin can set up the time period for preoder availability;
+1. 'Preorder qty field'- the admin can specify the product quantity that can be preordered;  
+1. 'Allow backorder'- if switched on means that the system will allow order products that are no longer in stock. The admin can set up the time period for backorder availability;
 1. 'Backorder qty' field- the admin can specify the product quantity that can be backordered.
 
 Some products may not require inventory tracking. For example, services, second hand or custom-made goods. In this case, a store owner can select not to track inventory, by switching off the 'Track Inventory' option on the Physical item details blade
 
 ![Track Inventory](docs/media/screen-track-inventory.png)
 
-## Fulfillment Centers
+### Fulfillment Centers
 
 VC fulfillment includes the steps involved in receiving, processing and delivering orders to end customers. Usually the process of fulfillment in ecommerce inlcudes receiving inventory from a supplier (including its counting, instecting, labeling and etc.), storage of the inventory, order processing (including preparing, packing and exchange if necessary) and shipping. There also may be returns that are counted according to the store rules and conditions. In Virto Commerce manager fulfillment lifecycle looks as follows:
 
@@ -46,29 +49,22 @@ When the packed shipment is sent to delivery service to be shipped.
 
 [Manage Fulfillment Centers](/docs/manage-fullfilment.md)
 
+### Installation
 
-
-
-
-
-
-
-# Documentation
-User guide: <a href="https://virtocommerce.com/docs/vc2userguide/fulfillment" target="_blank">Fulfillment</a>
-
-
-# Installation
 Installing the module:
-* Automatically: in VC Manager go to Configuration -> Modules -> Inventory module -> Install
-* Manually: download module zip package from https://github.com/VirtoCommerce/vc-module-inventory/releases. In VC Manager go to Configuration -> Modules -> Advanced -> upload module package -> Install.
+* Automatically: in VC Manager go to More -> Modules -> Inventory module -> Install
 
+* Manually: download module zip package from https://github.com/VirtoCommerce/vc-module-inventory/releases.
+ In VC Manager go to More -> Modules -> Advanced -> upload module package -> Install.
 
-# Available resources
+### Available resources
+
 * Module related service implementations as a <a href="https://www.nuget.org/packages/VirtoCommerce.InventoryModule.Data" target="_blank">NuGet package</a>
 * API client as a <a href="https://www.nuget.org/packages/VirtoCommerce.InventoryModule.Client" target="_blank">NuGet package</a>
 * API client documentation https://admin-demo.virtocommerce.com/#/Inventory%2520module
 
-# License
+### License
+
 Copyright (c) Virtosoftware Ltd.  All rights reserved.
 
 Licensed under the Virto Commerce Open Software License (the "License"); you
