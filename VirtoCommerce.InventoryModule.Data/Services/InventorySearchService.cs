@@ -104,10 +104,11 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             return result;
         }
 
+
         /// <summary>
         /// Build column name map from resulting FulfillmentCenterInventoryInfo to FulfillmentCenterInventory object fields by which we queue the data
         /// </summary>
-        private void InitSortingAliases()
+        protected virtual void InitSortingAliases()
         {
             var inventoryInfoRealType = AbstractTypeFactory<InventoryInfo>.TryCreateInstance().GetType();
 
@@ -118,7 +119,6 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
             _sortingAliases["FulfillmentCenterName"] = $"{nameof(FulfillmentCenterInventory.FulfillmentCenter)}.{nameof(FulfillmentCenterEntity.Name)}";
         }
-
 
         protected virtual IQueryable<FulfillmentCenterInventory> GetFulfillmentCenterInventoryQuery(IInventoryRepository repository, InventorySearchCriteria criteria)
         {
