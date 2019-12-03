@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -75,10 +75,12 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             inventory.ProductId = Sku;
             inventory.ReservedQuantity = (long)ReservedQuantity;
             inventory.Status = EnumUtility.SafeParse(Status.ToString(), InventoryStatus.Enabled);
+            
 
             if(FulfillmentCenter != null)
             {
                 inventory.FulfillmentCenter = FulfillmentCenter.ToModel(AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance());
+                inventory.FulfillmentCenterName = inventory.FulfillmentCenter.Name;
             }
            
             return inventory;

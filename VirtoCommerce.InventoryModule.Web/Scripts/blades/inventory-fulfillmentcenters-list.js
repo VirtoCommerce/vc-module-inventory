@@ -158,10 +158,9 @@ angular.module('virtoCommerce.inventoryModule')
                     productIds: [blade.itemId] ,
                     sort: uiGridHelper.getSortExpression($scope),
                     skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
-                    take: $scope.pageSettings.itemsPerPageCount
+                    take: $scope.pageSettings.itemsPerPageCount,
+                    responseGroup: 'WithAllFulfillmentCenters'
                 };
                 return searchCriteria;
             }
-
-
         }]);

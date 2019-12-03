@@ -55,7 +55,6 @@ namespace VirtoCommerce.InventoryModule.Web
             _container.RegisterType<IInventorySearchService, InventorySearchService>();
             _container.RegisterType<IFulfillmentCenterSearchService, FulfillmentCenterSearchService>();
             _container.RegisterType<IFulfillmentCenterService, FulfillmentCenterService>();
-            _container.RegisterType<IFulfillmentCenterInventorySearchService, FulfillmentCenterInventorySearchService>();
         }
 
         public override void PostInitialize()

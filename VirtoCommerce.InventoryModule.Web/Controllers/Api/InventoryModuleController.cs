@@ -5,8 +5,6 @@ using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Inventory.Model;
 using VirtoCommerce.Domain.Inventory.Model.Search;
 using VirtoCommerce.Domain.Inventory.Services;
-using VirtoCommerce.InventoryModule.Data.Model;
-using VirtoCommerce.InventoryModule.Data.Services;
 using VirtoCommerce.InventoryModule.Web.Security;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Web.Security;
@@ -18,19 +16,16 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
     {
         private readonly IInventoryService _inventoryService;
         private readonly IInventorySearchService _inventorySearchService;
-        private readonly IFulfillmentCenterInventorySearchService _fulfillmentCenterInventorySearchService;
         private readonly IFulfillmentCenterSearchService _fulfillmentCenterSearchService;
         private readonly IFulfillmentCenterService _fulfillmentCenterService;
 
         public InventoryModuleController(IInventoryService inventoryService,
             IInventorySearchService inventorySearchService,
-            IFulfillmentCenterInventorySearchService fulfillmentCenterInventorySearchService,
             IFulfillmentCenterSearchService fulfillmentCenterSearchService,
             IFulfillmentCenterService fulfillmentCenterService)
         {
             _inventoryService = inventoryService;
             _inventorySearchService = inventorySearchService;
-            _fulfillmentCenterInventorySearchService = fulfillmentCenterInventorySearchService;
             _fulfillmentCenterSearchService = fulfillmentCenterSearchService;
             _fulfillmentCenterService = fulfillmentCenterService;
         }
@@ -40,7 +35,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("inventories/search")]
-        [ResponseType(typeof(GenericSearchResult<FulfillmentCenterInventoryInfo>))]
+        [ResponseType(typeof(GenericSearchResult<InventoryInfo>))]
         public IHttpActionResult SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
         {
             var result = _inventorySearchService.SearchInventories(searchCriteria);
@@ -52,10 +47,10 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("fulfillmentcenterinventories/search")]
-        [ResponseType(typeof(GenericSearchResult<FulfillmentCenterInventoryInfo>))]
+        [ResponseType(typeof(GenericSearchResult<InventoryInfo>))]
         public IHttpActionResult SearchFulfillmentCenterInventory([FromBody] InventorySearchCriteria searchCriteria)
         {
-            var result = _fulfillmentCenterInventorySearchService.Search(searchCriteria);
+            var result = _inventorySearchService.SearchInventories(searchCriteria);
             return Ok(result);
         }
 

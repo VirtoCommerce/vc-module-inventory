@@ -75,11 +75,11 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VirtoCommerce.Domain, Version=2.25.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Domain.2.25.0\lib\net461\VirtoCommerce.Domain.dll</HintPath>
+    <Reference Include="VirtoCommerce.Domain, Version=2.25.30.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Domain.2.25.30\lib\net461\VirtoCommerce.Domain.dll</HintPath>
     </Reference>
-    <Reference Include="VirtoCommerce.Platform.Core, Version=2.13.26.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Platform.Core.2.13.26\lib\net461\VirtoCommerce.Platform.Core.dll</HintPath>
+    <Reference Include="VirtoCommerce.Platform.Core, Version=2.13.42.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Platform.Core.2.13.42\lib\net461\VirtoCommerce.Platform.Core.dll</HintPath>
     </Reference>
     <Reference Include="VirtoCommerce.Platform.Data, Version=2.13.26.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\VirtoCommerce.Platform.Data.2.13.26\lib\net461\VirtoCommerce.Platform.Data.dll</HintPath>
@@ -108,19 +108,15 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\FulfillmentCenterEntity.cs" />
-    <Compile Include="Model\FulfillmentCenterInventories.cs" />
     <Compile Include="Model\FulfillmentCenterInventory.cs" />
-    <Compile Include="Model\FulfillmentCenterInventoryInfo.cs" />
     <Compile Include="Model\InventoryEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\InventoryRepositoryImpl.cs" />
     <Compile Include="Repositories\IInventoryRepository.cs" />
     <Compile Include="Search\Indexing\ProductAvailabilityChangesProvider.cs" />
     <Compile Include="Search\Indexing\ProductAvailabilityDocumentBuilder.cs" />
-    <Compile Include="Services\FulfillmentCenterInventorySearchService.cs" />
     <Compile Include="Services\FulfillmentCenterService.cs" />
     <Compile Include="Services\FulfillmentCenterSearchService.cs" />
-    <Compile Include="Services\IFulfillmentCenterInventorySearchService.cs" />
     <Compile Include="Services\InventorySearchService.cs" />
     <Compile Include="Services\InventoryServiceImpl.cs" />
   </ItemGroup>
