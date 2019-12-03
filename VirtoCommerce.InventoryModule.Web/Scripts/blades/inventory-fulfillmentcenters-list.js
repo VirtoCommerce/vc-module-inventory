@@ -1,6 +1,6 @@
 angular.module('virtoCommerce.inventoryModule')
-    .controller('virtoCommerce.inventoryModule.inventoryFulfillmentcentersListController', ['$scope', '$q', '$timeout', 'platformWebApp.bladeUtils', 'uiGridConstants', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.fulfillments',
-        function ($scope, $q, $timeout, bladeUtils, uiGridConstants, uiGridHelper, bladeNavigationService, fulfillments) {
+    .controller('virtoCommerce.inventoryModule.inventoryFulfillmentcentersListController', ['$scope', '$q', '$timeout', 'platformWebApp.bladeUtils', 'uiGridConstants', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.inventories',
+        function ($scope, $q, $timeout, bladeUtils, uiGridConstants, uiGridHelper, bladeNavigationService, inventories) {
             $scope.uiGridConstants = uiGridConstants;
             var blade = $scope.blade;
 
@@ -21,7 +21,7 @@ angular.module('virtoCommerce.inventoryModule')
 
                 var searchCriteria = getSearchCriteria();
 
-                fulfillments.searchFulfillmentCenterInventories(searchCriteria,
+                inventories.search(searchCriteria,
                     function (data) {
                         _.each(data.results, fillProductIdIfEmpty);
                         $scope.items = data.results;
@@ -46,7 +46,7 @@ angular.module('virtoCommerce.inventoryModule')
                     blade.isLoading = true;
                     var searchCriteria = getSearchCriteria();
 
-                    fulfillments.searchFulfillmentCenterInventories(searchCriteria,
+                    inventories.search(searchCriteria,
                         function (data) {
                             _.each(data.results, fillProductIdIfEmpty);
                             $scope.items = $scope.items.concat(data.results);
