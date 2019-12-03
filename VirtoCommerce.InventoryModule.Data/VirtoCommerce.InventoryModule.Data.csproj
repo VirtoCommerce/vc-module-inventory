@@ -108,7 +108,6 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\FulfillmentCenterEntity.cs" />
-    <Compile Include="Model\FulfillmentCenterInventory.cs" />
     <Compile Include="Model\InventoryEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\InventoryRepositoryImpl.cs" />
