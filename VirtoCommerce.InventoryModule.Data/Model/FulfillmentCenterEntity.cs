@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.Domain.Inventory.Model;
+using VirtoCommerce.Domain.Search;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.InventoryModule.Data.Model
@@ -10,7 +11,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
         [StringLength(128)]
         public string Name { get; set; }
 
-        public string Description { get; set; }
+        public string Description { get; set; }     
 
         [StringLength(1024)]
         public string Line1 { get; set; }
@@ -75,7 +76,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             center.Description = Description;
             center.Name = Name;
             center.GeoLocation = GeoLocation;
-
+          
             return center;
         }
 
