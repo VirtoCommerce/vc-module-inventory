@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.InventoryModule.Core;
 using VirtoCommerce.InventoryModule.Core.Model;
@@ -72,6 +73,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Route("inventory/fulfillmentcenters")]
         [Route("fulfillment/centers")]
         [Authorize(ModuleConstants.Security.Permissions.FulfillmentDelete)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteFulfillmentCenters([FromQuery] string[] ids)
         {
             await _fulfillmentCenterService.DeleteAsync(ids);
