@@ -25,7 +25,7 @@ angular.module('virtoCommerce.inventoryModule')
                     function (data) {
                         _.each(data.results, fillProductIdIfEmpty);
                         $scope.items = data.results;
-                        $scope.pageSettings.totalItems = $scope.items.length;
+                        $scope.pageSettings.totalItems = data.totalCount;
                         $scope.hasMore = data.results.length === $scope.pageSettings.itemsPerPageCount;
 
                     }).$promise.finally(function () {
@@ -50,7 +50,7 @@ angular.module('virtoCommerce.inventoryModule')
                         function (data) {
                             _.each(data.results, fillProductIdIfEmpty);
                             $scope.items = $scope.items.concat(data.results);
-                            $scope.pageSettings.totalItems = $scope.items.length;
+                            $scope.pageSettings.totalItems = data.totalCount;
                             $scope.hasMore = data.results.length === $scope.pageSettings.itemsPerPageCount;
                             $scope.gridApi.infiniteScroll.dataLoaded();
 
@@ -155,7 +155,7 @@ angular.module('virtoCommerce.inventoryModule')
             function getSearchCriteria() {
                 var searchCriteria = {
                     searchPhrase: filter.keyword ? filter.keyword : undefined,
-                    productIds: [blade.itemId] ,
+                    productId: blade.itemId ,
                     sort: uiGridHelper.getSortExpression($scope),
                     skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
                     take: $scope.pageSettings.itemsPerPageCount

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -79,6 +79,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             if(FulfillmentCenter != null)
             {
                 inventory.FulfillmentCenter = FulfillmentCenter.ToModel(AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance());
+                inventory.FulfillmentCenterName = FulfillmentCenter.Name;
             }
            
             return inventory;
