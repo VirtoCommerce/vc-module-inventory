@@ -2,7 +2,7 @@
 
 ## Overview
 
-Inventory management is a system of stock level controlling and fullfilment centers management. 
+Inventory management is a system of stock level controlling and fulfillment centers management.
 
 Inventory is often the largest item a business has in its current assets, meaning it must be accurately monitored. Inventory is counted and valued at the end of each accounting period to determine the company's profits or losses.
 
@@ -23,7 +23,7 @@ Fields description :
 1. 'In stock' - total quantity of product items allowed in stock;
 1. 'Reserved'- in VC this field has no logics and is simply a UI element;
 1. 'Reoder min. qty'- the minimum quantity of products that can be reordered;
-1. 'Allow preoder' - if switched on means that the system will allow order products that are still not in stock. By using the calender, the admin can set up the time period for preoder availability;
+1. 'Allow preoder' - if switched on means that the system will allow order products that are still not in stock. By using the preorder calender, the admin can set up the time period for preoder availability;
 1. 'Preorder qty field'- the admin can specify the product quantity that can be preordered;  
 1. 'Allow backorder'- if switched on means that the system will allow order products that are no longer in stock. The admin can set up the time period for backorder availability;
 1. 'Backorder qty' field- the admin can specify the product quantity that can be backordered.
@@ -34,7 +34,7 @@ Some products may not require inventory tracking. For example, services, second 
 
 ### Fulfillment Centers
 
-VC fulfillment includes the steps involved in receiving, processing and delivering orders to end customers. Usually the process of fulfillment in ecommerce inlcudes receiving inventory from a supplier (including its counting, instecting, labeling and etc.), storage of the inventory, order processing (including preparing, packing and exchange if necessary) and shipping. There also may be returns that are counted according to the store rules and conditions. In Virto Commerce manager fulfillment lifecycle looks as follows:
+VC fulfillment includes the steps involved in receiving, processing and delivering orders to end customers. Usually the process of fulfillment in ecommerce inlcudes receiving inventory from a supplier (including its counting, inspecting, labeling and etc.), storage of the inventory, order processing (including preparing, packing and exchange if necessary) and shipping. There also may be returns that are counted according to the store rules and conditions. In Virto Commerce manager fulfillment lifecycle looks as follows:
 
 1. Shipment created-
 This is the first step of fulfillment. A shipment includes one or more products of the order. Order can contain one or more shipments.
@@ -60,7 +60,9 @@ Installing the module:
 ### Available resources
 
 * Module related service implementations as a <a href="https://www.nuget.org/packages/VirtoCommerce.InventoryModule.Data" target="_blank">NuGet package</a>
+
 * API client as a <a href="https://www.nuget.org/packages/VirtoCommerce.InventoryModule.Client" target="_blank">NuGet package</a>
+
 * API client documentation https://admin-demo.virtocommerce.com/#/Inventory%2520module
 
 ### License

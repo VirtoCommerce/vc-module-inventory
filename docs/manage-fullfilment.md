@@ -1,12 +1,12 @@
 # Manage Fulfillment Centers
 
-VC Inventroy Module allows managing multiple fulfillment centers. In order to access the list of fulfillment centers, the user should select More->Catalog-> Categories & Items-> Item details-> Inventory widget.
+VC Inventory Module allows managing multiple fulfillment centers. In order to access the list of fulfillment centers, the user should select More->Catalog-> Categories & Items-> Item details-> Inventory widget.
 
 ![Fulfillment Centers](media/screen-fulfillment-centers-list.png)
 
 ## View And Edit Fulfillment Center Details
 
-In order to view the details of a specific fulfillment center and edit it, the user should click the 'Manage Fulfillment Centers' button as seen on the screenshot bellow:
+In order to view the details of a specific fulfillment center and edit it, the user should click the 'Manage Fulfillment Centers' button as seen on the screenshot below:
 
 ![Manage Fulfillment](media/screen-manage-centers-button.png)
 
@@ -25,11 +25,11 @@ Once the details are edited, the user should click the 'Save' button and the cha
 
 ## Delete Fulfillment Center
 
-The system allows delete the fulfillment centers from the list. In order to delete the selected fulfillment center, the user should select the 'Delete' option under the three dots menu. The system will display a warning message that the fulfillment center will be deleted. The user should confirm the deletion and the fulfillment center will be removed from the system.
+The system allows deleting the fulfillment centers from the list. In order to delete the selected fulfillment center, the user should select the 'Delete' option under the three dots menu. The system will display a warning message that the fulfillment center will be deleted. The user should confirm the deletion and the fulfillment center will be removed from the system.
 
 ## Add Fulfillment Center
 
-The user can add as many fulfillment centers as necessary. To add a new fulfillment center the user should click the 'Add' button on the 'Manage Fulfillment centers' blade and complete the form on 'Edit Fulfillment center' blade. Once the form is completed, the user should save the changes. The new fulfillment center will be added and displayed on the list.
+The user can add as many fulfillment centers as necessary. To add a new fulfillment center the user should click the 'Add' button on the 'Manage Fulfillment centers' blade and complete the form on 'Edit Fulfillment center' blade. Once the form is completed, the user should save the changes. The new fulfillment center will be added and displayed in the list.
 
 ![Add Fulfillment Center](media/screen-add-fulfillment-center.png)
 
