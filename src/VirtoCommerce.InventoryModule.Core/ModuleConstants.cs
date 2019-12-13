@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.InventoryModule.Core
@@ -33,20 +34,27 @@ namespace VirtoCommerce.InventoryModule.Core
                     DefaultValue = "50",
                 };
 
-                public static IEnumerable<SettingDescriptor> AllSettings
+                public static IEnumerable<SettingDescriptor> AllSettings => new[] { PageSize };
+            }
+
+            public static class Search
+            {
+                public static SettingDescriptor EventBasedIndexationEnable = new SettingDescriptor
                 {
-                    get
-                    {
-                        yield return PageSize;
-                    }
-                }
+                    Name = "Inventory.Search.EventBasedIndexation.Enable",
+                    GroupName = "Search | Inverntory",
+                    ValueType = SettingValueType.Boolean,
+                    DefaultValue = false
+                };
+
+                public static IEnumerable<SettingDescriptor> AllSettings => new[] { EventBasedIndexationEnable };
             }
 
             public static IEnumerable<SettingDescriptor> AllSettings
             {
                 get
                 {
-                    return General.AllSettings;
+                    return General.AllSettings.Concat(Search.AllSettings);
                 }
             }
         }
