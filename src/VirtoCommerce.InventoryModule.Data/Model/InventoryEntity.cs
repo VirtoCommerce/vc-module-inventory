@@ -1,7 +1,9 @@
 using System;
+
 using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
+
 
 namespace VirtoCommerce.InventoryModule.Data.Model
 {
@@ -24,6 +26,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
 
         public bool AllowPreorder { get; set; }
 
+
         [Required]
         public int Status { get; set; }
 
@@ -41,6 +44,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
 
         [Required]
         [StringLength(128)]
+
         public string Sku { get; set; }
 
         [StringLength(128)]
@@ -50,6 +54,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
 
         public string FulfillmentCenterId { get; set; }
         public virtual FulfillmentCenterEntity FulfillmentCenter { get; set; }
+
 
         #endregion
 
@@ -78,6 +83,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             if (FulfillmentCenter != null)
             {
                 inventory.FulfillmentCenter = FulfillmentCenter.ToModel(AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance());
+                inventory.FulfillmentCenterName = FulfillmentCenter.Name;
             }
 
             return inventory;
@@ -106,6 +112,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             Status = (int)inventory.Status;
 
             return this;
+
         }
 
         public virtual void Patch(InventoryEntity target)
