@@ -21,7 +21,7 @@ The Inventory module content can be both exported and imported using the VC Expo
 Fields description :
 
 1. 'In stock' - total quantity of product items allowed in stock;
-1. 'Reserved'- in VC this field has no logics and is simply a UI element;
+1. 'Reserved'- in VC this field currently is simply a UI element, but can be customized if needed, based on client's business needs.
 1. 'Reoder min. qty'- the minimum quantity of products that can be reordered;
 1. 'Allow preoder' - if switched on means that the system will allow order products that are still not in stock. By using the preorder calender, the admin can set up the time period for preoder availability;
 1. 'Preorder qty field'- the admin can specify the product quantity that can be preordered;  
