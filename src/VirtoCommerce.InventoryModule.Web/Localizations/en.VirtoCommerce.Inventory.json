@@ -17,7 +17,9 @@
             },
             "inventory-fulfillmentcenters-list": {
                 "labels": {
-                    "no-fulfillment-centers": "No Fulfillment centers available"
+                    "no-fulfillment-centers": "No Fulfillment centers available",
+                    "fulfillment-center-name": "Fulfillment center",
+                    "in-stock-quantity": "In stock quantity"
                 }
             },
             "fulfillment-center-detail": {

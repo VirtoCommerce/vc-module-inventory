@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using VirtoCommerce.Domain.Inventory.Model.Search;
 using VirtoCommerce.InventoryModule.Core;
 using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Core.Model.Search;
@@ -71,7 +70,7 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
                     searchCriteria.Take = take;
                     searchCriteria.Skip = skip;
                     var searchResult = await _fulfillmentCenterSearchService.SearchCentersAsync(searchCriteria);
-                    return (GenericSearchResult<FulfillmentCenter>) searchResult;
+                    return (GenericSearchResult<FulfillmentCenter>)searchResult;
                 }, (processedCount, totalCount) =>
                 {
                     progressInfo.Description = $"{processedCount} of {totalCount} FulfillmentCenters have been exported";

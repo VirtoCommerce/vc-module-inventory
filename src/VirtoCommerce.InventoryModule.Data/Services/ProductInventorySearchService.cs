@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Core.Model.Search;
 using VirtoCommerce.InventoryModule.Core.Services;
@@ -22,9 +24,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             {
                 _sortingAliases[property.Name] = $"Inventory.{property.Name}";
             }
-            /// <summary>
-            /// Build column name map from resulting FulfillmentCenterInventoryInfo to FulfillmentCenterInventory object fields by which we queue the data
-            /// </summary>
+            // Build column name map from resulting FulfillmentCenterInventoryInfo to FulfillmentCenterInventory object fields by which we queue the data            
             _sortingAliases["FulfillmentCenterName"] = "FulfillmentCenter.Name";
         }
 
@@ -33,17 +33,8 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             _repositoryFactory = repositoryFactory;
         }
 
-        public virtual GenericSearchResult<InventoryInfo> SearchProductInventories(ProductInventorySearchCriteria criteria)
+        public virtual async Task<GenericSearchResult<InventoryInfo>> SearchProductInventoriesAsync(ProductInventorySearchCriteria criteria)
         {
-            if (criteria == null)
-            {
-                throw new ArgumentNullException(nameof(criteria));
-            }
-            if (string.IsNullOrEmpty(criteria.ProductId))
-            {
-                throw new ArgumentNullException($"{nameof(criteria.ProductId)} must be set", nameof(criteria.ProductId));
-            }
-
             var result = new GenericSearchResult<InventoryInfo>();
             using (var repository = _repositoryFactory())
             {
@@ -78,7 +69,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                             Inventory = y,
                         });
 
-                result.TotalCount = query.Count();
+                result.TotalCount = await query.CountAsync();
 
                 var sortInfos = criteria.SortInfos;
                 if (sortInfos.IsNullOrEmpty())
@@ -94,27 +85,26 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
                 query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.FulfillmentCenter.Id);
 
-                result.Results = query.Skip(criteria.Skip).Take(criteria.Take)
-                                 .AsEnumerable()
-                                 .Select(x =>
-                                 {
-                                     var inventory = AbstractTypeFactory<InventoryInfo>.TryCreateInstance();
-                                     inventory.FulfillmentCenter = x.FulfillmentCenter.ToModel(AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance());
-                                     inventory.FulfillmentCenterId = x.FulfillmentCenter.Id;
-                                     inventory.FulfillmentCenterName = inventory.FulfillmentCenter.Name;
-                                     inventory.ProductId = criteria.ProductId;
-                                     if (x.Inventory != null)
-                                     {
-                                         x.Inventory.ToModel(inventory);
-                                     }
-                                     return inventory;
-                                 }).ToList();
+                var queryResult = await query.Skip(criteria.Skip).Take(criteria.Take)
+                                 .ToListAsync();
+
+                result.Results = queryResult.Select(x =>
+                {
+                    var inventory = AbstractTypeFactory<InventoryInfo>.TryCreateInstance();
+                    inventory.FulfillmentCenter = x.FulfillmentCenter.ToModel(AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance());
+                    inventory.FulfillmentCenterId = x.FulfillmentCenter.Id;
+                    inventory.FulfillmentCenterName = inventory.FulfillmentCenter.Name;
+                    inventory.ProductId = criteria.ProductId;
+                    if (x.Inventory != null)
+                    {
+                        x.Inventory.ToModel(inventory);
+                    }
+                    return inventory;
+                }).ToList();
             }
 
             return result;
         }
-
-
 
         protected virtual void TryTransformSortingInfoColumnNames(Dictionary<string, string> sortingAliases, IEnumerable<SortInfo> sortInfos)
         {
