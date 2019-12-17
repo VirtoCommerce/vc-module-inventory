@@ -33,9 +33,9 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             _repositoryFactory = repositoryFactory;
         }
 
-        public virtual async Task<GenericSearchResult<InventoryInfo>> SearchProductInventoriesAsync(ProductInventorySearchCriteria criteria)
+        public virtual async Task<InventoryInfoSearchResult> SearchProductInventoriesAsync(ProductInventorySearchCriteria criteria)
         {
-            var result = new GenericSearchResult<InventoryInfo>();
+            var result = new InventoryInfoSearchResult();
             using (var repository = _repositoryFactory())
             {
                 repository.DisableChangesTracking();

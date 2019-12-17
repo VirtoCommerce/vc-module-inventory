@@ -37,10 +37,10 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <summary>
         /// Search inventories by given criteria
         /// </summary>
-        [HttpPost]        
+        [HttpPost]
         [Route("inventories/search")]
         [Route("inventory/search")]
-        public async Task<ActionResult<GenericSearchResult<InventoryInfo>>> SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
+        public async Task<ActionResult<InventoryInfoSearchResult>> SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
         {
             var result = await _inventorySearchService.SearchInventoriesAsync(searchCriteria);
             return Ok(result);
@@ -52,7 +52,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [HttpPost]
         [Route("inventory/product/inventories/search")]
         [Route("inventory/product/search")]
-        public async Task<ActionResult<GenericSearchResult<InventoryInfo>>> SearchProductInventories([FromBody] ProductInventorySearchCriteria searchCriteria)
+        public async Task<ActionResult<InventoryInfoSearchResult>> SearchProductInventories([FromBody] ProductInventorySearchCriteria searchCriteria)
         {
             var result = await _productInventorySearchService.SearchProductInventoriesAsync(searchCriteria);
             return Ok(result);
@@ -111,9 +111,9 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         ///  Save fulfillment centers 
         /// </summary>
         /// <param name="centers">fulfillment centers</param>
-        [HttpPost]        
+        [HttpPost]
         [Route("inventory/fulfillmentcenters/batch")]
-        [Authorize(ModuleConstants.Security.Permissions.FulfillmentEdit)]        
+        [Authorize(ModuleConstants.Security.Permissions.FulfillmentEdit)]
         public async Task<ActionResult<FulfillmentCenter[]>> SaveFulfillmentCenters([FromBody] FulfillmentCenter[] centers)
         {
             await _fulfillmentCenterService.SaveChangesAsync(centers);
