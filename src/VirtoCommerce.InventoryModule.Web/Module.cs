@@ -104,7 +104,7 @@ namespace VirtoCommerce.InventoryModule.Web
             var settingsManager = appBuilder.ApplicationServices.GetRequiredService<ISettingsManager>();
             var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
             inProcessBus.RegisterHandler<InventoryChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
-            if (settingsManager.GetValue("Inventory.Search.EventBasedIndexation.Enable", false))
+            if (settingsManager.GetValue(ModuleConstants.Settings.Search.EventBasedIndexationEnable.Name, false))
             {
                 inProcessBus.RegisterHandler<InventoryChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<IndexInventoryChangedEventHandler>().Handle(message));
             }
