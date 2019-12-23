@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using VirtoCommerce.Platform.Core.Common;
 
-namespace VirtoCommerce.Domain.Inventory.Model.Search
+namespace VirtoCommerce.InventoryModule.Core.Model.Search
 {
     public class InventorySearchCriteria : SearchCriteriaBase
     {

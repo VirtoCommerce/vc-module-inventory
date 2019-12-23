@@ -15,10 +15,6 @@
     <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.0.0-rc1-update0001" />
   </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Services\" />
-    </ItemGroup>
-
 
 
 </Project>
