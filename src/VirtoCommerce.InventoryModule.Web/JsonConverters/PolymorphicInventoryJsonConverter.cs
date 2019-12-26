@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using VirtoCommerce.Domain.Inventory.Model.Search;
 using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Core.Model.Search;
 using VirtoCommerce.Platform.Core.Common;

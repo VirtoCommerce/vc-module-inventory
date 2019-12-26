@@ -46,6 +46,7 @@ namespace VirtoCommerce.InventoryModule.Web
             serviceCollection.AddTransient<IInventorySearchService, InventorySearchService>();
             serviceCollection.AddTransient<IFulfillmentCenterSearchService, FulfillmentCenterSearchService>();
             serviceCollection.AddTransient<IFulfillmentCenterService, FulfillmentCenterService>();
+            serviceCollection.AddTransient<IProductInventorySearchService, ProductInventorySearchService>();
             serviceCollection.AddTransient<InventoryExportImport>();
             serviceCollection.AddTransient<ProductAvailabilityChangesProvider>();
             serviceCollection.AddTransient<ProductAvailabilityDocumentBuilder>();
@@ -78,7 +79,7 @@ namespace VirtoCommerce.InventoryModule.Web
             var productIndexingConfigurations = appBuilder.ApplicationServices.GetServices<IndexDocumentConfiguration>();
             if (productIndexingConfigurations != null)
             {
-                var productAvaibilitySource = new IndexDocumentSource
+                var productAvailabilitySource = new IndexDocumentSource
                 {
                     ChangesProvider = appBuilder.ApplicationServices.GetService<ProductAvailabilityChangesProvider>(),
                     DocumentBuilder = appBuilder.ApplicationServices.GetService<ProductAvailabilityDocumentBuilder>(),
@@ -90,7 +91,7 @@ namespace VirtoCommerce.InventoryModule.Web
                     {
                         configuration.RelatedSources = new List<IndexDocumentSource>();
                     }
-                    configuration.RelatedSources.Add(productAvaibilitySource);
+                    configuration.RelatedSources.Add(productAvailabilitySource);
                 }
             }
 
@@ -100,13 +101,18 @@ namespace VirtoCommerce.InventoryModule.Web
             var mvcJsonOptions = appBuilder.ApplicationServices.GetService<IOptions<MvcNewtonsoftJsonOptions>>();
             mvcJsonOptions.Value.SerializerSettings.Converters.Add(new PolymorphicInventoryJsonConverter());
 
+            var settingsManager = appBuilder.ApplicationServices.GetRequiredService<ISettingsManager>();
             var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
             inProcessBus.RegisterHandler<InventoryChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
-            inProcessBus.RegisterHandler<InventoryChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<IndexInventoryChangedEventHandler>().Handle(message));
+            if (settingsManager.GetValue(ModuleConstants.Settings.Search.EventBasedIndexationEnable.Name, false))
+            {
+                inProcessBus.RegisterHandler<InventoryChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<IndexInventoryChangedEventHandler>().Handle(message));
+            }
         }
 
         public void Uninstall()
         {
+            // Method intentionally left empty.
         }
 
         public async Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)

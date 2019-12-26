@@ -6,6 +6,7 @@ namespace VirtoCommerce.InventoryModule.Core.Model
     public class InventoryInfo : AuditableEntity, ICloneable
     {
         public string FulfillmentCenterId { get; set; }
+        public string FulfillmentCenterName { get; set; }
         public FulfillmentCenter FulfillmentCenter { get; set; }
 
         public string ProductId { get; set; }
