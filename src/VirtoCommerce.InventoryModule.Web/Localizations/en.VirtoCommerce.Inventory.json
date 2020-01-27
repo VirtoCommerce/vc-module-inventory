@@ -91,10 +91,20 @@
         "inventory:fulfillment:delete": "Delete fulfillment centers"
     },
     "settings": {
-        "Inventory.ExportImport.PageSize": {
-            "description": "High value may will cause slow performance",
-            "title": "The page size being used for Export / Import"
+      "Inventory": {
+        "ExportImport.PageSize" :{
+          "description": "High value may will cause slow performance",
+          "title": "The page size being used for Export / Import"
+        },
+        "Search": {
+          "EventBasedIndexation": {
+            "Enable": {
+              "title": "Enable event-based indexation for inventory entities (Restart required)",
+              "description": "Any changes to the inventory entity will trigger a background task that will apply these changes in the search index."
+            }
+          }
         }
+      }
     },
     "module": {
         "VirtoCommerce.Inventory": {
