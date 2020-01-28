@@ -42,7 +42,7 @@ namespace VirtoCommerce.InventoryModule.Core
                 public static SettingDescriptor EventBasedIndexationEnable = new SettingDescriptor
                 {
                     Name = "Inventory.Search.EventBasedIndexation.Enable",
-                    GroupName = "Inverntory",
+                    GroupName = "Inventory | Search",
                     ValueType = SettingValueType.Boolean,
                     DefaultValue = false
                 };
