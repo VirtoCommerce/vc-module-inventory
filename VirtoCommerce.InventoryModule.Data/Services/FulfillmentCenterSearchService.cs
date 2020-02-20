@@ -54,6 +54,11 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         {
             var query = repository.FulfillmentCenters;
 
+            if (criteria.ObjectIds?.Any() == true)
+            {
+                query = query.Where(x => criteria.ObjectIds.Contains(x.Id));
+            }
+
             if (!string.IsNullOrEmpty(criteria.SearchPhrase))
             {
                 query = query.Where(x => x.Name.Contains(criteria.SearchPhrase));
