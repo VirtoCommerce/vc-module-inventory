@@ -18,7 +18,7 @@ namespace VirtoCommerce.InventoryModule.Core
                 public const string Access = "inventory:access";
                 public const string Delete = "inventory:delete";
 
-                public static string[] AllPermissions = new[] { FulfillmentEdit, FulfillmentDelete, Read, Create, Update, Access, Delete };
+                public static string[] AllPermissions { get; } = new[] { FulfillmentEdit, FulfillmentDelete, Read, Create, Update, Access, Delete };
             }
         }
 
@@ -26,7 +26,7 @@ namespace VirtoCommerce.InventoryModule.Core
         {
             public static class General
             {
-                public static SettingDescriptor PageSize = new SettingDescriptor
+                public static SettingDescriptor PageSize { get; } = new SettingDescriptor
                 {
                     Name = "Inventory.ExportImport.PageSize",
                     GroupName = "Inventory | General",
@@ -34,12 +34,12 @@ namespace VirtoCommerce.InventoryModule.Core
                     DefaultValue = "50",
                 };
 
-                public static IEnumerable<SettingDescriptor> AllSettings => new[] { PageSize };
+                public static IEnumerable<SettingDescriptor> AllSettings { get; } = new[] { PageSize };
             }
 
             public static class Search
             {
-                public static SettingDescriptor EventBasedIndexationEnable = new SettingDescriptor
+                public static SettingDescriptor EventBasedIndexationEnable { get; } = new SettingDescriptor
                 {
                     Name = "Inventory.Search.EventBasedIndexation.Enable",
                     GroupName = "Inventory | Search",
@@ -47,7 +47,7 @@ namespace VirtoCommerce.InventoryModule.Core
                     DefaultValue = false
                 };
 
-                public static IEnumerable<SettingDescriptor> AllSettings => new[] { EventBasedIndexationEnable };
+                public static IEnumerable<SettingDescriptor> AllSettings { get; } = new[] { EventBasedIndexationEnable };
             }
 
             public static IEnumerable<SettingDescriptor> AllSettings

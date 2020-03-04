@@ -30,9 +30,9 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             _platformMemoryCache = platformMemoryCache;
         }
 
-        public virtual async Task<IEnumerable<InventoryInfo>> GetByIdsAsync(string[] itemIds, string responseGroup = null)
+        public virtual async Task<IEnumerable<InventoryInfo>> GetByIdsAsync(string[] ids, string responseGroup = null)
         {
-            var cacheKey = CacheKey.With(GetType(), "GetByIdsAsync", string.Join("-", itemIds), responseGroup);
+            var cacheKey = CacheKey.With(GetType(), "GetByIdsAsync", string.Join("-", ids), responseGroup);
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 using (var repository = _repositoryFactory())
