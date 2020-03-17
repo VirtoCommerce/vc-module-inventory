@@ -40,6 +40,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [HttpPost]
         [Route("inventories/search")]
         [Route("inventory/search")]
+        [Authorize(ModuleConstants.Security.Permissions.Access)]
         public async Task<ActionResult<InventoryInfoSearchResult>> SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
         {
             var result = await _inventorySearchService.SearchInventoriesAsync(searchCriteria);
@@ -52,6 +53,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [HttpPost]
         [Route("inventory/product/inventories/search")]
         [Route("inventory/product/search")]
+        [Authorize(ModuleConstants.Security.Permissions.Access)]
         public async Task<ActionResult<InventoryInfoSearchResult>> SearchProductInventories([FromBody] ProductInventorySearchCriteria searchCriteria)
         {
             var result = await _productInventorySearchService.SearchProductInventoriesAsync(searchCriteria);
@@ -63,6 +65,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("inventory/fulfillmentcenters/search")]
+        [Authorize(ModuleConstants.Security.Permissions.Access)]
         public async Task<ActionResult<FulfillmentCenterSearchResult>> SearchFulfillmentCenters([FromBody] FulfillmentCenterSearchCriteria searchCriteria)
         {
             var retVal = await _fulfillmentCenterSearchService.SearchCentersAsync(searchCriteria);
@@ -75,6 +78,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="id">fulfillment center id</param>
         [HttpGet]
         [Route("inventory/fulfillmentcenters/{id}")]
+        [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<FulfillmentCenter>> GetFulfillmentCenter([FromRoute]string id)
         {
             var retVal = await _fulfillmentCenterService.GetByIdsAsync(new[] { id });
@@ -87,6 +91,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="ids">fulfillment center ids</param>
         [HttpPost]
         [Route("inventory/fulfillmentcenters/plenty")]
+        [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<IEnumerable<FulfillmentCenter>>> GetFulfillmentCenters([FromBody] string[] ids)
         {
             var retVal = await _fulfillmentCenterService.GetByIdsAsync(ids);
@@ -142,6 +147,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="fulfillmentCenterIds">The fulfillment centers that will be used to filter product inventories</param>
         [HttpGet]
         [Route("inventory/products")]
+        [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<InventoryInfo[]>> GetProductsInventories([FromQuery] string[] ids, [FromQuery] string[] fulfillmentCenterIds = null)
         {
             var criteria = AbstractTypeFactory<InventorySearchCriteria>.TryCreateInstance();
@@ -161,6 +167,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="fulfillmentCenterIds">The fulfillment centers that will be used to filter product inventories</param>
         [HttpPost]
         [Route("inventory/products/plenty")]
+        [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<InventoryInfo[]>> GetProductsInventoriesByPlentyIds([FromQuery] string[] ids, [FromQuery] string[] fulfillmentCenterIds = null)
         {
             return await GetProductsInventories(ids, fulfillmentCenterIds);
@@ -173,6 +180,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="productId">Product id</param>
         [HttpGet]
         [Route("inventory/products/{productId}")]
+        [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<InventoryInfo[]>> GetProductInventories([FromRoute]string productId)
         {
             return await GetProductsInventories(new[] { productId });
