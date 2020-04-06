@@ -46,7 +46,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                     
                     if (criteria.Take > 0)
                     {
-                        var ids = await query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
+                        var ids = await query.AsNoTracking().OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
                                            .Select(x => x.Id)
                                            .Skip(criteria.Skip).Take(criteria.Take)
                                            .ToArrayAsync();

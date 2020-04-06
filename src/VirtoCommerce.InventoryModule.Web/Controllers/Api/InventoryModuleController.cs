@@ -161,7 +161,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="fulfillmentCenterIds">The fulfillment centers that will be used to filter product inventories</param>
         [HttpPost]
         [Route("inventory/products/plenty")]
-        public async Task<ActionResult<InventoryInfo[]>> GetProductsInventoriesByPlentyIds([FromQuery] string[] ids, [FromQuery] string[] fulfillmentCenterIds = null)
+        public async Task<ActionResult<InventoryInfo[]>> GetProductsInventoriesByPlentyIds([FromBody] string[] ids, [FromQuery] string[] fulfillmentCenterIds = null)
         {
             return await GetProductsInventories(ids, fulfillmentCenterIds);
         }

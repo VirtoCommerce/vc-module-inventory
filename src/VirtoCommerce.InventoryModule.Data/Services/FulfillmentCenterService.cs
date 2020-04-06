@@ -36,7 +36,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             {
                 throw new ArgumentNullException(nameof(ids));
             }
-            var cacheKey = CacheKey.With(GetType(), "GetByIdsAsync", string.Join("-", ids.OrderBy(x => x)));
+            var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", ids.OrderBy(x => x)));
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 cacheEntry.AddExpirationToken(FulfillmentCenterCacheRegion.CreateChangeToken());

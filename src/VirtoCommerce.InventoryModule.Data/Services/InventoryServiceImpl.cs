@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.InventoryModule.Core.Events;
 using VirtoCommerce.InventoryModule.Core.Model;
@@ -30,20 +29,24 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             _platformMemoryCache = platformMemoryCache;
         }
 
-        public virtual async Task<IEnumerable<InventoryInfo>> GetByIdsAsync(string[] itemIds, string responseGroup = null)
+        public virtual async Task<IEnumerable<InventoryInfo>> GetByIdsAsync(string[] ids, string responseGroup = null)
         {
-            var cacheKey = CacheKey.With(GetType(), "GetByIdsAsync", string.Join("-", itemIds), responseGroup);
+            var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", ids), responseGroup);
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 using (var repository = _repositoryFactory())
                 {
+                    //It is so important to generate change tokens for all ids even for not existing objects to prevent an issue
+                    //with caching of empty results for non - existing objects that have the infinitive lifetime in the cache
+                    //and future unavailability to create objects with these ids.
+                    cacheEntry.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(ids));
+    
                     repository.DisableChangesTracking();
-                    var entries = await repository.Inventories.ToArrayAsync();
+                    var entries = await repository.GetByIdsAsync(ids, responseGroup);
 
                     return entries.Select(e =>
                     {
                         var result = e.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance());
-                        cacheEntry.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(result));
                         return result;
                     }).ToArray();
                 }
@@ -54,7 +57,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
         public virtual async Task<IEnumerable<InventoryInfo>> GetProductsInventoryInfosAsync(IEnumerable<string> productIds, string responseGroup = null)
         {
-            var cacheKey = CacheKey.With(GetType(), "GetProductsInventoryInfosAsync", string.Join("-", productIds), responseGroup);
+            var cacheKey = CacheKey.With(GetType(), nameof(GetProductsInventoryInfosAsync), string.Join("-", productIds), responseGroup);
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 var retVal = new List<InventoryInfo>();

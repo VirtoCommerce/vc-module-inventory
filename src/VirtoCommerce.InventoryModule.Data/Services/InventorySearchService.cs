@@ -30,7 +30,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
         public virtual async Task<InventoryInfoSearchResult> SearchInventoriesAsync(InventorySearchCriteria criteria)
         {
-            var cacheKey = CacheKey.With(GetType(), "SearchInventoriesAsync", criteria.GetCacheKey());
+            var cacheKey = CacheKey.With(GetType(), nameof(SearchInventoriesAsync), criteria.GetCacheKey());
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 cacheEntry.AddExpirationToken(InventorySearchCacheRegion.CreateChangeToken());
@@ -45,7 +45,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                     result.TotalCount = await query.CountAsync();
                     if (criteria.Take > 0)
                     {
-                        var ids = await query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
+                        var ids = await query.AsNoTracking().OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
                                             .Select(x => x.Id)
                                             .Skip(criteria.Skip).Take(criteria.Take)
                                             .ToArrayAsync();

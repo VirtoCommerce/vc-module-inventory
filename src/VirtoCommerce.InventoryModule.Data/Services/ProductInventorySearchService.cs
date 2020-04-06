@@ -85,7 +85,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
                 query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.FulfillmentCenter.Id);
 
-                var queryResult = await query.Skip(criteria.Skip).Take(criteria.Take)
+                var queryResult = await query.AsNoTracking().Skip(criteria.Skip).Take(criteria.Take)
                                  .ToListAsync();
 
                 result.Results = queryResult.Select(x =>
