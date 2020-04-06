@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -145,6 +146,10 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Route("inventory/products")]
         public async Task<ActionResult<InventoryInfo[]>> GetProductsInventories([FromQuery] string[] ids, [FromQuery] string[] fulfillmentCenterIds = null)
         {
+            if (ids.IsNullOrEmpty() && fulfillmentCenterIds.IsNullOrEmpty())
+            {
+                throw new ArgumentNullException($"the product {ids} or {fulfillmentCenterIds} must be set");
+            }
             var criteria = AbstractTypeFactory<InventorySearchCriteria>.TryCreateInstance();
             criteria.FulfillmentCenterIds = fulfillmentCenterIds;
             criteria.ProductIds = ids;
