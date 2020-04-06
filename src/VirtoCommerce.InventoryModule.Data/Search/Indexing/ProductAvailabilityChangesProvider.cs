@@ -45,8 +45,6 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
 
         public virtual async Task<IList<IndexDocumentChange>> GetChangesAsync(DateTime? startDate, DateTime? endDate, long skip, long take)
         {
-            var result = new List<IndexDocumentChange>();
-
             var criteria = new ChangeLogSearchCriteria
             {
                 ObjectType = ChangeLogObjectType,
@@ -61,7 +59,7 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
 
             var inventories = await _inventoryService.GetByIdsAsync(operations.Select(o => o.ObjectId).ToArray(), InventoryResponseGroup.Default.ToString());
 
-            result = operations.Join(inventories, o => o.ObjectId, i => i.Id, (o, i) => new IndexDocumentChange
+            var result = operations.Join(inventories, o => o.ObjectId, i => i.Id, (o, i) => new IndexDocumentChange
             {
                 DocumentId = i.ProductId,
                 ChangeType = IndexDocumentChangeType.Modified,

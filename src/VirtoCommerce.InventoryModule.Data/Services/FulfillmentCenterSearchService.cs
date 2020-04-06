@@ -43,7 +43,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                     var query = BuildQuery(repository, criteria);
 
                     result.TotalCount = await query.CountAsync();
-                    
+
                     if (criteria.Take > 0)
                     {
                         var ids = await query.AsNoTracking().OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
@@ -52,7 +52,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                                            .ToArrayAsync();
 
                         result.Results = (await _fulfillmentService.GetByIdsAsync(ids)).OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
-                    }                 
+                    }
                 }
                 return result;
             });
@@ -61,6 +61,12 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         protected virtual IQueryable<FulfillmentCenterEntity> BuildQuery(IInventoryRepository repository, FulfillmentCenterSearchCriteria criteria)
         {
             var query = repository.FulfillmentCenters;
+
+            if (criteria.ObjectIds?.Any() == true)
+            {
+                query = query.Where(x => criteria.ObjectIds.Contains(x.Id));
+            }
+
             if (!string.IsNullOrEmpty(criteria.Keyword))
             {
                 query = query.Where(x => x.Name.Contains(criteria.Keyword));

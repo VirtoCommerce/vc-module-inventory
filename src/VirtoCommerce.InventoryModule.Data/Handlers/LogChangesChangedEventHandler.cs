@@ -17,9 +17,9 @@ namespace VirtoCommerce.InventoryModule.Data.Handlers
             _changeLogService = changeLogService;
         }
 
-        public virtual Task Handle(InventoryChangedEvent @event)
+        public virtual Task Handle(InventoryChangedEvent message)
         {
-            InnerHandle(@event);
+            InnerHandle(message);
             return Task.CompletedTask;
         }
 

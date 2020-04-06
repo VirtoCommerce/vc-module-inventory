@@ -13,6 +13,7 @@ using VirtoCommerce.Platform.Core.Common;
 namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
 {
     [Route("api")]
+    [Authorize]
     public class InventoryModuleController : Controller
     {
         private readonly IInventoryService _inventoryService;
