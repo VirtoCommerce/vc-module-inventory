@@ -41,11 +41,18 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("inventories/search")]
-        [Route("inventory/search")]
         public async Task<ActionResult<InventoryInfoSearchResult>> SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
         {
             var result = await _inventorySearchService.SearchInventoriesAsync(searchCriteria);
             return Ok(result);
+        }
+
+        //TODO remove the enpoint but It needs for swagger validation
+        [HttpPost]
+        [Route("inventory/search")]
+        public Task<ActionResult<InventoryInfoSearchResult>> SearchInventory([FromBody] InventorySearchCriteria searchCriteria)
+        {
+            return SearchInventories(searchCriteria);
         }
 
         /// <summary>
@@ -53,11 +60,18 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("inventory/product/inventories/search")]
-        [Route("inventory/product/search")]
         public async Task<ActionResult<InventoryInfoSearchResult>> SearchProductInventories([FromBody] ProductInventorySearchCriteria searchCriteria)
         {
             var result = await _productInventorySearchService.SearchProductInventoriesAsync(searchCriteria);
             return Ok(result);
+        }
+
+        //TODO remove the enpoint but It needs for swagger validation
+        [HttpPost]
+        [Route("inventory/product/search")]
+        public Task<ActionResult<InventoryInfoSearchResult>> SearchProductInventory([FromBody] ProductInventorySearchCriteria searchCriteria)
+        {
+            return SearchProductInventories(searchCriteria);
         }
 
         /// <summary>
@@ -127,13 +141,22 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         [HttpDelete]
         [Route("inventory/fulfillmentcenters")]
-        [Route("fulfillment/centers")]
         [Authorize(ModuleConstants.Security.Permissions.FulfillmentDelete)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> DeleteFulfillmentCenters([FromQuery] string[] ids)
+        public async Task<ActionResult> DeleteInventoryFulfillmentCenters([FromQuery] string[] ids)
         {
             await _fulfillmentCenterService.DeleteAsync(ids);
             return NoContent();
+        }
+
+        //TODO remove the enpoint but It needs for swagger validation
+        [HttpDelete]
+        [Route("fulfillment/centers")]
+        [Authorize(ModuleConstants.Security.Permissions.FulfillmentDelete)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        public Task<ActionResult> DeleteFulfillmentCenters([FromQuery] string[] ids)
+        {
+            return DeleteInventoryFulfillmentCenters(ids);
         }
 
         /// <summary>
