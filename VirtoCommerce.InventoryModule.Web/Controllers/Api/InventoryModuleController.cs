@@ -5,8 +5,6 @@ using VirtoCommerce.Domain.Commerce.Model.Search;
 using VirtoCommerce.Domain.Inventory.Model;
 using VirtoCommerce.Domain.Inventory.Model.Search;
 using VirtoCommerce.Domain.Inventory.Services;
-using VirtoCommerce.InventoryModule.Data.Model;
-using VirtoCommerce.InventoryModule.Data.Services;
 using VirtoCommerce.InventoryModule.Web.Security;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Web.Security;
@@ -200,6 +198,21 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         {
             var result = _inventoryService.UpsertInventory(inventory);
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Upsert inventories
+        /// </summary>
+        /// <remarks>Upsert (add or update) given inventories.</remarks>
+        /// <param name="inventories">Inventories to upsert</param>
+        [HttpPut]
+        [Route("inventories")]
+        [ResponseType(typeof(void))]
+        [CheckPermission(Permission = InventoryPredefinedPermissions.Update)]
+        public IHttpActionResult UpsertProductInventories([FromBody]InventoryInfo[] inventories)
+        {
+            _inventoryService.UpsertInventories(inventories);
+            return Ok();
         }
     }
 }
