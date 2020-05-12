@@ -227,12 +227,12 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <remarks>Upsert (add or update) given inventories.</remarks>
         /// <param name="inventories">Inventories to upsert</param>
         [HttpPut]
-        [Route("inventories")]
+        [Route("inventory/plenty")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult> UpsertProductInventories([FromBody]InventoryInfo[] inventories)
         {
             await _inventoryService.SaveChangesAsync(inventories);
-            return NoContent();
+            return Ok();
         }
     }
 }
