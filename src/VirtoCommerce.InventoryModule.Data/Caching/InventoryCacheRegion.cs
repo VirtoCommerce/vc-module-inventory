@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Microsoft.Extensions.Primitives;
 using VirtoCommerce.InventoryModule.Core.Model;
@@ -11,16 +12,14 @@ namespace VirtoCommerce.InventoryModule.Data.Caching
     public class InventoryCacheRegion : CancellableCacheRegion<InventoryCacheRegion>
     {
         private static readonly ConcurrentDictionary<string, CancellationTokenSource> _inventoryRegionTokenLookup = new ConcurrentDictionary<string, CancellationTokenSource>();
-
-
-        public static IChangeToken CreateChangeToken(InventoryInfo inventory)
+        
+        public static IChangeToken CreateChangeToken(List<InventoryInfo> inventoryInfos)
         {
-            if (inventory == null)
+            if (inventoryInfos == null)
             {
-                throw new ArgumentNullException(nameof(inventory));
+                throw new ArgumentNullException(nameof(inventoryInfos));
             }
-
-            return CreateChangeToken(new[] { inventory.Id });
+            return CreateChangeToken(inventoryInfos.Select(x => x.Id).ToArray());
         }
 
         public static IChangeToken CreateChangeToken(string[] inventoryIds)
@@ -39,7 +38,7 @@ namespace VirtoCommerce.InventoryModule.Data.Caching
 
         public static void ExpireInventory(InventoryInfo inventory)
         {
-            if (_inventoryRegionTokenLookup.TryRemove(inventory.ProductId, out var token))
+            if (_inventoryRegionTokenLookup.TryRemove(inventory.Id, out var token))
             {
                 token.Cancel();
             }

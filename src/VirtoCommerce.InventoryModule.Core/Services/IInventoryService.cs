@@ -6,7 +6,7 @@ namespace VirtoCommerce.InventoryModule.Core.Services
 {
 	public interface IInventoryService
 	{
-        Task<IEnumerable<InventoryInfo>> GetProductsInventoryInfosAsync(IEnumerable<string> productIds, string responseGroup = null);
+        Task<IEnumerable<InventoryInfo>> GetProductsInventoryInfosAsync(string[] productIds, string responseGroup = null);
 		Task SaveChangesAsync(IEnumerable<InventoryInfo> inventoryInfos);
 	    Task<IEnumerable<InventoryInfo>> GetByIdsAsync(string[] ids, string responseGroup = null);
     }
