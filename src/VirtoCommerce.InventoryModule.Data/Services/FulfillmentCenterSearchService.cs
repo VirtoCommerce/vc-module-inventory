@@ -33,26 +33,25 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             var cacheKey = CacheKey.With(GetType(), nameof(SearchCentersAsync), criteria.GetCacheKey());
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
+                using var repository = _repositoryFactory();
                 cacheEntry.AddExpirationToken(FulfillmentCenterCacheRegion.CreateChangeToken());
                 var result = AbstractTypeFactory<FulfillmentCenterSearchResult>.TryCreateInstance();
-                using (var repository = _repositoryFactory())
+
+                repository.DisableChangesTracking();
+
+                var sortInfos = BuildSortExpression(criteria);
+                var query = BuildQuery(repository, criteria);
+
+                result.TotalCount = await query.CountAsync();
+
+                if (criteria.Take > 0)
                 {
-                    repository.DisableChangesTracking();
+                    var ids = await query.AsNoTracking().OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
+                                       .Select(x => x.Id)
+                                       .Skip(criteria.Skip).Take(criteria.Take)
+                                       .ToArrayAsync();
 
-                    var sortInfos = BuildSortExpression(criteria);
-                    var query = BuildQuery(repository, criteria);
-
-                    result.TotalCount = await query.CountAsync();
-
-                    if (criteria.Take > 0)
-                    {
-                        var ids = await query.AsNoTracking().OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
-                                           .Select(x => x.Id)
-                                           .Skip(criteria.Skip).Take(criteria.Take)
-                                           .ToArrayAsync();
-
-                        result.Results = (await _fulfillmentService.GetByIdsAsync(ids)).OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
-                    }
+                    result.Results = (await _fulfillmentService.GetByIdsAsync(ids)).OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
                 }
                 return result;
             });

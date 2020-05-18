@@ -37,20 +37,21 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 throw new ArgumentNullException(nameof(ids));
             }
             var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", ids.OrderBy(x => x)));
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
+            var result = await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
+                using var repository = _repositoryFactory();
+                //It is so important to generate change tokens for all ids even for not existing objects to prevent an issue
+                //with caching of empty results for non - existing objects that have the infinitive lifetime in the cache
+                //and future unavailability to create objects with these ids.
                 cacheEntry.AddExpirationToken(FulfillmentCenterCacheRegion.CreateChangeToken());
-                IEnumerable<FulfillmentCenter> result = null;
-                using (var repository = _repositoryFactory())
-                {
-                    repository.DisableChangesTracking();
 
-                    var fulfillmentCenters = await repository.GetFulfillmentCentersAsync(ids);
-                    result = fulfillmentCenters
-                        .Select(x => x.ToModel(AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance())).ToArray();
-                }
-                return result;
+                repository.DisableChangesTracking();
+
+                var fulfillmentCenters = (await repository.GetFulfillmentCentersAsync(ids))
+                    .Select(x => x.ToModel(AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance())).ToArray();
+                return fulfillmentCenters;
             });
+            return result.Select(x => x.Clone() as FulfillmentCenter).ToArray();
         }
 
         public virtual async Task SaveChangesAsync(IEnumerable<FulfillmentCenter> fulfillmentCenters)

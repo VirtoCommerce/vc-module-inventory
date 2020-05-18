@@ -31,26 +31,29 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
         public virtual async Task<IEnumerable<InventoryInfo>> GetByIdsAsync(string[] ids, string responseGroup = null)
         {
-            var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", ids), responseGroup);
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
+            if (ids == null)
             {
-                using (var repository = _repositoryFactory())
-                {
-                    //It is so important to generate change tokens for all ids even for not existing objects to prevent an issue
-                    //with caching of empty results for non - existing objects that have the infinitive lifetime in the cache
-                    //and future unavailability to create objects with these ids.
-                    cacheEntry.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(ids));
-    
-                    repository.DisableChangesTracking();
-                    var entries = await repository.GetByIdsAsync(ids, responseGroup);
+                throw new ArgumentNullException(nameof(ids));
+            }
+            var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", ids), responseGroup);
+            var result = await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
+            {
+                using var repository = _repositoryFactory();
+                //It is so important to generate change tokens for all ids even for not existing objects to prevent an issue
+                //with caching of empty results for non - existing objects that have the infinitive lifetime in the cache
+                //and future unavailability to create objects with these ids.
+                cacheEntry.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(ids));
 
-                    return entries.Select(e =>
+                repository.DisableChangesTracking();
+                var entries = (await repository.GetByIdsAsync(ids, responseGroup))
+                    .Select(e =>
                     {
                         var result = e.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance());
                         return result;
                     }).ToArray();
-                }
+                return entries;
             });
+            return result.Select(x => x.Clone() as InventoryInfo).ToArray();
         }
 
         #region IInventoryService Members
@@ -60,18 +63,16 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             var cacheKey = CacheKey.With(GetType(), nameof(GetProductsInventoryInfosAsync), string.Join("-", productIds), responseGroup);
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
+                using var repository = _repositoryFactory();
                 var retVal = new List<InventoryInfo>();
-                using (var repository = _repositoryFactory())
+                repository.DisableChangesTracking();
+                var entities = await repository.GetProductsInventoriesAsync(productIds.ToArray(), responseGroup);
+                retVal.AddRange(entities.Select(x =>
                 {
-                    repository.DisableChangesTracking();
-                    var entities = await repository.GetProductsInventoriesAsync(productIds.ToArray(), responseGroup);
-                    retVal.AddRange(entities.Select(x =>
-                    {
-                        var result = x.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance());
-                        cacheEntry.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(result));
-                        return result;
-                    }));
-                }
+                    var result = x.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance());
+                    cacheEntry.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(result));
+                    return result;
+                }));
                 return retVal;
             });
         }
