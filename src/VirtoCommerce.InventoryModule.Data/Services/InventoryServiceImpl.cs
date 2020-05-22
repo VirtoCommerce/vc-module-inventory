@@ -44,11 +44,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                     repository.DisableChangesTracking();
                     var entries = await repository.GetByIdsAsync(ids, responseGroup);
 
-                    return entries.Select(e =>
-                    {
-                        var result = e.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance());
-                        return result;
-                    }).ToArray();
+                    return entries.Select(e => e.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance())).ToArray();
                 }
             });
         }
@@ -57,22 +53,19 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
         public virtual async Task<IEnumerable<InventoryInfo>> GetProductsInventoryInfosAsync(IEnumerable<string> productIds, string responseGroup = null)
         {
-            var cacheKey = CacheKey.With(GetType(), nameof(GetProductsInventoryInfosAsync), string.Join("-", productIds), responseGroup);
+            var arrayProductsIds = productIds.ToArray();
+            var cacheKey = CacheKey.With(GetType(), nameof(GetProductsInventoryInfosAsync), string.Join("-", arrayProductsIds), responseGroup);
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
-                var retVal = new List<InventoryInfo>();
                 using (var repository = _repositoryFactory())
                 {
                     repository.DisableChangesTracking();
-                    var entities = await repository.GetProductsInventoriesAsync(productIds.ToArray(), responseGroup);
-                    retVal.AddRange(entities.Select(x =>
-                    {
-                        var result = x.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance());
-                        cacheEntry.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(result));
-                        return result;
-                    }));
+                    var entities = await repository.GetProductsInventoriesAsync(arrayProductsIds, responseGroup);
+                    var result = entities.Select(x => x.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance())).ToList();
+                    cacheEntry.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(result));
+
+                    return result;
                 }
-                return retVal;
             });
         }
 

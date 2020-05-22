@@ -24,7 +24,7 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
         {
             var now = DateTime.UtcNow;
             var result = new List<IndexDocument>();
-            var inventoriesGroupByProduct = await _inventoryService.GetProductsInventoryInfosAsync(documentIds);
+            var inventoriesGroupByProduct = await _inventoryService.GetProductsInventoryInfosAsync(documentIds.ToArray());
             foreach (var productInventories in inventoriesGroupByProduct.GroupBy(x => x.ProductId))
             {
                 var document = new IndexDocument(productInventories.Key);
