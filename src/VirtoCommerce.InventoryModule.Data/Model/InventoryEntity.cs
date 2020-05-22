@@ -89,8 +89,10 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             return inventory;
         }
 
-        public virtual InventoryEntity FromModel(InventoryInfo inventory)
+        public virtual InventoryEntity FromModel(InventoryInfo inventory, PrimaryKeyResolvingMap pkMap)
         {
+            pkMap.AddPair(inventory, this);
+
             Id = inventory.Id;
             CreatedBy = inventory.CreatedBy;
             CreatedDate = inventory.CreatedDate;

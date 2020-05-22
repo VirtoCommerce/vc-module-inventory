@@ -38,7 +38,7 @@ namespace VirtoCommerce.InventoryModule.Data.Caching
 
         public static void ExpireInventory(InventoryInfo inventory)
         {
-            if (_inventoryRegionTokenLookup.TryRemove(inventory.Id, out var token))
+            if (inventory.Id != null && _inventoryRegionTokenLookup.TryRemove(inventory.Id, out var token))
             {
                 token.Cancel();
             }

@@ -38,7 +38,7 @@ namespace VirtoCommerce.InventoryModule.Tests
             //Arrange
             var id = Guid.NewGuid().ToString();
             var newInventoryInfo = new InventoryInfo { Id = id, ProductId = Guid.NewGuid().ToString() };
-            var newInventoryInfoEntity = AbstractTypeFactory<InventoryEntity>.TryCreateInstance().FromModel(newInventoryInfo);
+            var newInventoryInfoEntity = AbstractTypeFactory<InventoryEntity>.TryCreateInstance().FromModel(newInventoryInfo, new PrimaryKeyResolvingMap());
             var service = GetInventoryInfoServiceWithPlatformMemoryCache();
             _repositoryFactoryMock.Setup(x => x.Add(newInventoryInfoEntity))
                 .Callback(() =>

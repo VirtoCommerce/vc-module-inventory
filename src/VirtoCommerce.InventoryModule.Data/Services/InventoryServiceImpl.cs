@@ -76,6 +76,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 throw new ArgumentNullException(nameof(inventoryInfos));
             }
 
+            var pkMap = new PrimaryKeyResolvingMap();
             var changedEntries = new List<GenericChangedEntry<InventoryInfo>>();
             using (var repository = _repositoryFactory())
             {
@@ -84,9 +85,13 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 {
                     var originalEntity = dataExistInventories.FirstOrDefault(x => x.Sku == changedInventory.ProductId && x.FulfillmentCenterId == changedInventory.FulfillmentCenterId);
 
-                    var modifiedEntity = AbstractTypeFactory<InventoryEntity>.TryCreateInstance().FromModel(changedInventory);
+                    var modifiedEntity = AbstractTypeFactory<InventoryEntity>.TryCreateInstance().FromModel(changedInventory, pkMap);
                     if (originalEntity != null)
                     {
+                        if (changedInventory.Id == null)
+                        {
+                            changedInventory.Id = originalEntity.Id;
+                        }
                         changedEntries.Add(new GenericChangedEntry<InventoryInfo>(changedInventory, originalEntity.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance()), EntryState.Modified));
                         modifiedEntity?.Patch(originalEntity);
                     }
@@ -100,6 +105,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 //Raise domain events
                 await _eventPublisher.Publish(new InventoryChangingEvent(changedEntries));
                 await repository.UnitOfWork.CommitAsync();
+                pkMap.ResolvePrimaryKeys();
                 await _eventPublisher.Publish(new InventoryChangedEvent(changedEntries));
 
                 ClearCache(inventoryInfos);
