@@ -51,15 +51,16 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
         #region IInventoryService Members
 
-        public virtual async Task<IEnumerable<InventoryInfo>> GetProductsInventoryInfosAsync(string[] productIds, string responseGroup = null)
+        public virtual async Task<IEnumerable<InventoryInfo>> GetProductsInventoryInfosAsync(IEnumerable<string> productIds, string responseGroup = null)
         {
-            var cacheKey = CacheKey.With(GetType(), nameof(GetProductsInventoryInfosAsync), string.Join("-", productIds), responseGroup);
+            var arrayProductsIds = productIds.ToArray();
+            var cacheKey = CacheKey.With(GetType(), nameof(GetProductsInventoryInfosAsync), string.Join("-", arrayProductsIds), responseGroup);
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 using (var repository = _repositoryFactory())
                 {
                     repository.DisableChangesTracking();
-                    var entities = await repository.GetProductsInventoriesAsync(productIds, responseGroup);
+                    var entities = await repository.GetProductsInventoriesAsync(arrayProductsIds, responseGroup);
                     var result = entities.Select(x => x.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance())).ToList();
                     cacheEntry.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(result));
 
