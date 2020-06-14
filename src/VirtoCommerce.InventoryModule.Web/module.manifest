@@ -21,7 +21,7 @@
     <group>commerce</group>
   </groups>
   <projectUrl>https://virtocommerce.com/apps/extensions/virto-inventory-module</projectUrl>
-  <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-inventory/release/3.0.0/src/VirtoCommerce.InventoryModule.Web/Content/logo.png</iconUrl>
+  <iconUrl>Modules/$(VirtoCommerce.Inventory)/Content/logo.png</iconUrl>
   <copyright>Copyright В© 2011-2020 Virto Commerce. All rights reserved</copyright>
   <tags>order system</tags>
   <assemblyFile>VirtoCommerce.InventoryModule.Web.dll</assemblyFile>
