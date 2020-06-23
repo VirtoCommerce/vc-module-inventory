@@ -1,6 +1,6 @@
 angular.module('virtoCommerce.inventoryModule')
-    .controller('virtoCommerce.inventoryModule.fulfillmentListController', ['$scope', 'virtoCommerce.inventoryModule.fulfillments', 'platformWebApp.bladeNavigationService', 'platformWebApp.bladeUtils', 'uiGridConstants', 'platformWebApp.uiGridHelper', 'platformWebApp.dialogService',
-        function ($scope, fulfillments, bladeNavigationService, bladeUtils, uiGridConstants, uiGridHelper, dialogService) {
+    .controller('virtoCommerce.inventoryModule.fulfillmentListController', ['$scope', 'virtoCommerce.inventoryModule.fulfillments', 'platformWebApp.bladeNavigationService', 'platformWebApp.bladeUtils', 'uiGridConstants', 'platformWebApp.uiGridHelper', 'platformWebApp.dialogService', 'platformWebApp.authService',
+        function ($scope, fulfillments, bladeNavigationService, bladeUtils, uiGridConstants, uiGridHelper, dialogService, authService) {
             $scope.uiGridConstants = uiGridConstants;
             var blade = $scope.blade;
 
@@ -10,6 +10,8 @@ angular.module('virtoCommerce.inventoryModule')
 
             blade.refresh = function (parentRefresh) {
                 blade.isLoading = true;
+
+                $scope.deletePermission = authService.checkPermission('inventory:fulfillment:delete');
 
                 fulfillments.search({
                     searchPhrase: filter.keyword ? filter.keyword : undefined,
