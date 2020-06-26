@@ -37,7 +37,7 @@
                 <li class="menu-item" ng-click='blade.selectNode(contextMenuEntity)'>
                     <i class="menu-ico fa fa-edit"></i> {{'platform.commands.manage' | translate}}
                 </li>
-                <li class="menu-item" ng-click='delete(contextMenuEntity)' ng-if="deletePermission">
+                <li class="menu-item" ng-click='delete(contextMenuEntity)' va-permission="inventory:fulfillment:delete">
                     <i class="menu-ico fa fa-trash-o"></i> {{'platform.commands.delete' | translate}}
                 </li>
             </ul>
