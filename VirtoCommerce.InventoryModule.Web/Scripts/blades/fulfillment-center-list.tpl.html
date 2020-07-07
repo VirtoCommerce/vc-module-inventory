@@ -1,4 +1,4 @@
-﻿<div class="blade-static">
+<div class="blade-static">
     <div class="form-group">
         <div class="form-input __search">
             <input placeholder="{{'platform.placeholders.search-keyword' | translate}}" ng-model="filter.keyword" ng-keyup="$event.which === 13 && filter.criteriaChanged()" />
@@ -37,7 +37,7 @@
                 <li class="menu-item" ng-click='blade.selectNode(contextMenuEntity)'>
                     <i class="menu-ico fa fa-edit"></i> {{'platform.commands.manage' | translate}}
                 </li>
-                <li class="menu-item" ng-click='delete(contextMenuEntity)'>
+                <li class="menu-item" ng-click='delete(contextMenuEntity)' va-permission="inventory:fulfillment:delete">
                     <i class="menu-ico fa fa-trash-o"></i> {{'platform.commands.delete' | translate}}
                 </li>
             </ul>
