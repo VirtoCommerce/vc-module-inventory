@@ -16,7 +16,12 @@ namespace VirtoCommerce.InventoryModule.Data.Caching
             {
                 throw new ArgumentNullException(nameof(inventoryInfos));
             }
-            return CreateChangeToken(inventoryInfos.Select(x => x.Id).ToArray());
+            //generate the cancellation tokens for inventory.productId as well to be able evict from the cache the all inventories that are reference to the product id
+            var keys = inventoryInfos.Select(x => x.Id).Concat(inventoryInfos.Select(x => x.ProductId))
+                                     .Where(x => !string.IsNullOrEmpty(x))
+                                     .Distinct()
+                                     .ToArray();
+            return CreateChangeToken(keys);
         }
 
         public static IChangeToken CreateChangeToken(string[] inventoryIds)
@@ -35,7 +40,10 @@ namespace VirtoCommerce.InventoryModule.Data.Caching
 
         public static void ExpireInventory(InventoryInfo inventory)
         {
-            ExpireTokenForKey(inventory.Id);
+            if (inventory != null)
+            {
+                ExpireTokenForKey(inventory.IsTransient() ? inventory.ProductId : inventory.Id);
+            }
         }
     }
 }
