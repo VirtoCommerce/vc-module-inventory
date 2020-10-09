@@ -82,11 +82,12 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 }
 
                 await _eventPublisher.Publish(new FulfillmentCenterChangingEvent(changedEntries));
+
                 await repository.UnitOfWork.CommitAsync();
                 pkMap.ResolvePrimaryKeys();
-                await _eventPublisher.Publish(new FulfillmentCenterChangedEvent(changedEntries));
-
                 FulfillmentCenterCacheRegion.ExpireRegion();
+
+                await _eventPublisher.Publish(new FulfillmentCenterChangedEvent(changedEntries));
             }
         }
 
@@ -102,11 +103,10 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                     changedEntries.Add(new GenericChangedEntry<FulfillmentCenter>(dbCenter.ToModel(AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance()), EntryState.Deleted));
                 }
 
-                await _eventPublisher.Publish(new FulfillmentCenterChangingEvent(changedEntries));
                 await repository.UnitOfWork.CommitAsync();
-                await _eventPublisher.Publish(new FulfillmentCenterChangedEvent(changedEntries));
-
                 FulfillmentCenterCacheRegion.ExpireRegion();
+
+                await _eventPublisher.Publish(new FulfillmentCenterChangedEvent(changedEntries));
             }
         }
         #endregion
