@@ -109,11 +109,12 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
                 //Raise domain events
                 await _eventPublisher.Publish(new InventoryChangingEvent(changedEntries));
+
                 await repository.UnitOfWork.CommitAsync();
                 pkMap.ResolvePrimaryKeys();
-                await _eventPublisher.Publish(new InventoryChangedEvent(changedEntries));
-
                 ClearCache(inventoryInfos);
+
+                await _eventPublisher.Publish(new InventoryChangedEvent(changedEntries));
             }
         }
 
