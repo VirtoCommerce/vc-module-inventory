@@ -43,6 +43,11 @@ namespace VirtoCommerce.InventoryModule.Data.Services
     
                     repository.DisableChangesTracking();
                     var entries = await repository.GetByIdsAsync(ids, responseGroup);
+                    if (entries.Any())
+                    {
+                        //Also need to add cancellation tokes for inventory productIds to be able evict from cache by productId.
+                        cacheEntry.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(entries.Select(x => x.Sku).ToArray()));
+                    }
 
                     return entries.Select(e => e.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance())).ToArray();
                 }
@@ -104,11 +109,12 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
                 //Raise domain events
                 await _eventPublisher.Publish(new InventoryChangingEvent(changedEntries));
+
                 await repository.UnitOfWork.CommitAsync();
                 pkMap.ResolvePrimaryKeys();
-                await _eventPublisher.Publish(new InventoryChangedEvent(changedEntries));
-
                 ClearCache(inventoryInfos);
+
+                await _eventPublisher.Publish(new InventoryChangedEvent(changedEntries));
             }
         }
 
