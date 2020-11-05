@@ -126,7 +126,7 @@ angular.module('virtoCommerce.inventoryModule')
                 //disable watched
                 bladeUtils.initializePagination($scope, true);
                 //сhoose the optimal amount that ensures the appearance of the scroll
-                $scope.pageSettings.itemsPerPageCount = 20;
+                $scope.pageSettings.itemsPerPageCount = 50;
 
                 uiGridHelper.initialize($scope, gridOptions, function (gridApi) {
                     //update gridApi for current grid
