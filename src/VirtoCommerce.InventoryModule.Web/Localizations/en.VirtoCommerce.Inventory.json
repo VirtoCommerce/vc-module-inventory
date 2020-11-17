@@ -92,9 +92,13 @@
     },
     "settings": {
       "Inventory": {
-        "ExportImport.PageSize" :{
+        "ExportImport.PageSize": {
           "description": "High value may will cause slow performance",
           "title": "The page size being used for Export / Import"
+        },
+        "LogInventoryChanges": {
+          "title": "Log inventory changes",
+          "description": "Log product stock changes into the platform operation log. This might impact database size if product stocks are changed relatively often."
         },
         "Search": {
           "EventBasedIndexation": {
