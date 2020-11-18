@@ -39,7 +39,7 @@ namespace VirtoCommerce.InventoryModule.Core
                     Name = "Inventory.LogInventoryChanges",
                     GroupName = "Inventory | General",
                     ValueType = SettingValueType.Boolean,
-                    DefaultValue = true,
+                    DefaultValue = false,
                 };
 
                 public static IEnumerable<SettingDescriptor> AllSettings { get; } = new[]
