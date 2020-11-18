@@ -45,9 +45,10 @@ namespace VirtoCommerce.InventoryModule.Data.Handlers
             }
         }
 
-        public async Task LogEntityChangesInBackground(OperationLog[] operationLogs)
+        // (!) Do not make this method async, it causes improper user recorded into the log! It happens because the user stored in the current thread. If the thread switched, the user info will lost.
+        public void LogEntityChangesInBackground(OperationLog[] operationLogs)
         {
-            await _changeLogService.SaveChangesAsync(operationLogs);
+            _changeLogService.SaveChangesAsync(operationLogs).GetAwaiter().GetResult();
         }
     }
 }
