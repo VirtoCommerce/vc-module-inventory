@@ -34,7 +34,19 @@ namespace VirtoCommerce.InventoryModule.Core
                     DefaultValue = "50",
                 };
 
-                public static IEnumerable<SettingDescriptor> AllSettings { get; } = new[] { PageSize };
+                public static SettingDescriptor LogInventoryChanges { get; } = new SettingDescriptor
+                {
+                    Name = "Inventory.LogInventoryChanges",
+                    GroupName = "Inventory | General",
+                    ValueType = SettingValueType.Boolean,
+                    DefaultValue = true,
+                };
+
+                public static IEnumerable<SettingDescriptor> AllSettings { get; } = new[]
+                {
+                    PageSize,
+                    LogInventoryChanges
+                };
             }
 
             public static class Search

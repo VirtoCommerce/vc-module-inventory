@@ -40,7 +40,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                     //with caching of empty results for non - existing objects that have the infinitive lifetime in the cache
                     //and future unavailability to create objects with these ids.
                     cacheEntry.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(ids));
-    
+
                     repository.DisableChangesTracking();
                     var entries = await repository.GetByIdsAsync(ids, responseGroup);
                     if (entries.Any())
@@ -88,15 +88,27 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 var dataExistInventories = await repository.GetProductsInventoriesAsync(inventoryInfos.Select(x => x.ProductId));
                 foreach (var changedInventory in inventoryInfos)
                 {
-                    var originalEntity = dataExistInventories.FirstOrDefault(x => x.Sku == changedInventory.ProductId && x.FulfillmentCenterId == changedInventory.FulfillmentCenterId);
+                    InventoryEntity originalEntity = null;
+
+                    // If current inventory has an ID, let's attempt to find matching existing entity by ID. This should always take precedence over other properties
+                    // to make sure that we update the exact inventory record requested by calling code.
+                    if (!changedInventory.IsTransient())
+                    {
+                        originalEntity = dataExistInventories.FirstOrDefault(x => x.Id == changedInventory.Id);
+                    }
+
+                    // If there is no such entity (or if current inventory is transient), look it up by (ProductId, FulfillmentCenterId).
+                    if (originalEntity == null)
+                    {
+                        originalEntity = dataExistInventories.FirstOrDefault(x => x.Sku == changedInventory.ProductId && x.FulfillmentCenterId == changedInventory.FulfillmentCenterId);
+                    }
 
                     var modifiedEntity = AbstractTypeFactory<InventoryEntity>.TryCreateInstance().FromModel(changedInventory, pkMap);
+
                     if (originalEntity != null)
                     {
-                        if (changedInventory.Id == null)
-                        {
-                            changedInventory.Id = originalEntity.Id;
-                        }
+                        changedInventory.Id ??= originalEntity.Id;
+
                         changedEntries.Add(new GenericChangedEntry<InventoryInfo>(changedInventory, originalEntity.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance()), EntryState.Modified));
                         modifiedEntity?.Patch(originalEntity);
                     }
