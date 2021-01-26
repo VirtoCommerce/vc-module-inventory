@@ -56,7 +56,7 @@ angular.module('virtoCommerce.inventoryModule')
                     }
                 },
                 {
-                    name: "platform.commands.add", icon: 'fa fa-plus',
+                    name: "platform.commands.add", icon: 'fas fa-plus',
                     executeMethod: function () {
                         showDetailBlade({ maxReleasesPerPickBatch: 20, pickDelay: 30 }, 'New Fulfillment center');
                     },
