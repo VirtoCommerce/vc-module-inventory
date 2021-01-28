@@ -44,7 +44,7 @@ angular.module('virtoCommerce.inventoryModule')
     blade.headIcon = 'fa-cubes';
     blade.toolbarCommands = [
         {
-            name: "platform.commands.save", icon: 'fa fa-save',
+            name: "platform.commands.save", icon: 'fas fa-save',
             executeMethod: $scope.saveChanges,
             canExecuteMethod: canSave,
             permission: blade.updatePermission
