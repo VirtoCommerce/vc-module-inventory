@@ -40,7 +40,7 @@ namespace VirtoCommerce.InventoryModule.Web
             serviceCollection.AddDbContext<InventoryDbContext>((provider, options) =>
             {
                 var configuration = provider.GetRequiredService<IConfiguration>();
-                options.UseSqlServer(configuration.GetConnectionString("VirtoCommerce.Inventory") ?? configuration.GetConnectionString("VirtoCommerce"));
+                options.UseSqlServer(configuration.GetConnectionString(ModuleInfo.Id) ?? configuration.GetConnectionString("VirtoCommerce"));
             });
             serviceCollection.AddTransient<IInventoryRepository, InventoryRepositoryImpl>();
             serviceCollection.AddTransient<Func<IInventoryRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IInventoryRepository>());
