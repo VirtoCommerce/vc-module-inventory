@@ -190,8 +190,7 @@ namespace VirtoCommerce.InventoryModule.Data.Migrations
                     b.HasOne("VirtoCommerce.InventoryModule.Data.Model.FulfillmentCenterEntity", "FulfillmentCenter")
                         .WithMany()
                         .HasForeignKey("FulfillmentCenterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
