@@ -37,10 +37,12 @@ namespace VirtoCommerce.InventoryModule.Web
 
         public void Initialize(IServiceCollection serviceCollection)
         {
-            var configuration = serviceCollection.BuildServiceProvider().GetRequiredService<IConfiguration>();
+            serviceCollection.AddDbContext<InventoryDbContext>((provider, options) =>
+            {
+                var configuration = provider.GetRequiredService<IConfiguration>();
+                options.UseSqlServer(configuration.GetConnectionString(ModuleInfo.Id) ?? configuration.GetConnectionString("VirtoCommerce"));
+            });
             serviceCollection.AddTransient<IInventoryRepository, InventoryRepositoryImpl>();
-            var connectionString = configuration.GetConnectionString("VirtoCommerce.Inventory") ?? configuration.GetConnectionString("VirtoCommerce");
-            serviceCollection.AddDbContext<InventoryDbContext>(options => options.UseSqlServer(connectionString));
             serviceCollection.AddTransient<Func<IInventoryRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IInventoryRepository>());
             serviceCollection.AddTransient<IInventoryService, InventoryServiceImpl>();
             serviceCollection.AddTransient<IInventorySearchService, InventorySearchService>();
