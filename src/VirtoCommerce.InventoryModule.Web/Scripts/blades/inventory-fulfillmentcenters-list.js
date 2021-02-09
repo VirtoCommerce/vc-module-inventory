@@ -85,7 +85,7 @@ angular.module('virtoCommerce.inventoryModule')
                 openBlade(node);
             };
 
-            blade.headIcon = 'fa-cubes';
+            blade.headIcon = 'fa fa-cubes';
             blade.toolbarCommands = [
                 {
                     name: "platform.commands.refresh", icon: 'fa fa-refresh',
