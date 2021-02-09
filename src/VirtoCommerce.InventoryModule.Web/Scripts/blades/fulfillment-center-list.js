@@ -46,7 +46,7 @@ angular.module('virtoCommerce.inventoryModule')
                 showDetailBlade(node, node.name);
             };
 
-            blade.headIcon = 'fa-wrench';
+            blade.headIcon = 'fa fa-wrench';
             blade.toolbarCommands = [
                 {
                     name: "platform.commands.refresh", icon: 'fa fa-refresh',

@@ -30,7 +30,7 @@ angular.module('virtoCommerce.inventoryModule')
         bladeNavigationService.showBlade(newBlade, $scope.blade);
     }
 
-    $scope.blade.headIcon = 'fa-archive';
+    $scope.blade.headIcon = 'fa fa-archive';
 
     getFulfillmentCenters();
 
