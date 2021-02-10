@@ -46,7 +46,7 @@ angular.module('virtoCommerce.inventoryModule')
             });
         }
 
-        blade.headIcon = 'fa-wrench';
+        blade.headIcon = 'fa fa-wrench';
 
         blade.toolbarCommands = [
             {

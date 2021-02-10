@@ -41,7 +41,7 @@ angular.module('virtoCommerce.inventoryModule')
         bladeNavigationService.showConfirmationIfNeeded(isDirty(), canSave(), blade, $scope.saveChanges, closeCallback, "inventory.dialogs.inventory-save.title", "inventory.dialogs.inventory-save.message");
     };
 
-    blade.headIcon = 'fa-cubes';
+    blade.headIcon = 'fa fa-cubes';
     blade.toolbarCommands = [
         {
             name: "platform.commands.save", icon: 'fas fa-save',
