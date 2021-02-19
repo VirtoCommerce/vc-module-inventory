@@ -30,7 +30,7 @@ namespace VirtoCommerce.InventoryModule.Core
                 {
                     Name = "Inventory.ExportImport.PageSize",
                     GroupName = "Inventory | General",
-                    ValueType = SettingValueType.Integer,
+                    ValueType = SettingValueType.PositiveInteger,
                     DefaultValue = "50",
                 };
 
