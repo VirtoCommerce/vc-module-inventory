@@ -7,7 +7,7 @@
                     <div class="column">
                         <div class="form-group">
                             <label class="form-label">{{ 'stores.blades.store-advanced.labels.fulfillment-center' | translate }} <a href="" ng-click="openFulfillmentCentersList()" class="form-edit"><i class="form-ico fa fa-pencil"></i></a></label>
-                            <ui-inventory-selector ng-if="shown"
+                            <ui-inventory-selector ng-if="fulfillmentCenterSelectorsShown"
                                                    selected-id="blade.currentEntity.mainFulfillmentCenterId"
                                                    placeholder="'stores.blades.store-advanced.placeholders.fulfillment-center'">
                             </ui-inventory-selector>
@@ -16,7 +16,7 @@
                     <div class="column">
                         <div class="form-group">
                             <label class="form-label">{{ 'stores.blades.store-advanced.labels.additional-fulfillment-centers' | translate }} <a href="" ng-click="openFulfillmentCentersList()" class="form-edit"><i class="form-ico fa fa-pencil"></i></a></label>
-                            <ui-inventory-selector ng-if="shown"
+                            <ui-inventory-selector ng-if="fulfillmentCenterSelectorsShown"
                                                    multiple
                                                    selected-ids="blade.currentEntity.additionalFulfillmentCenterIds"
                                                    placeholder="'stores.blades.store-advanced.placeholders.fulfillment-center'">
@@ -28,7 +28,7 @@
                     <div class="column">
                         <div class="form-group">
                             <label class="form-label">{{ 'stores.blades.store-advanced.labels.returns-fulfillment-center' | translate }} <a href="" ng-click="openFulfillmentCentersList()" class="form-edit"><i class="form-ico fa fa-pencil"></i></a></label>
-                            <ui-inventory-selector ng-if="shown"
+                            <ui-inventory-selector ng-if="fulfillmentCenterSelectorsShown"
                                                    selected-id="blade.currentEntity.mainReturnsFulfillmentCenterId"
                                                    placeholder="'stores.blades.store-advanced.placeholders.fulfillment-center'">
                             </ui-inventory-selector>
@@ -37,7 +37,7 @@
                     <div class="column">
                         <div class="form-group">
                             <label class="form-label">{{ 'stores.blades.store-advanced.labels.additional-returns-fulfillment-centers' | translate }} <a href="" ng-click="openFulfillmentCentersList()" class="form-edit"><i class="form-ico fa fa-pencil"></i></a></label>
-                            <ui-inventory-selector ng-if="shown"
+                            <ui-inventory-selector ng-if="fulfillmentCenterSelectorsShown"
                                                    multiple
                                                    selected-ids="blade.currentEntity.returnsFulfillmentCenterIds"
                                                    placeholder="'stores.blades.store-advanced.placeholders.fulfillment-center'">

@@ -1,7 +1,7 @@
 angular.module('virtoCommerce.inventoryModule')
     .controller('virtoCommerce.inventoryModule.storeFulfillmentController', ['$scope', 'platformWebApp.bladeNavigationService', '$timeout',
         function ($scope, bladeNavigationService, $timeout) {
-            $scope.shown = true;
+            $scope.fulfillmentCenterSelectorsShown = true;
 
             $scope.saveChanges = function () {
                 angular.copy($scope.blade.currentEntity, $scope.blade.origEntity);
@@ -21,13 +21,16 @@ angular.module('virtoCommerce.inventoryModule')
             }
 
             $scope.blade.refresh = function () {
-                $scope.shown = false;
+                $scope.fulfillmentCenterSelectorsShown = false;
 
-                $timeout(callAtTimeout, 0);
+                // force redraw all selector directives on the blade after modifiying fullfillment centers
+                // since the underlying ui-select-choices directive doesn't fully track changes in the data source
+                // and to preserve paging
+                $timeout(fulfillmentCenterSelectors, 0);
             }
 
-            function callAtTimeout() {
-                $scope.shown = true;
+            function fulfillmentCenterSelectors() {
+                $scope.fulfillmentCenterSelectorsShown = true;
             }
 
             $scope.openFulfillmentCentersList = function () {
