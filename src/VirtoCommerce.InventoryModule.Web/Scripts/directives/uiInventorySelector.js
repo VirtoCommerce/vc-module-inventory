@@ -67,8 +67,6 @@ angular.module('virtoCommerce.inventoryModule')
                     $scope.fetchNext = ($select) => {
                         $select.page = $select.page || 0;
 
-                        console.log("page: " + $select.page);
-
                         if (lastSearchPhrase !== $select.search && totalCount > $scope.choices.length) {
                             lastSearchPhrase = $select.search;
                             $select.page = 0;
