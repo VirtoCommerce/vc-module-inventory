@@ -29,7 +29,7 @@ angular.module('virtoCommerce.inventoryModule')
                     var totalCount = 0;
 
                     $scope.setValue = (item, model) => {
-                        $scope.selectedId = item.id;
+                        $scope.selectedId = item ? item.id : null;
                     }
 
                     $scope.setValueMultiple = (item, model) => {
