@@ -1,47 +1,50 @@
 angular.module('virtoCommerce.inventoryModule')
-.controller('virtoCommerce.inventoryModule.storeFulfillmentController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.fulfillments', function ($scope, bladeNavigationService, fulfillments) {
-    $scope.saveChanges = function () {
-        angular.copy($scope.blade.currentEntity, $scope.blade.origEntity);
-        $scope.bladeClose();
-    };
+    .controller('virtoCommerce.inventoryModule.storeFulfillmentController', ['$scope', 'platformWebApp.bladeNavigationService', '$timeout',
+        function ($scope, bladeNavigationService, $timeout) {
+            $scope.fulfillmentCenterSelectorsShown = true;
 
-    $scope.setForm = function (form) {
-        $scope.formScope = form;
-    }
+            $scope.saveChanges = function () {
+                angular.copy($scope.blade.currentEntity, $scope.blade.origEntity);
+                $scope.bladeClose();
+            };
 
-    $scope.isValid = function () {
-        return $scope.formScope && $scope.formScope.$valid;
-    }
+            $scope.setForm = function (form) {
+                $scope.formScope = form;
+            }
 
-    $scope.cancelChanges = function () {
-        $scope.bladeClose();
-    }
+            $scope.isValid = function () {
+                return $scope.formScope && $scope.formScope.$valid;
+            }
 
-    $scope.blade.refresh = function () {
-        getFulfillmentCenters();
-    }
+            $scope.cancelChanges = function () {
+                $scope.bladeClose();
+            }
 
-    $scope.openFulfillmentCentersList = function () {
-        var newBlade = {
-            id: 'fulfillmentCenterList',
-            controller: 'virtoCommerce.inventoryModule.fulfillmentListController',
-            template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/blades/fulfillment-center-list.tpl.html'
-        };
-        bladeNavigationService.showBlade(newBlade, $scope.blade);
-    }
+            $scope.blade.refresh = function () {
+                $scope.fulfillmentCenterSelectorsShown = false;
 
-    $scope.blade.headIcon = 'fa fa-archive';
+                // force redraw all selector directives on the blade after modifiying fullfillment centers
+                // since the underlying ui-select-choices directive doesn't fully track changes in the data source
+                // and to preserve paging
+                $timeout(fulfillmentCenterSelectors, 0);
+            }
 
-    getFulfillmentCenters();
+            function fulfillmentCenterSelectors() {
+                $scope.fulfillmentCenterSelectorsShown = true;
+            }
 
-    $scope.blade.isLoading = false;
-    $scope.blade.currentEntity = angular.copy($scope.blade.entity);
-    $scope.blade.origEntity = $scope.blade.entity;
+            $scope.openFulfillmentCentersList = function () {
+                var newBlade = {
+                    id: 'fulfillmentCenterList',
+                    controller: 'virtoCommerce.inventoryModule.fulfillmentListController',
+                    template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/blades/fulfillment-center-list.tpl.html'
+                };
+                bladeNavigationService.showBlade(newBlade, $scope.blade);
+            }
 
-    function getFulfillmentCenters() {
-        fulfillments.search({ take: 100 }, function (response) {
-            $scope.fulfillmentCenters = response.results;
-        });
-    }
-    
-}]);
+            $scope.blade.headIcon = 'fa fa-archive';
+
+            $scope.blade.isLoading = false;
+            $scope.blade.currentEntity = angular.copy($scope.blade.entity);
+            $scope.blade.origEntity = $scope.blade.entity;
+        }]);
