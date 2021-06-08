@@ -3,7 +3,7 @@
   <id>VirtoCommerce.Inventory</id>
   <version>3.18.0</version>
   <version-tag />
-  <platformVersion>3.51.0</platformVersion>
+  <platformVersion>3.60.0</platformVersion>
   <title>Inventory module</title>
   <description>Simplify inventory management functionality</description>
   <authors>
