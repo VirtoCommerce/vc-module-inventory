@@ -1,6 +1,6 @@
 angular.module('virtoCommerce.inventoryModule')
-    .controller('virtoCommerce.inventoryModule.storeFulfillmentController', ['$scope', 'platformWebApp.bladeNavigationService', '$timeout',
-        function ($scope, bladeNavigationService, $timeout) {
+    .controller('virtoCommerce.inventoryModule.storeFulfillmentController', ['$scope', '$timeout', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.fulfillments',
+        function ($scope, $timeout, bladeNavigationService, fulfillments) {
             $scope.fulfillmentCenterSelectorsShown = true;
 
             $scope.saveChanges = function () {
@@ -40,6 +40,10 @@ angular.module('virtoCommerce.inventoryModule')
                     template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/blades/fulfillment-center-list.tpl.html'
                 };
                 bladeNavigationService.showBlade(newBlade, $scope.blade);
+            }
+
+            $scope.searchFulfillmentCenters = function (criteria) {
+                return fulfillments.search(criteria);
             }
 
             $scope.blade.headIcon = 'fa fa-archive';

@@ -7,20 +7,22 @@
                     <div class="column">
                         <div class="form-group">
                             <label class="form-label">{{ 'stores.blades.store-advanced.labels.fulfillment-center' | translate }} <a href="" ng-click="openFulfillmentCentersList()" class="form-edit"><i class="form-ico fa fa-pencil"></i></a></label>
-                            <ui-inventory-selector ng-if="fulfillmentCenterSelectorsShown"
+                            <ui-scroll-drop-down ng-if="fulfillmentCenterSelectorsShown"
                                                    ng-model="blade.currentEntity.mainFulfillmentCenterId"
+                                                   data="searchFulfillmentCenters(criteria)"
                                                    placeholder="'stores.blades.store-advanced.placeholders.fulfillment-center'">
-                            </ui-inventory-selector>
+                            </ui-scroll-drop-down>
                         </div>
                     </div>
                     <div class="column">
                         <div class="form-group">
                             <label class="form-label">{{ 'stores.blades.store-advanced.labels.additional-fulfillment-centers' | translate }} <a href="" ng-click="openFulfillmentCentersList()" class="form-edit"><i class="form-ico fa fa-pencil"></i></a></label>
-                            <ui-inventory-selector ng-if="fulfillmentCenterSelectorsShown"
+                            <ui-scroll-drop-down ng-if="fulfillmentCenterSelectorsShown"
                                                    multiple
+                                                   data="searchFulfillmentCenters(criteria)"
                                                    ng-model="blade.currentEntity.additionalFulfillmentCenterIds"
                                                    placeholder="'stores.blades.store-advanced.placeholders.fulfillment-center'">
-                            </ui-inventory-selector>
+                            </ui-scroll-drop-down>
                         </div>
                     </div>
                 </div>
@@ -28,20 +30,22 @@
                     <div class="column">
                         <div class="form-group">
                             <label class="form-label">{{ 'stores.blades.store-advanced.labels.returns-fulfillment-center' | translate }} <a href="" ng-click="openFulfillmentCentersList()" class="form-edit"><i class="form-ico fa fa-pencil"></i></a></label>
-                            <ui-inventory-selector ng-if="fulfillmentCenterSelectorsShown"
+                            <ui-scroll-drop-down ng-if="fulfillmentCenterSelectorsShown"
                                                    ng-model="blade.currentEntity.mainReturnsFulfillmentCenterId"
+                                                   data="searchFulfillmentCenters(criteria)"
                                                    placeholder="'stores.blades.store-advanced.placeholders.fulfillment-center'">
-                            </ui-inventory-selector>
+                            </ui-scroll-drop-down>
                         </div>
                     </div>
                     <div class="column">
                         <div class="form-group">
                             <label class="form-label">{{ 'stores.blades.store-advanced.labels.additional-returns-fulfillment-centers' | translate }} <a href="" ng-click="openFulfillmentCentersList()" class="form-edit"><i class="form-ico fa fa-pencil"></i></a></label>
-                            <ui-inventory-selector ng-if="fulfillmentCenterSelectorsShown"
+                            <ui-scroll-drop-down ng-if="fulfillmentCenterSelectorsShown"
                                                    multiple
                                                    ng-model="blade.currentEntity.returnsFulfillmentCenterIds"
+                                                   data="searchFulfillmentCenters(criteria)"
                                                    placeholder="'stores.blades.store-advanced.placeholders.fulfillment-center'">
-                            </ui-inventory-selector>
+                            </ui-scroll-drop-down>
                         </div>
                     </div>
                 </div>
