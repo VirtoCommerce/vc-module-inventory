@@ -9,9 +9,7 @@ angular.module('virtoCommerce.inventoryModule')
                 templateUrl: 'countrySelector.html',
                 priority: 4
             }, {
-                name: 'regionName',
-                title: 'inventory.widgets.fulfillmentWidget.address-detail.region',
-                valueType: 'ShortText',
+                templateUrl: 'countryRegionSelector.html',
                 priority: 5
             }, {
                 name: 'city',

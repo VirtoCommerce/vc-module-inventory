@@ -20,7 +20,7 @@
   <assemblyFile>VirtoCommerce.InventoryModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.InventoryModule.Web.Module, VirtoCommerce.InventoryModule.Web</moduleType>
   <dependencies>
-    <dependency id="VirtoCommerce.Core" version="3.0.0" />
+    <dependency id="VirtoCommerce.Core" version="3.18.0" />
     <dependency id="VirtoCommerce.Catalog" version="3.0.0" />
   </dependencies>
   <groups>
