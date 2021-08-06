@@ -53,7 +53,7 @@ On this step the shipment is packed according to shipping requirements (for inst
 1. Shipped-
 When the packed shipment is sent to delivery service to be shipped.
 
-[Manage Fulfillment Centers](/docs/manage-fullfilment.md)
+[Manage Fulfillment Centers](manage-fullfilment.md)
 
 ### Installation
 
