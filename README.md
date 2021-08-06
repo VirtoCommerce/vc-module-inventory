@@ -36,7 +36,7 @@ In the ecommerce sector, a day-to-day management of inventory helps increase bus
 
 * API client as a <a href="https://www.nuget.org/packages/VirtoCommerce.InventoryModule.Client" target="_blank">NuGet package</a>
 
-* API client documentation https://admin-demo.virtocommerce.com/docs/ui/index#/Inventory%2520module
+* API client documentation https://admin-demo.virtocommerce.com/docs/index.html?urls.primaryName=VirtoCommerce.Inventory
 
 ## References
 
