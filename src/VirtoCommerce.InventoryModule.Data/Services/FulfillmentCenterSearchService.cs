@@ -2,65 +2,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.InventoryModule.Core.Model.Search;
 using VirtoCommerce.InventoryModule.Core.Services;
-using VirtoCommerce.InventoryModule.Data.Caching;
 using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.InventoryModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Data.Infrastructure;
+using VirtoCommerce.Platform.Core.GenericCrud;
+using VirtoCommerce.Platform.Data.GenericCrud;
+using VirtoCommerce.InventoryModule.Core.Model;
 
 namespace VirtoCommerce.InventoryModule.Data.Services
 {
-    public class FulfillmentCenterSearchService : IFulfillmentCenterSearchService
+    public class FulfillmentCenterSearchService : SearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter, FulfillmentCenterEntity>, IFulfillmentCenterSearchService
     {
-        private readonly Func<IInventoryRepository> _repositoryFactory;
-        private readonly IPlatformMemoryCache _platformMemoryCache;
-        private readonly IFulfillmentCenterService _fulfillmentService;
-
         public FulfillmentCenterSearchService(Func<IInventoryRepository> repositoryFactory, IFulfillmentCenterService fulfillmentService, IPlatformMemoryCache platformMemoryCache)
+             : base(repositoryFactory, platformMemoryCache, (ICrudService<FulfillmentCenter>)fulfillmentService)
         {
-            _repositoryFactory = repositoryFactory;
-            _platformMemoryCache = platformMemoryCache;
-            _fulfillmentService = fulfillmentService;
         }
 
         public virtual async Task<FulfillmentCenterSearchResult> SearchCentersAsync(FulfillmentCenterSearchCriteria criteria)
         {
-            var cacheKey = CacheKey.With(GetType(), nameof(SearchCentersAsync), criteria.GetCacheKey());
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
-            {
-                cacheEntry.AddExpirationToken(FulfillmentCenterCacheRegion.CreateChangeToken());
-                var result = AbstractTypeFactory<FulfillmentCenterSearchResult>.TryCreateInstance();
-                using (var repository = _repositoryFactory())
-                {
-                    repository.DisableChangesTracking();
-
-                    var sortInfos = BuildSortExpression(criteria);
-                    var query = BuildQuery(repository, criteria);
-
-                    result.TotalCount = await query.CountAsync();
-
-                    if (criteria.Take > 0)
-                    {
-                        var ids = await query.AsNoTracking().OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
-                                           .Select(x => x.Id)
-                                           .Skip(criteria.Skip).Take(criteria.Take)
-                                           .ToArrayAsync();
-
-                        result.Results = (await _fulfillmentService.GetByIdsAsync(ids)).OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
-                    }
-                }
-                return result;
-            });
+            return await SearchAsync(criteria);
         }
 
-        protected virtual IQueryable<FulfillmentCenterEntity> BuildQuery(IInventoryRepository repository, FulfillmentCenterSearchCriteria criteria)
+        protected override IQueryable<FulfillmentCenterEntity> BuildQuery(IRepository repository, FulfillmentCenterSearchCriteria criteria)
         {
-            var query = repository.FulfillmentCenters;
+            var query = ((IInventoryRepository)repository).FulfillmentCenters;
 
             if (criteria.ObjectIds?.Any() == true)
             {
@@ -75,7 +43,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             return query;
         }
 
-        protected virtual IList<SortInfo> BuildSortExpression(FulfillmentCenterSearchCriteria criteria)
+        protected override IList<SortInfo> BuildSortExpression(FulfillmentCenterSearchCriteria criteria)
         {
             var sortInfos = criteria.SortInfos;
             if (sortInfos.IsNullOrEmpty())
