@@ -5,7 +5,7 @@ using VirtoCommerce.InventoryModule.Core.Model.Search;
 namespace VirtoCommerce.InventoryModule.Core.Services
 {
     /// <summary>
-    /// This interface should implement <see cref="SearchService<InventoryInfo>"/> without methods.
+    /// This interface should implement <![CDATA[<see cref="SearchService<InventoryInfo>"/>]]> without methods.
     /// Methods left for compatibility and should be removed after upgrade to inheritance
     /// </summary>
     public interface IInventorySearchService

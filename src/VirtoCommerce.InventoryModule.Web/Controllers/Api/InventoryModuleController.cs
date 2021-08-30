@@ -171,7 +171,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         {
             if (ids.IsNullOrEmpty() && fulfillmentCenterIds.IsNullOrEmpty())
             {
-                throw new ArgumentNullException($"the products ids or fulfillmentCenters ids must be set");
+                throw new ArgumentNullException("ids", "the products ids or fulfillmentCenters ids must be set");
             }
             var criteria = AbstractTypeFactory<InventorySearchCriteria>.TryCreateInstance();
             criteria.FulfillmentCenterIds = fulfillmentCenterIds;
