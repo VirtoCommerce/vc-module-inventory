@@ -21,9 +21,9 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         {
         }
 
-        public virtual async Task<InventoryInfoSearchResult> SearchInventoriesAsync(InventorySearchCriteria criteria)
+        public virtual Task<InventoryInfoSearchResult> SearchInventoriesAsync(InventorySearchCriteria criteria)
         {
-            return await SearchAsync(criteria);
+            return SearchAsync(criteria);
         }
 
         protected override IQueryable<InventoryEntity> BuildQuery(IRepository repository, InventorySearchCriteria criteria)

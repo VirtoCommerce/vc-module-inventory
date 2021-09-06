@@ -24,14 +24,14 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             _repositoryFactory = repositoryFactory;
         }
 
-        public virtual async Task<IEnumerable<InventoryInfo>> GetByIdsAsync(string[] ids, string responseGroup = null)
+        public virtual Task<IEnumerable<InventoryInfo>> GetByIdsAsync(string[] ids, string responseGroup = null)
         {
-            return await base.GetByIdsAsync(ids);
+            return base.GetByIdsAsync(ids);
         }
 
-        public virtual async Task<IEnumerable<InventoryInfo>> GetProductsInventoryInfosAsync(IEnumerable<string> productIds, string responseGroup = null)
+        public virtual Task<IEnumerable<InventoryInfo>> GetProductsInventoryInfosAsync(IEnumerable<string> productIds, string responseGroup = null)
         {
-            return await base.GetByIdsAsync(productIds);
+            return base.GetByIdsAsync(productIds);
         }
 
         public new async Task SaveChangesAsync(IEnumerable<InventoryInfo> inventoryInfos)
@@ -90,9 +90,9 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             }
         }
 
-        protected async override Task<IEnumerable<InventoryEntity>> LoadEntities(IRepository repository, IEnumerable<string> ids, string responseGroup)
+        protected override Task<IEnumerable<InventoryEntity>> LoadEntities(IRepository repository, IEnumerable<string> ids, string responseGroup)
         {
-            return await ((IInventoryRepository)repository).GetByIdsAsync(ids.ToArray());
+            return ((IInventoryRepository)repository).GetByIdsAsync(ids.ToArray());
         }
     }
 }

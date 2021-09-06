@@ -21,9 +21,9 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         {
         }
 
-        public virtual async Task<FulfillmentCenterSearchResult> SearchCentersAsync(FulfillmentCenterSearchCriteria criteria)
+        public virtual Task<FulfillmentCenterSearchResult> SearchCentersAsync(FulfillmentCenterSearchCriteria criteria)
         {
-            return await SearchAsync(criteria);
+            return SearchAsync(criteria);
         }
 
         protected override IQueryable<FulfillmentCenterEntity> BuildQuery(IRepository repository, FulfillmentCenterSearchCriteria criteria)

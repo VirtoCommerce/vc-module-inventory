@@ -190,9 +190,9 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="fulfillmentCenterIds">The fulfillment centers that will be used to filter product inventories</param>
         [HttpPost]
         [Route("inventory/products/plenty")]
-        public async Task<ActionResult<InventoryInfo[]>> GetProductsInventoriesByPlentyIds([FromBody] string[] ids, [FromQuery] string[] fulfillmentCenterIds = null)
+        public Task<ActionResult<InventoryInfo[]>> GetProductsInventoriesByPlentyIds([FromBody] string[] ids, [FromQuery] string[] fulfillmentCenterIds = null)
         {
-            return await GetProductsInventories(ids, fulfillmentCenterIds);
+            return GetProductsInventories(ids, fulfillmentCenterIds);
         }
 
         /// <summary>
@@ -202,9 +202,9 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="productId">Product id</param>
         [HttpGet]
         [Route("inventory/products/{productId}")]
-        public async Task<ActionResult<InventoryInfo[]>> GetProductInventories([FromRoute] string productId)
+        public Task<ActionResult<InventoryInfo[]>> GetProductInventories([FromRoute] string productId)
         {
-            return await GetProductsInventories(new[] { productId });
+            return GetProductsInventories(new[] { productId });
         }
 
         /// <summary>

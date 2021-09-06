@@ -21,19 +21,19 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         {
         }
 
-        public virtual async Task<IEnumerable<FulfillmentCenter>> GetByIdsAsync(IEnumerable<string> ids)
+        public virtual Task<IEnumerable<FulfillmentCenter>> GetByIdsAsync(IEnumerable<string> ids)
         {
-            return await base.GetByIdsAsync(ids);
+            return base.GetByIdsAsync(ids);
         }
 
-        public virtual async Task DeleteAsync(IEnumerable<string> ids)
+        public virtual Task DeleteAsync(IEnumerable<string> ids)
         {
-            await base.DeleteAsync(ids);
+            return base.DeleteAsync(ids);
         }
 
-        protected async override Task<IEnumerable<FulfillmentCenterEntity>> LoadEntities(IRepository repository, IEnumerable<string> ids, string responseGroup)
+        protected override Task<IEnumerable<FulfillmentCenterEntity>> LoadEntities(IRepository repository, IEnumerable<string> ids, string responseGroup)
         {
-            return await ((IInventoryRepository)repository).GetFulfillmentCentersAsync(ids);
+            return ((IInventoryRepository)repository).GetFulfillmentCentersAsync(ids);
         }
     }
 }
