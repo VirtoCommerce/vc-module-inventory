@@ -10,6 +10,7 @@ using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Core.Model.Search;
 using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.GenericCrud;
 
 namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
 {
@@ -18,10 +19,10 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
     public class InventoryModuleController : Controller
     {
         private readonly IInventoryService _inventoryService;
-        private readonly IInventorySearchService _inventorySearchService;
+        private readonly ISearchService<InventorySearchCriteria, InventoryInfoSearchResult, InventoryInfo> _inventorySearchService;
         private readonly IProductInventorySearchService _productInventorySearchService;
-        private readonly IFulfillmentCenterSearchService _fulfillmentCenterSearchService;
-        private readonly IFulfillmentCenterService _fulfillmentCenterService;
+        private readonly ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter> _fulfillmentCenterSearchService;
+        private readonly ICrudService<FulfillmentCenter> _fulfillmentCenterService;
 
         public InventoryModuleController(IInventoryService inventoryService,
             IInventorySearchService inventorySearchService,
@@ -30,10 +31,10 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
             IFulfillmentCenterService fulfillmentCenterService)
         {
             _inventoryService = inventoryService;
-            _inventorySearchService = inventorySearchService;
+            _inventorySearchService = (ISearchService<InventorySearchCriteria, InventoryInfoSearchResult, InventoryInfo>)inventorySearchService;
             _productInventorySearchService = fulfillmentCenterInventorySearchService;
-            _fulfillmentCenterSearchService = fulfillmentCenterSearchService;
-            _fulfillmentCenterService = fulfillmentCenterService;
+            _fulfillmentCenterSearchService = (ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>)fulfillmentCenterSearchService;
+            _fulfillmentCenterService = (ICrudService<FulfillmentCenter>)fulfillmentCenterService;
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Route("inventories/search")]
         public async Task<ActionResult<InventoryInfoSearchResult>> SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
         {
-            var result = await _inventorySearchService.SearchInventoriesAsync(searchCriteria);
+            var result = await _inventorySearchService.SearchAsync(searchCriteria);
             return Ok(result);
         }
 
@@ -81,7 +82,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Route("inventory/fulfillmentcenters/search")]
         public async Task<ActionResult<FulfillmentCenterSearchResult>> SearchFulfillmentCenters([FromBody] FulfillmentCenterSearchCriteria searchCriteria)
         {
-            var retVal = await _fulfillmentCenterSearchService.SearchCentersAsync(searchCriteria);
+            var retVal = await _fulfillmentCenterSearchService.SearchAsync(searchCriteria);
             return Ok(retVal);
         }
 
@@ -91,7 +92,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="id">fulfillment center id</param>
         [HttpGet]
         [Route("inventory/fulfillmentcenters/{id}")]
-        public async Task<ActionResult<FulfillmentCenter>> GetFulfillmentCenter([FromRoute]string id)
+        public async Task<ActionResult<FulfillmentCenter>> GetFulfillmentCenter([FromRoute] string id)
         {
             var retVal = await _fulfillmentCenterService.GetByIdsAsync(new[] { id });
             return Ok(retVal.FirstOrDefault());
@@ -116,12 +117,11 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [HttpPut]
         [Route("inventory/fulfillmentcenters")]
         [Authorize(ModuleConstants.Security.Permissions.FulfillmentEdit)]
-        public async Task<ActionResult<FulfillmentCenter>> SaveFulfillmentCenter([FromBody]FulfillmentCenter center)
+        public async Task<ActionResult<FulfillmentCenter>> SaveFulfillmentCenter([FromBody] FulfillmentCenter center)
         {
             await _fulfillmentCenterService.SaveChangesAsync(new[] { center });
             return Ok(center);
         }
-
 
         /// <summary>
         ///  Save fulfillment centers 
@@ -171,14 +171,14 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         {
             if (ids.IsNullOrEmpty() && fulfillmentCenterIds.IsNullOrEmpty())
             {
-                throw new ArgumentNullException($"the products ids or fulfillmentCenters ids must be set");
+                throw new ArgumentNullException("ids", "the products ids or fulfillmentCenters ids must be set");
             }
             var criteria = AbstractTypeFactory<InventorySearchCriteria>.TryCreateInstance();
             criteria.FulfillmentCenterIds = fulfillmentCenterIds;
             criteria.ProductIds = ids;
             criteria.Take = int.MaxValue;
 
-            var result = await _inventorySearchService.SearchInventoriesAsync(criteria);
+            var result = await _inventorySearchService.SearchAsync(criteria);
             return Ok(result.Results);
         }
 
@@ -190,9 +190,9 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="fulfillmentCenterIds">The fulfillment centers that will be used to filter product inventories</param>
         [HttpPost]
         [Route("inventory/products/plenty")]
-        public async Task<ActionResult<InventoryInfo[]>> GetProductsInventoriesByPlentyIds([FromBody] string[] ids, [FromQuery] string[] fulfillmentCenterIds = null)
+        public Task<ActionResult<InventoryInfo[]>> GetProductsInventoriesByPlentyIds([FromBody] string[] ids, [FromQuery] string[] fulfillmentCenterIds = null)
         {
-            return await GetProductsInventories(ids, fulfillmentCenterIds);
+            return GetProductsInventories(ids, fulfillmentCenterIds);
         }
 
         /// <summary>
@@ -202,9 +202,9 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="productId">Product id</param>
         [HttpGet]
         [Route("inventory/products/{productId}")]
-        public async Task<ActionResult<InventoryInfo[]>> GetProductInventories([FromRoute]string productId)
+        public Task<ActionResult<InventoryInfo[]>> GetProductInventories([FromRoute] string productId)
         {
-            return await GetProductsInventories(new[] { productId });
+            return GetProductsInventories(new[] { productId });
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [HttpPut]
         [Route("inventory/products/{productId}")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
-        public async Task<ActionResult<InventoryInfo>> UpdateProductInventory([FromBody]InventoryInfo inventory)
+        public async Task<ActionResult<InventoryInfo>> UpdateProductInventory([FromBody] InventoryInfo inventory)
         {
             await _inventoryService.SaveChangesAsync(new[] { inventory });
             return Ok(inventory);
@@ -229,7 +229,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [HttpPut]
         [Route("inventory/plenty")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
-        public async Task<ActionResult> UpsertProductInventories([FromBody]InventoryInfo[] inventories)
+        public async Task<ActionResult> UpsertProductInventories([FromBody] InventoryInfo[] inventories)
         {
             await _inventoryService.SaveChangesAsync(inventories);
             return Ok();

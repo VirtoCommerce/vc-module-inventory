@@ -6,6 +6,7 @@ using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.Platform.Core.ChangeLog;
+using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 
@@ -19,12 +20,12 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
         public const string ChangeLogObjectType = nameof(InventoryInfo);
 
         private readonly IChangeLogSearchService _changeLogSearchService;
-        private readonly IInventoryService _inventoryService;
+        private readonly ICrudService<InventoryInfo> _inventoryService;
 
         public ProductAvailabilityChangesProvider(IChangeLogSearchService changeLogSearchService, IInventoryService inventoryService)
         {
             _changeLogSearchService = changeLogSearchService;
-            _inventoryService = inventoryService;
+            _inventoryService = (ICrudService<InventoryInfo>)inventoryService;
         }
 
         public async Task<long> GetTotalChangesCountAsync(DateTime? startDate, DateTime? endDate)
