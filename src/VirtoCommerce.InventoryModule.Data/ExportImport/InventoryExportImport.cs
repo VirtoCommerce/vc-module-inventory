@@ -10,6 +10,7 @@ using VirtoCommerce.InventoryModule.Core.Model.Search;
 using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
+using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.ExportImport;
 
@@ -17,10 +18,10 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
 {
     public sealed class InventoryExportImport
     {
-        private readonly IInventoryService _inventoryService;
-        private readonly IInventorySearchService _inventorySearchService;
-        private readonly IFulfillmentCenterSearchService _fulfillmentCenterSearchService;
-        private readonly IFulfillmentCenterService _fulfillmentCenterService;
+        private readonly ICrudService<InventoryInfo> _inventoryService;
+        private readonly ISearchService<InventorySearchCriteria, InventoryInfoSearchResult, InventoryInfo> _inventorySearchService;
+        private readonly ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter> _fulfillmentCenterSearchService;
+        private readonly ICrudService<FulfillmentCenter> _fulfillmentCenterService;
         private readonly ISettingsManager _settingsManager;
         private readonly JsonSerializer _jsonSerializer;
 
@@ -43,10 +44,10 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
             IInventorySearchService inventorySearchService, IFulfillmentCenterService fulfillmentCenterService,
             ISettingsManager settingsManager, JsonSerializer jsonSerializer)
         {
-            _inventoryService = inventoryService;
-            _fulfillmentCenterSearchService = fulfillmentCenterSearchService;
-            _fulfillmentCenterService = fulfillmentCenterService;
-            _inventorySearchService = inventorySearchService;
+            _inventoryService = (ICrudService<InventoryInfo>)inventoryService;
+            _fulfillmentCenterSearchService = (ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>)fulfillmentCenterSearchService;
+            _fulfillmentCenterService = (ICrudService<FulfillmentCenter>)fulfillmentCenterService;
+            _inventorySearchService = (ISearchService<InventorySearchCriteria, InventoryInfoSearchResult, InventoryInfo>)inventorySearchService;
             _settingsManager = settingsManager;
             _jsonSerializer = jsonSerializer;
         }
@@ -69,7 +70,7 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
                     var searchCriteria = AbstractTypeFactory<FulfillmentCenterSearchCriteria>.TryCreateInstance();
                     searchCriteria.Take = take;
                     searchCriteria.Skip = skip;
-                    var searchResult = await _fulfillmentCenterSearchService.SearchCentersAsync(searchCriteria);
+                    var searchResult = await _fulfillmentCenterSearchService.SearchAsync(searchCriteria);
                     return (GenericSearchResult<FulfillmentCenter>)searchResult;
                 }, (processedCount, totalCount) =>
                 {
@@ -86,7 +87,7 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
                     var searchCriteria = AbstractTypeFactory<InventorySearchCriteria>.TryCreateInstance();
                     searchCriteria.Take = take;
                     searchCriteria.Skip = skip;
-                    var searchResult = await _inventorySearchService.SearchInventoriesAsync(searchCriteria);
+                    var searchResult = await _inventorySearchService.SearchAsync(searchCriteria);
                     return (GenericSearchResult<InventoryInfo>)searchResult;
                 }, (processedCount, totalCount) =>
                 {

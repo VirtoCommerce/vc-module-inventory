@@ -53,7 +53,7 @@ On this step the shipment is packed according to shipping requirements (for inst
 1. Shipped-
 When the packed shipment is sent to delivery service to be shipped.
 
-[Manage Fulfillment Centers](/docs/manage-fullfilment.md)
+[Manage Fulfillment Centers](manage-fullfilment.md)
 
 ### Installation
 
@@ -69,4 +69,4 @@ Installing the module:
 
 * API client as a <a href="https://www.nuget.org/packages/VirtoCommerce.InventoryModule.Client" target="_blank">NuGet package</a>
 
-* API client documentation https://admin-demo.virtocommerce.com/docs/ui/index#/Inventory%2520module
+* API client documentation https://admin-demo.virtocommerce.com/docs/index.html?urls.primaryName=VirtoCommerce.Inventory

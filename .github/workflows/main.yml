@@ -1,4 +1,4 @@
-# v1.1.3
+# v1.1.5
 name: Module CI
 
 on:
@@ -23,6 +23,7 @@ on:
     
 jobs:
   ci:
+    if: ${{ github.actor != 'dependabot[bot]' && (github.event.pull_request.head.repo.full_name == github.repository || github.event.pull_request.head.repo.full_name == '') }}  # Check that PR not from forked repo and not from Dependabot
     runs-on: ubuntu-latest
     env:
       SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
@@ -37,11 +38,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.11
-
-      - name: Set up .net Core 3.1.x for vc-build #GitHib Actions migrates to .net Core 5.x. To vc-build work properly need to manually install .net Core 3.1.x
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.x'
 
       - uses: actions/checkout@v2
         with:
@@ -68,7 +64,6 @@ jobs:
           else
             echo "VERSION_SUFFIX=${{ steps.image.outputs.suffix }}" >> $GITHUB_ENV
           fi;
-
       - name: Add version suffix
         if: ${{ github.ref != 'refs/heads/master' }}
         uses: VirtoCommerce/vc-github-actions/add-version-suffix@master
@@ -100,12 +95,19 @@ jobs:
         uses: VirtoCommerce/vc-github-actions/publish-nuget@master
 
       - name: Publish to Blob
-        if: ${{ github.ref == 'refs/heads/dev' || (github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/master') }}
+        if: ${{ github.ref == 'refs/heads/dev' || github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/master') }}
         id: blobRelease
         uses: VirtoCommerce/vc-github-actions/publish-blob-release@master
         with:
           blobSAS: ${{ secrets.BLOB_TOKEN }}
-        
+
+      - name: Add link to PR
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: VirtoCommerce/vc-github-actions/publish-artifact-link@master
+        with:
+          artifactUrl: ${{ steps.blobRelease.outputs.packageUrl }}
+          downloadComment: 'Artifact URL:'
+
       - name: Publish Github Release
         if: ${{ github.ref == 'refs/heads/master' }}
         with:
@@ -135,3 +137,11 @@ jobs:
           moduleDescription: ${{ steps.image.outputs.moduleDescription }}
           projectUrl: ${{ steps.image.outputs.projectUrl }}
           iconUrl: ${{ steps.image.outputs.iconUrl }}
+          
+      - name: Invoke Module deployment workflow
+        if: ${{ github.ref == 'refs/heads/master' }}
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: VC deployment
+          token: ${{ secrets.REPO_TOKEN }}
+          inputs: '{ "artifactUrl": "https://github.com/${{ github.repository }}/releases/download/${{ steps.image.outputs.shortVersion }}/${{ steps.image.outputs.moduleId }}_${{ steps.image.outputs.shortVersion }}.zip", "deployBranch": "dev" }'

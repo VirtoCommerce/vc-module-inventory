@@ -2,64 +2,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.InventoryModule.Core.Model.Search;
 using VirtoCommerce.InventoryModule.Core.Services;
-using VirtoCommerce.InventoryModule.Data.Caching;
 using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.InventoryModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Data.Infrastructure;
+using VirtoCommerce.Platform.Core.GenericCrud;
+using VirtoCommerce.Platform.Data.GenericCrud;
+using VirtoCommerce.InventoryModule.Core.Model;
 
 namespace VirtoCommerce.InventoryModule.Data.Services
 {
-    public class InventorySearchService : IInventorySearchService
+    public class InventorySearchService : SearchService<InventorySearchCriteria, InventoryInfoSearchResult, InventoryInfo, InventoryEntity>, IInventorySearchService
     {
-        private readonly Func<IInventoryRepository> _repositoryFactory;
-        private readonly IPlatformMemoryCache _platformMemoryCache;
-        private readonly IInventoryService _inventoryService;
-
         public InventorySearchService(Func<IInventoryRepository> repositoryFactory, IPlatformMemoryCache platformMemoryCache, IInventoryService inventoryService)
+            : base(repositoryFactory, platformMemoryCache, (ICrudService<InventoryInfo>)inventoryService)
         {
-            _repositoryFactory = repositoryFactory;
-            _platformMemoryCache = platformMemoryCache;
-            _inventoryService = inventoryService;
         }
 
-        public virtual async Task<InventoryInfoSearchResult> SearchInventoriesAsync(InventorySearchCriteria criteria)
+        public virtual Task<InventoryInfoSearchResult> SearchInventoriesAsync(InventorySearchCriteria criteria)
         {
-            var cacheKey = CacheKey.With(GetType(), nameof(SearchInventoriesAsync), criteria.GetCacheKey());
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
-            {
-                cacheEntry.AddExpirationToken(InventorySearchCacheRegion.CreateChangeToken());
-                var result = AbstractTypeFactory<InventoryInfoSearchResult>.TryCreateInstance();
-                using (var repository = _repositoryFactory())
-                {
-                    repository.DisableChangesTracking();
-
-                    var sortInfos = BuildSortExpression(criteria);
-                    var query = BuildQuery(repository, criteria);
-
-                    result.TotalCount = await query.CountAsync();
-                    if (criteria.Take > 0)
-                    {
-                        var ids = await query.AsNoTracking().OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
-                                            .Select(x => x.Id)
-                                            .Skip(criteria.Skip).Take(criteria.Take)
-                                            .ToArrayAsync();
-
-                        result.Results = (await _inventoryService.GetByIdsAsync(ids)).OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
-                    }
-                }
-                return result;
-            });
+            return SearchAsync(criteria);
         }
 
-        protected virtual IQueryable<InventoryEntity> BuildQuery(IInventoryRepository repository, InventorySearchCriteria criteria)
+        protected override IQueryable<InventoryEntity> BuildQuery(IRepository repository, InventorySearchCriteria criteria)
         {
-            var query = repository.Inventories;
+            var query = ((IInventoryRepository)repository).Inventories;
             if (!criteria.ProductIds.IsNullOrEmpty())
             {
                 query = query.Where(x => criteria.ProductIds.Contains(x.Sku));
@@ -72,7 +41,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             return query;
         }
 
-        protected virtual IList<SortInfo> BuildSortExpression(InventorySearchCriteria criteria)
+        protected override IList<SortInfo> BuildSortExpression(InventorySearchCriteria criteria)
         {
             var sortInfos = criteria.SortInfos;
             if (sortInfos.IsNullOrEmpty())
