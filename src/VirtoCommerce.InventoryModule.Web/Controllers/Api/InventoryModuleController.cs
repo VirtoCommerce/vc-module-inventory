@@ -19,7 +19,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
     public class InventoryModuleController : Controller
     {
         private readonly IInventoryService _inventoryService;
-        private readonly ISearchService<InventorySearchCriteria, InventoryInfoSearchResult, InventoryInfo> _inventorySearchService;
+        private readonly IInventorySearchService _inventorySearchService;
         private readonly IProductInventorySearchService _productInventorySearchService;
         private readonly ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter> _fulfillmentCenterSearchService;
         private readonly ICrudService<FulfillmentCenter> _fulfillmentCenterService;
@@ -31,7 +31,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
             IFulfillmentCenterService fulfillmentCenterService)
         {
             _inventoryService = inventoryService;
-            _inventorySearchService = (ISearchService<InventorySearchCriteria, InventoryInfoSearchResult, InventoryInfo>)inventorySearchService;
+            _inventorySearchService = inventorySearchService;
             _productInventorySearchService = fulfillmentCenterInventorySearchService;
             _fulfillmentCenterSearchService = (ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>)fulfillmentCenterSearchService;
             _fulfillmentCenterService = (ICrudService<FulfillmentCenter>)fulfillmentCenterService;
@@ -44,7 +44,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Route("inventories/search")]
         public async Task<ActionResult<InventoryInfoSearchResult>> SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
         {
-            var result = await _inventorySearchService.SearchAsync(searchCriteria);
+            var result = await _inventorySearchService.SearchInventoriesAsync(searchCriteria);
             return Ok(result);
         }
 
@@ -178,7 +178,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
             criteria.ProductIds = ids;
             criteria.Take = int.MaxValue;
 
-            var result = await _inventorySearchService.SearchAsync(criteria);
+            var result = await _inventorySearchService.SearchInventoriesAsync(criteria);
             return Ok(result.Results);
         }
 

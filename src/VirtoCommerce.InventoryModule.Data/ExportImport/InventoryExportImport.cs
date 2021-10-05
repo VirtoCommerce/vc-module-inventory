@@ -18,8 +18,8 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
 {
     public sealed class InventoryExportImport
     {
-        private readonly ICrudService<InventoryInfo> _inventoryService;
-        private readonly ISearchService<InventorySearchCriteria, InventoryInfoSearchResult, InventoryInfo> _inventorySearchService;
+        private readonly IInventoryService _inventoryService;
+        private readonly IInventorySearchService _inventorySearchService;
         private readonly ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter> _fulfillmentCenterSearchService;
         private readonly ICrudService<FulfillmentCenter> _fulfillmentCenterService;
         private readonly ISettingsManager _settingsManager;
@@ -44,10 +44,10 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
             IInventorySearchService inventorySearchService, IFulfillmentCenterService fulfillmentCenterService,
             ISettingsManager settingsManager, JsonSerializer jsonSerializer)
         {
-            _inventoryService = (ICrudService<InventoryInfo>)inventoryService;
+            _inventoryService = inventoryService;
             _fulfillmentCenterSearchService = (ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>)fulfillmentCenterSearchService;
             _fulfillmentCenterService = (ICrudService<FulfillmentCenter>)fulfillmentCenterService;
-            _inventorySearchService = (ISearchService<InventorySearchCriteria, InventoryInfoSearchResult, InventoryInfo>)inventorySearchService;
+            _inventorySearchService = inventorySearchService;
             _settingsManager = settingsManager;
             _jsonSerializer = jsonSerializer;
         }
@@ -87,7 +87,7 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
                     var searchCriteria = AbstractTypeFactory<InventorySearchCriteria>.TryCreateInstance();
                     searchCriteria.Take = take;
                     searchCriteria.Skip = skip;
-                    var searchResult = await _inventorySearchService.SearchAsync(searchCriteria);
+                    var searchResult = await _inventorySearchService.SearchInventoriesAsync(searchCriteria);
                     return (GenericSearchResult<InventoryInfo>)searchResult;
                 }, (processedCount, totalCount) =>
                 {
