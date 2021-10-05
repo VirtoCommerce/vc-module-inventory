@@ -1,13 +1,11 @@
 using System;
-
 using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.Domain;
 
 namespace VirtoCommerce.InventoryModule.Data.Model
 {
-    public class InventoryEntity : AuditableEntity, IDataEntity<InventoryEntity, InventoryInfo>, IHasOuterId
+    public class InventoryEntity : AuditableEntity, IHasOuterId
     {
         [Required]
         public decimal InStockQuantity { get; set; }
