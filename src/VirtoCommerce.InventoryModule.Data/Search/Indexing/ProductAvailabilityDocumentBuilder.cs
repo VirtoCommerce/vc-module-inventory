@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
-using VirtoCommerce.Platform.Core.GenericCrud;
-using VirtoCommerce.InventoryModule.Core.Model;
 
 namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
 {
@@ -15,18 +13,18 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
     /// </summary>
     public class ProductAvailabilityDocumentBuilder : IIndexDocumentBuilder
     {
-        private readonly ICrudService<InventoryInfo> _inventoryService;
+        private readonly IInventoryService _inventoryService;
 
         public ProductAvailabilityDocumentBuilder(IInventoryService inventoryService)
         {
-            _inventoryService = (ICrudService<InventoryInfo>)inventoryService;
+            _inventoryService = inventoryService;
         }
 
         public async Task<IList<IndexDocument>> GetDocumentsAsync(IList<string> documentIds)
         {
             var now = DateTime.UtcNow;
             var result = new List<IndexDocument>();
-            var inventoriesGroupByProduct = await _inventoryService.GetByIdsAsync(documentIds.ToArray());
+            var inventoriesGroupByProduct = await _inventoryService.GetProductsInventoryInfosAsync(documentIds.ToArray());
             foreach (var productInventories in inventoriesGroupByProduct.GroupBy(x => x.ProductId))
             {
                 var document = new IndexDocument(productInventories.Key);
