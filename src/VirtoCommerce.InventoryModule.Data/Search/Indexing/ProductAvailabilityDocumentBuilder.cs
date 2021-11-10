@@ -33,6 +33,8 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
                     if (inventory.IsAvailableOn(now))
                     {
                         document.Add(new IndexDocumentField("available_in", inventory.FulfillmentCenterId.ToLowerInvariant()) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
+                        document.Add(new IndexDocumentField("fulfillmentCenter_name", inventory.FulfillmentCenterName.ToLowerInvariant()) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
+                        document.Add(new IndexDocumentField("inStock_quantity", inventory.InStockQuantity) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
                     }
                     result.Add(document);
                 }
