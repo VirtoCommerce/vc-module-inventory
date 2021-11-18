@@ -20,7 +20,7 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
         {
             modelBuilder.Entity<InventoryEntity>().ToTable("Inventory").HasKey(x => x.Id);
             modelBuilder.Entity<InventoryEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
-            modelBuilder.Entity<InventoryEntity>().HasIndex(inv => new { inv.Sku, inv.ModifiedDate /* (! Important !) DESC */ }).IsUnique(false).HasName("IX_Inventory_Sku_ModifiedDate");
+            modelBuilder.Entity<InventoryEntity>().HasIndex(inv => new { inv.Sku, inv.ModifiedDate /* (! Important !) DESC */ }).IsUnique(false).HasDatabaseName("IX_Inventory_Sku_ModifiedDate");
             modelBuilder.Entity<InventoryEntity>().HasOne(x => x.FulfillmentCenter).WithMany()
                 .HasForeignKey(x => x.FulfillmentCenterId).IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
