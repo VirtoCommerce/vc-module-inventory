@@ -131,6 +131,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             target.Description = Description;
             target.Name = Name;
             target.GeoLocation = GeoLocation;
+            target.OuterId = OuterId;
         }
     }
 }
