@@ -47,7 +47,8 @@ namespace VirtoCommerce.InventoryModule.Web
             serviceCollection.AddTransient<IInventoryService, InventoryServiceImpl>();
             serviceCollection.AddTransient<IInventorySearchService, InventorySearchService>();
             serviceCollection.AddTransient<ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>, FulfillmentCenterSearchService>();
-            serviceCollection.AddTransient(x => (IFulfillmentCenterSearchService)x.GetRequiredService<ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>>());
+            serviceCollection.AddTransient(x => (IFulfillmentCenterSearchService)x.
+                        GetRequiredService<ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>>());
             serviceCollection.AddTransient<ICrudService<FulfillmentCenter>, FulfillmentCenterService>();
             serviceCollection.AddTransient(x => (IFulfillmentCenterService)x.GetRequiredService<ICrudService<FulfillmentCenter>>());
             serviceCollection.AddTransient<IProductInventorySearchService, ProductInventorySearchService>();
