@@ -40,14 +40,17 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
             }
         }
 
-        public InventoryExportImport(IInventoryService inventoryService, IFulfillmentCenterSearchService fulfillmentCenterSearchService,
-            IInventorySearchService inventorySearchService, IFulfillmentCenterService fulfillmentCenterService,
-            ISettingsManager settingsManager, JsonSerializer jsonSerializer)
+        public InventoryExportImport(IInventoryService inventoryService,
+            IInventorySearchService inventorySearchService,
+            ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter> fulfillmentCenterSearchService,            
+            ICrudService<FulfillmentCenter> fulfillmentCenterService,
+            ISettingsManager settingsManager,
+            JsonSerializer jsonSerializer)
         {
             _inventoryService = inventoryService;
-            _fulfillmentCenterSearchService = (ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>)fulfillmentCenterSearchService;
-            _fulfillmentCenterService = (ICrudService<FulfillmentCenter>)fulfillmentCenterService;
             _inventorySearchService = inventorySearchService;
+            _fulfillmentCenterSearchService = fulfillmentCenterSearchService;
+            _fulfillmentCenterService = fulfillmentCenterService;            
             _settingsManager = settingsManager;
             _jsonSerializer = jsonSerializer;
         }
