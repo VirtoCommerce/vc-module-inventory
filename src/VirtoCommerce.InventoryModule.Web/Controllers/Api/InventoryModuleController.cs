@@ -27,14 +27,14 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         public InventoryModuleController(IInventoryService inventoryService,
             IInventorySearchService inventorySearchService,
             IProductInventorySearchService fulfillmentCenterInventorySearchService,
-            IFulfillmentCenterSearchService fulfillmentCenterSearchService,
-            IFulfillmentCenterService fulfillmentCenterService)
+            ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter> fulfillmentCenterSearchService,
+            ICrudService<FulfillmentCenter> fulfillmentCenterService)
         {
             _inventoryService = inventoryService;
             _inventorySearchService = inventorySearchService;
             _productInventorySearchService = fulfillmentCenterInventorySearchService;
-            _fulfillmentCenterSearchService = (ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>)fulfillmentCenterSearchService;
-            _fulfillmentCenterService = (ICrudService<FulfillmentCenter>)fulfillmentCenterService;
+            _fulfillmentCenterSearchService = fulfillmentCenterSearchService;
+            _fulfillmentCenterService = fulfillmentCenterService;
         }
 
         /// <summary>
