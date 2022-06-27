@@ -87,6 +87,17 @@ angular.module('virtoCommerce.inventoryModule')
                         name: "platform.commands.reset", icon: 'fa fa-undo',
                         executeMethod: function () {
                             angular.copy(blade.origEntity, blade.currentEntity);
+                            $scope.$broadcast('resetContent',
+                                {
+                                    body: blade.currentEntity.description,
+                                    id: "descriptionEditor"
+                                });
+                            $scope.$broadcast('resetContent',
+                                {
+                                    body: blade.currentEntity.shortDescription,
+                                    id: "shortDescriptionEditor"
+                                });
+
                         },
                         canExecuteMethod: isDirty,
                         permission: blade.updatePermission
