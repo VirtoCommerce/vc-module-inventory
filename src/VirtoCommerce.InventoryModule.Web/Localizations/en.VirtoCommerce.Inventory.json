@@ -27,6 +27,7 @@
         "labels": {
           "name": "Name",
           "description": "Description",
+          "short-description": "Short description",
           "max-releases": "Maximum number of releases in the selected batch",
           "pick-delay": "Package delay"
         },
@@ -36,7 +37,8 @@
         },
         "description": {
           "name": "Fulfillment center name",
-          "description": "Fulfillment center description"
+          "description": "Fulfillment center description",
+          "short-description": "Fulfillment center short description"
         }
       }
     },

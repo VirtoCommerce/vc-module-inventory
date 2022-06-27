@@ -1,5 +1,6 @@
 angular.module('virtoCommerce.inventoryModule')
-    .controller('virtoCommerce.inventoryModule.fulfillmentCenterDetailController', ['$scope', 'platformWebApp.dialogService', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.fulfillments', 'platformWebApp.common.countries', 'platformWebApp.metaFormsService', function ($scope, dialogService, bladeNavigationService, fulfillments, countries, metaFormsService) {
+    .controller('virtoCommerce.inventoryModule.fulfillmentCenterDetailController', ['$scope', 'platformWebApp.dialogService', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.fulfillments', 'platformWebApp.common.countries', 'platformWebApp.metaFormsService', 'FileUploader',
+        function ($scope, dialogService, bladeNavigationService, fulfillments, countries, metaFormsService, FileUploader) {
 
         var blade = $scope.blade;
         blade.updatePermission = 'inventory:fulfillment:edit';
@@ -28,7 +29,27 @@ angular.module('virtoCommerce.inventoryModule')
 
         $scope.setForm = function (form) {
             $scope.formScope = form;
-        };
+            };
+
+        var contentType = 'image';
+        $scope.fileUploader = new FileUploader({
+            url: 'api/assets?folderUrl=cms-content/' + contentType + '/assets',
+            headers: { Accept: 'application/json' },
+            autoUpload: true,
+            removeAfterUpload: true,
+            onBeforeUploadItem: function (fileItem) {
+                blade.isLoading = true;
+            },
+            onSuccessItem: function (fileItem, response, status, headers) {
+                $scope.$broadcast('filesUploaded', { items: response });
+            },
+            onErrorItem: function (fileItem, response, status, headers) {
+                bladeNavigationService.setError(fileItem._file.name + ' failed: ' + (response.message ? response.message : status), blade);
+            },
+            onCompleteAll: function () {
+                blade.isLoading = false;
+            }
+        });
 
         function isDirty() {
             return !angular.equals(blade.currentEntity, blade.origEntity) && blade.hasUpdatePermission();
