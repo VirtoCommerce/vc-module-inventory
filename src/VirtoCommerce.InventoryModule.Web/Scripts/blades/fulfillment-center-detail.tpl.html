@@ -1,4 +1,4 @@
-<div class="blade-content">
+<div class="blade-content __xlarge-wide">
     <div class="blade-inner">
         <div class="inner-block clearfix">
             <form class="form" name="detailForm">
@@ -11,11 +11,30 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">{{ 'inventory.blades.fulfillment-center-detail.labels.description' | translate }}</label>
-                    <div class="form-input">
-                        <textarea class="form-control" cols="30" rows="3" placeholder="{{ 'inventory.blades.fulfillment-center-detail.placeholders.description' | translate }}" ng-model="blade.currentEntity.description"></textarea>
+                    <div class="form-input" style="margin: 0">
+                        <input id="fileUploader" type="file" multiple style="display: none;" uploader="fileUploader" nv-file-select />
+                        <textarea class="form-control"
+                                  vc-uk-htmleditor placeholder="{{ 'inventory.blades.fulfillment-center-detail.placeholders.description' | translate }}"
+                                  ng-model="blade.currentEntity.description"
+                                  file-uploader="fileUploader"
+                                  id="descriptionEditor"></textarea>
                         <span class="table-descr">{{ 'inventory.blades.fulfillment-center-detail.description.description' | translate }}</span>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="form-label">{{ 'inventory.blades.fulfillment-center-detail.labels.short-description' | translate }}</label>
+                    <div class="form-input" style="margin: 0">
+                        <input id="fileUploader" type="file" multiple style="display: none;" uploader="fileUploader" nv-file-select />
+                        <textarea class="form-control"
+                                  vc-uk-htmleditor placeholder="{{ 'inventory.blades.fulfillment-center-detail.placeholders.description' | translate }}"
+                                  ng-model="blade.currentEntity.shortDescription"
+                                  file-uploader="fileUploader"
+                                  id="shortDescriptionEditor"></textarea>
+                        <span class="table-descr">{{ 'inventory.blades.fulfillment-center-detail.description.short-description' | translate }}</span>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="form-label">{{ 'inventory.properties.geoPoint.title' | translate }}</label>
                     <div class="form-input">
