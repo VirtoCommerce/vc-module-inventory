@@ -12,6 +12,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
         public string Name { get; set; }
 
         public string Description { get; set; }
+        public string ShortDescription { get; set; }
 
         [StringLength(1024)]
         public string Line1 { get; set; }
@@ -78,6 +79,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             center.Address.Email = Email;
 
             center.Description = Description;
+            center.ShortDescription = ShortDescription;
             center.Name = Name;
             center.GeoLocation = GeoLocation;
 
@@ -110,6 +112,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             }
 
             Description = center.Description;
+            ShortDescription = center.ShortDescription;
             Name = center.Name;
             GeoLocation = center.GeoLocation;
 
@@ -129,6 +132,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             target.RegionId = RegionId;
             target.Email = Email;
             target.Description = Description;
+            target.ShortDescription = ShortDescription;
             target.Name = Name;
             target.GeoLocation = GeoLocation;
             target.OuterId = OuterId;
