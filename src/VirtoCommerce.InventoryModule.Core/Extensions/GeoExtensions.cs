@@ -24,7 +24,7 @@ namespace VirtoCommerce.InventoryModule.Data.Extensions
         }
 
         /// <summary>
-        /// Calculate distance between two geopoints in kilometers
+        /// Calculate distance between two geopoints in meters
         /// </summary>
         public static int? CalculateDistance(this GeoPoint point1, GeoPoint point2)
         {
