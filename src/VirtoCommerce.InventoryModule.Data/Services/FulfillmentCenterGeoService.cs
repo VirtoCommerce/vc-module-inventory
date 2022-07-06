@@ -89,20 +89,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         {
             var nearestByFFCId = new Dictionary<string, List<string>>();
 
-            var withLocations = new List<FulfillmentCenterGeoPoint>();
-            var emptyLocations = new List<FulfillmentCenterGeoPoint>();
-
-            foreach (var ffc in ffcGeoPoints)
-            {
-                if (!string.IsNullOrEmpty(ffc.GeoLocation))
-                {
-                    withLocations.Add(ffc);
-                }
-                else
-                {
-                    emptyLocations.Add(ffc);
-                }
-            }
+            var withLocations = ffcGeoPoints.Where(x => !string.IsNullOrEmpty(x.GeoLocation)).ToList();
 
             foreach (var ffc in withLocations)
             {
@@ -130,18 +117,16 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             }
 
             // fill the rest ffcs
-            if (emptyLocations.Count > 0)
+            var emptyLocations = ffcGeoPoints.Where(x => string.IsNullOrEmpty(x.GeoLocation)).Select(x => x.FulfillmentCenterId);
+            foreach (var ffcIds in emptyLocations)
             {
-                foreach (var ffc in emptyLocations)
-                {
-                    var list = ffcGeoPoints
-                        .Where(x => x.FulfillmentCenterId != ffc.FulfillmentCenterId)
-                        .Take(_limit)
-                        .Select(x => x.FulfillmentCenterId)
-                        .ToList();
+                var list = ffcGeoPoints
+                    .Where(x => x.FulfillmentCenterId != ffcIds)
+                    .Take(_limit)
+                    .Select(x => x.FulfillmentCenterId)
+                    .ToList();
 
-                    nearestByFFCId.Add(ffc.FulfillmentCenterId, list);
-                }
+                nearestByFFCId.Add(ffcIds, list);
             }
 
             return Task.FromResult(nearestByFFCId);
