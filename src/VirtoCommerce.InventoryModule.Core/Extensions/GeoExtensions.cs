@@ -8,6 +8,7 @@ namespace VirtoCommerce.InventoryModule.Data.Extensions
     public static class GeoExtensions
     {
         private const double EarthRadius = 6372795;
+        private const double PiRad = Math.PI / 180;
 
         public static int? CalculateDistance(this string source, string destination)
         {
@@ -22,6 +23,9 @@ namespace VirtoCommerce.InventoryModule.Data.Extensions
             return point1.CalculateDistance(point2);
         }
 
+        /// <summary>
+        /// Calculate distance between two geopoints in kilometers
+        /// </summary>
         public static int? CalculateDistance(this GeoPoint point1, GeoPoint point2)
         {
             ConvertToRadians(point1);
@@ -49,8 +53,8 @@ namespace VirtoCommerce.InventoryModule.Data.Extensions
 
         private static void ConvertToRadians(GeoPoint point)
         {
-            point.Latitude = point.Latitude * Math.PI / 180;
-            point.Longitude = point.Longitude * Math.PI / 180;
+            point.Latitude *= PiRad;
+            point.Longitude *= PiRad;
         }
 
         private static GeoPoint GetGeoPoint(string geoLocation)
