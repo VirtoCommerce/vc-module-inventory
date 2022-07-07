@@ -47,7 +47,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 Take = take,
             });
 
-            return searchResult.Results;
+            return searchResult.Results.OrderBy(x => nearestCenters.IndexOf(x.Id)).ToList();
         }
 
         private Task<Dictionary<string, List<string>>> GetFirstLevelCacheAsync()
