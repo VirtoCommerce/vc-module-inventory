@@ -27,7 +27,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             _platformMemoryCache = platformMemoryCache;
         }
 
-        public async Task<IList<FulfillmentCenter>> GetNearest(string ffId, int take)
+        public async Task<IList<FulfillmentCenter>> GetNearestAsync(string ffId, int take)
         {
             if (take > _limit)
             {

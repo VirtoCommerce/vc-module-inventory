@@ -38,7 +38,7 @@ namespace VirtoCommerce.InventoryModule.Data.Handlers
         {
             FulfillmentCenterGeoCacheRegion.ExpireRegion();
 
-            _ = await _fulfillmentCenterGeoService.GetNearest(string.Empty, default(int));
+            _ = await _fulfillmentCenterGeoService.GetNearestAsync(string.Empty, default(int));
         }
     }
 }

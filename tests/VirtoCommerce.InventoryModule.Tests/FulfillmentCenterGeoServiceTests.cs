@@ -30,7 +30,7 @@ namespace VirtoCommerce.InventoryModule.Tests
             var ffc = fulfillmentCenters.FirstOrDefault();
 
             // Act
-            var result = await target.GetNearest(ffc.Id, 20);
+            var result = await target.GetNearestAsync(ffc.Id, 20);
 
             // Assert
             Assert.Equal(knownLimit, result.Count);
@@ -45,7 +45,7 @@ namespace VirtoCommerce.InventoryModule.Tests
             var ffc = fulfillmentCenters.FirstOrDefault(x => x.GeoLocation == null);
 
             // Act
-            var result = await target.GetNearest(ffc.Id, 5);
+            var result = await target.GetNearestAsync(ffc.Id, 5);
 
             // Assert
             Assert.Equal(5, result.Count);
@@ -60,7 +60,7 @@ namespace VirtoCommerce.InventoryModule.Tests
             var ffc = fulfillmentCenters.FirstOrDefault(x => x.GeoLocation != null);
 
             // Act
-            var result = await target.GetNearest(ffc.Id, 5);
+            var result = await target.GetNearestAsync(ffc.Id, 5);
 
             // Assert
             Assert.Equal(5, result.Count);
