@@ -51,11 +51,13 @@ namespace VirtoCommerce.InventoryModule.Web
             serviceCollection.AddTransient<ICrudService<FulfillmentCenter>, FulfillmentCenterService>();
             serviceCollection.AddTransient(x => (IFulfillmentCenterService)x.GetRequiredService<ICrudService<FulfillmentCenter>>());
             serviceCollection.AddTransient<IProductInventorySearchService, ProductInventorySearchService>();
+            serviceCollection.AddTransient<IFulfillmentCenterGeoService, FulfillmentCenterGeoService>();
             serviceCollection.AddTransient<InventoryExportImport>();
             serviceCollection.AddTransient<ProductAvailabilityChangesProvider>();
             serviceCollection.AddTransient<ProductAvailabilityDocumentBuilder>();
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
             serviceCollection.AddTransient<IndexInventoryChangedEventHandler>();
+            serviceCollection.AddTransient<FulfillmentCenterChangedEventHandler>();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)
@@ -104,6 +106,7 @@ namespace VirtoCommerce.InventoryModule.Web
             var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
             inProcessBus.RegisterHandler<InventoryChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
             inProcessBus.RegisterHandler<InventoryChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<IndexInventoryChangedEventHandler>().Handle(message));
+            inProcessBus.RegisterHandler<FulfillmentCenterChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<FulfillmentCenterChangedEventHandler>().Handle(message));
         }
 
         public void Uninstall()
