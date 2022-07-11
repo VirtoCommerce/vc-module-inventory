@@ -52,7 +52,6 @@ namespace VirtoCommerce.InventoryModule.Web
             serviceCollection.AddTransient(x => (IFulfillmentCenterService)x.GetRequiredService<ICrudService<FulfillmentCenter>>());
             serviceCollection.AddTransient<IProductInventorySearchService, ProductInventorySearchService>();
             serviceCollection.AddTransient<IFulfillmentCenterGeoService, FulfillmentCenterGeoService>();
-            serviceCollection.AddTransient<IFulfillmentCenterGeoHashService, FulfillmentCenterGeoHashService>();
             serviceCollection.AddTransient<InventoryExportImport>();
             serviceCollection.AddTransient<ProductAvailabilityChangesProvider>();
             serviceCollection.AddTransient<ProductAvailabilityDocumentBuilder>();
