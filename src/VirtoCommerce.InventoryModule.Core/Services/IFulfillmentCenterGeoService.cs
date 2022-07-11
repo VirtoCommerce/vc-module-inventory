@@ -6,6 +6,6 @@ namespace VirtoCommerce.InventoryModule.Core.Services
 {
     public interface IFulfillmentCenterGeoService
     {
-        Task<IList<FulfillmentCenter>> GetNearest(string ffId, int take);
+        Task<IList<FulfillmentCenter>> GetNearestAsync(string ffId, int take);
     }
 }
