@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.InventoryModule.Core.Events;
 using VirtoCommerce.InventoryModule.Core.Model;
@@ -21,9 +22,10 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         {
         }
 
-        public virtual Task<IEnumerable<FulfillmentCenter>> GetByIdsAsync(IEnumerable<string> ids)
+        public virtual async Task<IEnumerable<FulfillmentCenter>> GetByIdsAsync(IEnumerable<string> ids)
         {
-            return base.GetByIdsAsync(ids);
+            var result = await base.GetAsync(ids.ToList());
+            return result;
         }
 
         public virtual Task DeleteAsync(IEnumerable<string> ids)

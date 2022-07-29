@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -94,8 +93,8 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Route("inventory/fulfillmentcenters/{id}")]
         public async Task<ActionResult<FulfillmentCenter>> GetFulfillmentCenter([FromRoute] string id)
         {
-            var retVal = await _fulfillmentCenterService.GetByIdsAsync(new[] { id });
-            return Ok(retVal.FirstOrDefault());
+            var retVal = await _fulfillmentCenterService.GetByIdAsync(id);
+            return Ok(retVal);
         }
 
         /// <summary>
@@ -104,9 +103,9 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="ids">fulfillment center ids</param>
         [HttpPost]
         [Route("inventory/fulfillmentcenters/plenty")]
-        public async Task<ActionResult<IEnumerable<FulfillmentCenter>>> GetFulfillmentCenters([FromBody] string[] ids)
+        public async Task<ActionResult<IEnumerable<FulfillmentCenter>>> GetFulfillmentCenters([FromBody] List<string> ids)
         {
-            var retVal = await _fulfillmentCenterService.GetByIdsAsync(ids);
+            var retVal = await _fulfillmentCenterService.GetAsync(ids);
             return Ok(retVal);
         }
 
