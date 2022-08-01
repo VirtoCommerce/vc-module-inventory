@@ -31,45 +31,74 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
         public virtual async Task<IEnumerable<InventoryInfo>> GetByIdsAsync(string[] ids, string responseGroup = null)
         {
-            var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", ids), responseGroup);
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
-            {
-                using (var repository = _repositoryFactory())
-                {
-                    //It is so important to generate change tokens for all ids even for not existing objects to prevent an issue
-                    //with caching of empty results for non - existing objects that have the infinitive lifetime in the cache
-                    //and future unavailability to create objects with these ids.
-                    cacheEntry.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(ids));
+            var cacheKeyPrefix = CacheKey.With(GetType(), nameof(GetByIdsAsync), responseGroup);
 
+            var models = await _platformMemoryCache.GetOrLoadByIdsAsync(cacheKeyPrefix, ids,
+                async missingIds =>
+                {
+                    using var repository = _repositoryFactory();
                     repository.DisableChangesTracking();
-                    var entries = await repository.GetByIdsAsync(ids, responseGroup);
-                    if (entries.Any())
+                    var entities = await repository.GetByIdsAsync(missingIds.ToArray(), responseGroup);
+
+                    return entities
+                        .Select(x => x.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance()));
+                },
+                (cacheOptions, id, model) =>
+                {
+                    var tokenIds = new HashSet<string> { id };
+
+                    if (model != null)
                     {
-                        //Also need to add cancellation tokes for inventory productIds to be able evict from cache by productId.
-                        cacheEntry.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(entries.Select(x => x.Sku).ToArray()));
+                        tokenIds.Add(model.ProductId);
                     }
 
-                    return entries.Select(e => e.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance())).ToArray();
-                }
-            });
+                    cacheOptions.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(tokenIds.ToArray()));
+                });
+
+            return models
+                .OrderBy(x => Array.IndexOf(ids, x.Id))
+                .Select(x => x.CloneTyped())
+                .ToList();
         }
 
-        public virtual Task<IEnumerable<InventoryInfo>> GetProductsInventoryInfosAsync(IEnumerable<string> productIds, string responseGroup = null)
+        public virtual async Task<IEnumerable<InventoryInfo>> GetProductsInventoryInfosAsync(IEnumerable<string> productIds, string responseGroup = null)
         {
-            var arrayProductsIds = productIds.ToArray();
-            var cacheKey = CacheKey.With(GetType(), nameof(GetProductsInventoryInfosAsync), string.Join("-", arrayProductsIds), responseGroup);
-            return _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
-            {
-                using (var repository = _repositoryFactory())
-                {
-                    repository.DisableChangesTracking();
-                    var entities = await repository.GetProductsInventoriesAsync(arrayProductsIds, responseGroup);
-                    var result = entities.Select(x => x.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance()));
-                    cacheEntry.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(result.ToList()));
+            var productIdsList = productIds.ToList();
+            var cacheKeyPrefix = CacheKey.With(GetType(), nameof(GetProductsInventoryInfosAsync), responseGroup);
 
-                    return result;
-                }
-            });
+            var models = await _platformMemoryCache.GetOrLoadByIdsAsync(cacheKeyPrefix, productIdsList,
+                async missingIds =>
+                {
+                    using var repository = _repositoryFactory();
+                    repository.DisableChangesTracking();
+                    var entities = await repository.GetProductsInventoriesAsync(missingIds, responseGroup);
+
+                    return entities
+                        .Select(x => x.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance()))
+                        .GroupBy(x => x.ProductId)
+                        .Select(g => new CacheEntity(g.Key, g));
+                },
+                (cacheOptions, id, model) =>
+                {
+                    var tokenIds = new HashSet<string> { id };
+
+                    if (model != null)
+                    {
+                        foreach (var inventory in model.Inventories)
+                        {
+                            tokenIds.Add(inventory.Id);
+                            tokenIds.Add(inventory.ProductId);
+                        }
+                    }
+
+                    cacheOptions.AddExpirationToken(InventoryCacheRegion.CreateChangeToken(tokenIds.ToArray()));
+                });
+
+            return models
+                .OrderBy(x => productIdsList.IndexOf(x.Id))
+                .SelectMany(x => x.Inventories)
+                .Select(x => x.CloneTyped())
+                .ToList();
         }
 
         public virtual async Task SaveChangesAsync(IEnumerable<InventoryInfo> inventoryInfos)
@@ -136,6 +165,17 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             {
                 InventoryCacheRegion.ExpireInventory(inventory);
             }
+        }
+
+        private class CacheEntity : Entity
+        {
+            public CacheEntity(string productId, IEnumerable<InventoryInfo> inventories)
+            {
+                Id = productId;
+                Inventories = inventories;
+            }
+
+            public IEnumerable<InventoryInfo> Inventories { get; }
         }
     }
 }
