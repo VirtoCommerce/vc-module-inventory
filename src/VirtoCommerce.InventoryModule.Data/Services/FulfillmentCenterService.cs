@@ -22,15 +22,18 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         {
         }
 
+        // TODO: Remove after 1 year (2023-08-02)
+        [Obsolete("Use GetAsync()")]
         public virtual async Task<IEnumerable<FulfillmentCenter>> GetByIdsAsync(IEnumerable<string> ids)
         {
-            var result = await base.GetAsync(ids.ToList());
+            var result = await GetAsync(ids.ToList(), responseGroup: null);
             return result;
         }
 
+        // TODO: Remove after 1 year (2023-08-02)
         public virtual Task DeleteAsync(IEnumerable<string> ids)
         {
-            return base.DeleteAsync(ids);
+            return DeleteAsync(ids, softDelete: false);
         }
 
         protected override Task<IEnumerable<FulfillmentCenterEntity>> LoadEntities(IRepository repository, IEnumerable<string> ids, string responseGroup)

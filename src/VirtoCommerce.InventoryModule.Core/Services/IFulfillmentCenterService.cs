@@ -2,20 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VirtoCommerce.InventoryModule.Core.Model;
+using VirtoCommerce.Platform.Core.GenericCrud;
 
 namespace VirtoCommerce.InventoryModule.Core.Services
 {
-    /// <summary>
-    /// This interface should implement <![CDATA[<see cref="ICrudService<FulfillmentCenter>"/>]]> without methods.
-    /// Methods left for compatibility and should be removed after upgrade to inheritance
-    /// </summary>
-    public interface IFulfillmentCenterService
+    public interface IFulfillmentCenterService : ICrudService<FulfillmentCenter>
     {
-        [Obsolete(@"Need to remove after inherit IFulfillmentCenterService from ICrudService<FulfillmentCenter>")]
-        Task SaveChangesAsync(IEnumerable<FulfillmentCenter> fulfillmentCenters);
-        [Obsolete(@"Need to remove after inherit IFulfillmentCenterService from ICrudService<FulfillmentCenter>")]
+        // TODO: Remove after 1 year (2023-08-02)
+        [Obsolete("Use GetAsync()")]
         Task<IEnumerable<FulfillmentCenter>> GetByIdsAsync(IEnumerable<string> ids);
-        [Obsolete(@"Need to remove after inherit IFulfillmentCenterService from ICrudService<FulfillmentCenter>")]
+
+        // TODO: Remove after 1 year (2023-08-02)
         Task DeleteAsync(IEnumerable<string> ids);
     }
 }

@@ -9,7 +9,6 @@ using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Core.Model.Search;
 using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.GenericCrud;
 
 namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
 {
@@ -20,14 +19,14 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         private readonly IInventoryService _inventoryService;
         private readonly IInventorySearchService _inventorySearchService;
         private readonly IProductInventorySearchService _productInventorySearchService;
-        private readonly ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter> _fulfillmentCenterSearchService;
-        private readonly ICrudService<FulfillmentCenter> _fulfillmentCenterService;
+        private readonly IFulfillmentCenterSearchService _fulfillmentCenterSearchService;
+        private readonly IFulfillmentCenterService _fulfillmentCenterService;
 
         public InventoryModuleController(IInventoryService inventoryService,
             IInventorySearchService inventorySearchService,
             IProductInventorySearchService fulfillmentCenterInventorySearchService,
-            ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter> fulfillmentCenterSearchService,
-            ICrudService<FulfillmentCenter> fulfillmentCenterService)
+            IFulfillmentCenterSearchService fulfillmentCenterSearchService,
+            IFulfillmentCenterService fulfillmentCenterService)
         {
             _inventoryService = inventoryService;
             _inventorySearchService = inventorySearchService;

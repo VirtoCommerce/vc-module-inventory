@@ -10,7 +10,6 @@ using VirtoCommerce.InventoryModule.Core.Model.Search;
 using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.ExportImport;
 
@@ -20,8 +19,8 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
     {
         private readonly IInventoryService _inventoryService;
         private readonly IInventorySearchService _inventorySearchService;
-        private readonly ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter> _fulfillmentCenterSearchService;
-        private readonly ICrudService<FulfillmentCenter> _fulfillmentCenterService;
+        private readonly IFulfillmentCenterSearchService _fulfillmentCenterSearchService;
+        private readonly IFulfillmentCenterService _fulfillmentCenterService;
         private readonly ISettingsManager _settingsManager;
         private readonly JsonSerializer _jsonSerializer;
 
@@ -42,15 +41,15 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
 
         public InventoryExportImport(IInventoryService inventoryService,
             IInventorySearchService inventorySearchService,
-            ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter> fulfillmentCenterSearchService,            
-            ICrudService<FulfillmentCenter> fulfillmentCenterService,
+            IFulfillmentCenterSearchService fulfillmentCenterSearchService,
+            IFulfillmentCenterService fulfillmentCenterService,
             ISettingsManager settingsManager,
             JsonSerializer jsonSerializer)
         {
             _inventoryService = inventoryService;
             _inventorySearchService = inventorySearchService;
             _fulfillmentCenterSearchService = fulfillmentCenterSearchService;
-            _fulfillmentCenterService = fulfillmentCenterService;            
+            _fulfillmentCenterService = fulfillmentCenterService;
             _settingsManager = settingsManager;
             _jsonSerializer = jsonSerializer;
         }
@@ -121,7 +120,7 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
                             await reader.DeserializeJsonArrayWithPagingAsync<FulfillmentCenter>(_jsonSerializer, BatchSize,
                                 items => _fulfillmentCenterService.SaveChangesAsync(items.ToArray()), processedCount =>
                                 {
-                                    progressInfo.Description = $"{ processedCount } FulfillmentCenters have been imported";
+                                    progressInfo.Description = $"{processedCount} FulfillmentCenters have been imported";
                                     progressCallback(progressInfo);
                                 }, cancellationToken);
                         }
@@ -130,7 +129,7 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
                             await reader.DeserializeJsonArrayWithPagingAsync<InventoryInfo>(_jsonSerializer, BatchSize,
                                 items => _inventoryService.SaveChangesAsync(items.ToArray()), processedCount =>
                                 {
-                                    progressInfo.Description = $"{ processedCount } Inventories have been imported";
+                                    progressInfo.Description = $"{processedCount} Inventories have been imported";
                                     progressCallback(progressInfo);
                                 }, cancellationToken);
                         }
