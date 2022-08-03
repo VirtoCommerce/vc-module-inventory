@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29025.244
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.InventoryModule.Data", "src\VirtoCommerce.InventoryModule.Data\VirtoCommerce.InventoryModule.Data.csproj", "{AD562F67-BDEC-434C-920A-2FE7F54E6A0F}"
 EndProject
@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.InventoryModu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{BD6EF1DA-D884-4258-8EFF-1FB8770D908B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.InventoryModule.Tests", "tests\VirtoCommerce.InventoryModule.Tests\VirtoCommerce.InventoryModule.Tests.csproj", "{CE6513A9-CA03-494E-8998-EADCC27408FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.InventoryModule.Tests", "tests\VirtoCommerce.InventoryModule.Tests\VirtoCommerce.InventoryModule.Tests.csproj", "{CE6513A9-CA03-494E-8998-EADCC27408FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
