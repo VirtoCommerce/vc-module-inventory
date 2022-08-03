@@ -29,5 +29,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\VirtoCommerce.InventoryModule.Core\VirtoCommerce.InventoryModule.Core.csproj" />
     <ProjectReference Include="..\..\src\VirtoCommerce.InventoryModule.Data\VirtoCommerce.InventoryModule.Data.csproj" />
+    <ProjectReference Include="..\..\src\VirtoCommerce.InventoryModule.Web\VirtoCommerce.InventoryModule.Web.csproj" />
   </ItemGroup>
 </Project>

@@ -13,7 +13,6 @@ using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.InventoryModule.Data.Services;
 using VirtoCommerce.Platform.Caching;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using Xunit;
 
 namespace VirtoCommerce.InventoryModule.Tests
@@ -97,7 +96,7 @@ namespace VirtoCommerce.InventoryModule.Tests
     /// <summary>
     /// Custom search service mock 
     /// </summary>
-    public class FulfillmentCenterSearchServiceMock : ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>, IFulfillmentCenterSearchService
+    public class FulfillmentCenterSearchServiceMock : IFulfillmentCenterSearchService
     {
         private readonly List<FulfillmentCenter> _fulfillmentCenters;
 

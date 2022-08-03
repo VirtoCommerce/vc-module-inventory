@@ -8,13 +8,12 @@ using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.InventoryModule.Data.Caching;
 using VirtoCommerce.InventoryModule.Data.Extensions;
 using VirtoCommerce.Platform.Core.Caching;
-using VirtoCommerce.Platform.Core.GenericCrud;
 
 namespace VirtoCommerce.InventoryModule.Data.Services
 {
     public class FulfillmentCenterGeoService : IFulfillmentCenterGeoService
     {
-        private readonly ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter> _searchService;
+        private readonly IFulfillmentCenterSearchService _searchService;
         private readonly IPlatformMemoryCache _platformMemoryCache;
 
         private readonly int _limit = 10;
@@ -23,7 +22,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             IFulfillmentCenterSearchService fulfillmentCenterSearchService,
             IPlatformMemoryCache platformMemoryCache)
         {
-            _searchService = (ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>)fulfillmentCenterSearchService;
+            _searchService = fulfillmentCenterSearchService;
             _platformMemoryCache = platformMemoryCache;
         }
 
