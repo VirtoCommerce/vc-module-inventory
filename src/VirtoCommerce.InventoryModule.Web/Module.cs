@@ -46,10 +46,10 @@ namespace VirtoCommerce.InventoryModule.Web
             serviceCollection.AddTransient<Func<IInventoryRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IInventoryRepository>());
             serviceCollection.AddTransient<IInventoryService, InventoryServiceImpl>();
             serviceCollection.AddTransient<IInventorySearchService, InventorySearchService>();
-            serviceCollection.AddTransient<ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>, FulfillmentCenterSearchService>();
-            serviceCollection.AddTransient(x => (IFulfillmentCenterSearchService)x.GetRequiredService<ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>>());
-            serviceCollection.AddTransient<ICrudService<FulfillmentCenter>, FulfillmentCenterService>();
-            serviceCollection.AddTransient(x => (IFulfillmentCenterService)x.GetRequiredService<ICrudService<FulfillmentCenter>>());
+            serviceCollection.AddTransient<IFulfillmentCenterSearchService, FulfillmentCenterSearchService>();
+            serviceCollection.AddTransient(x => (ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>)x.GetRequiredService<IFulfillmentCenterSearchService>());
+            serviceCollection.AddTransient<IFulfillmentCenterService, FulfillmentCenterService>();
+            serviceCollection.AddTransient(x => (ICrudService<FulfillmentCenter>)x.GetRequiredService<IFulfillmentCenterService>());
             serviceCollection.AddTransient<IProductInventorySearchService, ProductInventorySearchService>();
             serviceCollection.AddTransient<IFulfillmentCenterGeoService, FulfillmentCenterGeoService>();
             serviceCollection.AddTransient<InventoryExportImport>();

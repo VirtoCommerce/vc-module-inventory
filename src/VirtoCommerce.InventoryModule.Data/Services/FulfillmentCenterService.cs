@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.InventoryModule.Core.Events;
 using VirtoCommerce.InventoryModule.Core.Model;
@@ -21,14 +22,18 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         {
         }
 
-        public virtual Task<IEnumerable<FulfillmentCenter>> GetByIdsAsync(IEnumerable<string> ids)
+        // TODO: Remove after 1 year (2023-08-02)
+        [Obsolete("Use GetAsync()")]
+        public virtual async Task<IEnumerable<FulfillmentCenter>> GetByIdsAsync(IEnumerable<string> ids)
         {
-            return base.GetByIdsAsync(ids);
+            var result = await GetAsync(ids.ToList(), responseGroup: null);
+            return result;
         }
 
+        // TODO: Remove after 1 year (2023-08-02)
         public virtual Task DeleteAsync(IEnumerable<string> ids)
         {
-            return base.DeleteAsync(ids);
+            return DeleteAsync(ids, softDelete: false);
         }
 
         protected override Task<IEnumerable<FulfillmentCenterEntity>> LoadEntities(IRepository repository, IEnumerable<string> ids, string responseGroup)

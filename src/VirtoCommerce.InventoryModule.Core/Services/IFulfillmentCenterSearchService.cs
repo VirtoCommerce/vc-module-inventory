@@ -1,16 +1,15 @@
 using System;
 using System.Threading.Tasks;
+using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Core.Model.Search;
+using VirtoCommerce.Platform.Core.GenericCrud;
 
 namespace VirtoCommerce.InventoryModule.Core.Services
 {
-    /// <summary>
-    /// This interface should implement <![CDATA[<see cref="SearchService<FulfillmentCenter>"/>]]> without methods.
-    /// Methods left for compatibility and should be removed after upgrade to inheritance
-    /// </summary>
-    public interface IFulfillmentCenterSearchService
+    public interface IFulfillmentCenterSearchService : ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>
     {
-        [Obsolete(@"Need to remove after inherit IFulfillmentCenterSearchService from SearchService<FulfillmentCenter>.")]
+        // TODO: Remove after 1 year (2023-08-02)
+        [Obsolete("Use SearchAsync()")]
         Task<FulfillmentCenterSearchResult> SearchCentersAsync(FulfillmentCenterSearchCriteria criteria);
     }
 }

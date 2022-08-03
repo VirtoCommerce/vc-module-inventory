@@ -42,7 +42,8 @@ namespace VirtoCommerce.InventoryModule.Data.Caching
         {
             if (inventory != null)
             {
-                ExpireTokenForKey(inventory.IsTransient() ? inventory.ProductId : inventory.Id);
+                ExpireTokenForKey(inventory.Id);
+                ExpireTokenForKey(inventory.ProductId);
             }
         }
     }
