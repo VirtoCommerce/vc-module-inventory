@@ -167,7 +167,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             }
         }
 
-        private class CacheEntity : Entity
+        private sealed class CacheEntity : Entity
         {
             public CacheEntity(string productId, IEnumerable<InventoryInfo> inventories)
             {
