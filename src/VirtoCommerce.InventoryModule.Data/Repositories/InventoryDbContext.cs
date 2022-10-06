@@ -6,6 +6,7 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
 {
     public class InventoryDbContext : DbContextWithTriggers
     {
+#pragma warning disable S109
         public InventoryDbContext(DbContextOptions<InventoryDbContext> options)
             : base(options)
         {
@@ -24,11 +25,17 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             modelBuilder.Entity<InventoryEntity>().HasOne(x => x.FulfillmentCenter).WithMany()
                 .HasForeignKey(x => x.FulfillmentCenterId).IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<InventoryEntity>().Property(x => x.BackorderQuantity).HasPrecision(18, 2);
+            modelBuilder.Entity<InventoryEntity>().Property(x => x.InStockQuantity).HasPrecision(18, 2);
+            modelBuilder.Entity<InventoryEntity>().Property(x => x.PreorderQuantity).HasPrecision(18, 2);
+            modelBuilder.Entity<InventoryEntity>().Property(x => x.ReorderMinQuantity).HasPrecision(18, 2);
+            modelBuilder.Entity<InventoryEntity>().Property(x => x.ReservedQuantity).HasPrecision(18, 2);
 
             modelBuilder.Entity<FulfillmentCenterEntity>().ToTable("FulfillmentCenter").HasKey(x => x.Id);
             modelBuilder.Entity<FulfillmentCenterEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
 
             base.OnModelCreating(modelBuilder);
         }
+#pragma warning restore S109
     }
 }
