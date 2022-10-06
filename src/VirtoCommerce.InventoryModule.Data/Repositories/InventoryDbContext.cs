@@ -6,6 +6,7 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
 {
     public class InventoryDbContext : DbContextWithTriggers
     {
+#pragma warning disable S109
         public InventoryDbContext(DbContextOptions<InventoryDbContext> options)
             : base(options)
         {
@@ -35,5 +36,6 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
 
             base.OnModelCreating(modelBuilder);
         }
+#pragma warning restore S109
     }
 }
