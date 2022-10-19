@@ -13,6 +13,7 @@ angular.module('virtoCommerce.inventoryModule')
 
                 fulfillments.search({
                     searchPhrase: filter.keyword ? filter.keyword : undefined,
+                    outerId: blade.outerId ? blade.outerId : undefined,
                     sort: uiGridHelper.getSortExpression($scope),
                     skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
                     take: $scope.pageSettings.itemsPerPageCount

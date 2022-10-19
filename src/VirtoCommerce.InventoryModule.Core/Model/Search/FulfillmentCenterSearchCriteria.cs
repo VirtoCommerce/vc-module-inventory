@@ -5,5 +5,6 @@ namespace VirtoCommerce.InventoryModule.Core.Model.Search
     public class FulfillmentCenterSearchCriteria : SearchCriteriaBase
     {
         //todo       //public GeoPoint Location { get; set; }
+        public string OuterId { get; set; }
     }
 }
