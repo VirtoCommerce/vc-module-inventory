@@ -11,6 +11,7 @@ namespace VirtoCommerce.InventoryModule.Core.Model
         public string GeoLocation { get; set; }
         public Address Address { get; set; }
         public string OuterId { get; set; }
+        public string OrganizationId { get; set; }
 
         #region ICloneable members
 
