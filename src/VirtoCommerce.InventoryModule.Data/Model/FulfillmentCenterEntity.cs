@@ -48,7 +48,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
         public string Email { get; set; }
 
         [StringLength(128)]
-        public string Organization { get; set; }
+        public string OrganizationId { get; set; }
 
         [StringLength(64)]
         public string GeoLocation { get; set; }
@@ -83,6 +83,8 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             center.Name = Name;
             center.GeoLocation = GeoLocation;
 
+            center.OrganizationId = OrganizationId;
+
             return center;
         }
 
@@ -115,6 +117,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             ShortDescription = center.ShortDescription;
             Name = center.Name;
             GeoLocation = center.GeoLocation;
+            OrganizationId = center.OrganizationId;
 
             return this;
         }
@@ -136,6 +139,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             target.Name = Name;
             target.GeoLocation = GeoLocation;
             target.OuterId = OuterId;
+            target.OrganizationId = OrganizationId;
         }
     }
 }

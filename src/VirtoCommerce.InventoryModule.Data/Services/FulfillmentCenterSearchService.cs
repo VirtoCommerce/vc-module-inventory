@@ -46,6 +46,11 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 query = query.Where(x => x.OuterId == criteria.OuterId);
             }
 
+            if (!string.IsNullOrEmpty(criteria.OrganizationId))
+            {
+                query = query.Where(x => x.OrganizationId == criteria.OrganizationId);
+            }
+
             return query;
         }
 

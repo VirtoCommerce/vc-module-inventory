@@ -14,6 +14,7 @@ angular.module('virtoCommerce.inventoryModule')
                 fulfillments.search({
                     searchPhrase: filter.keyword ? filter.keyword : undefined,
                     outerId: blade.outerId ? blade.outerId : undefined,
+                    organizationId: blade.organizationId ? blade.organizationId : undefined,
                     sort: uiGridHelper.getSortExpression($scope),
                     skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
                     take: $scope.pageSettings.itemsPerPageCount
@@ -59,7 +60,7 @@ angular.module('virtoCommerce.inventoryModule')
                 {
                     name: "platform.commands.add", icon: 'fas fa-plus',
                     executeMethod: function () {
-                        showDetailBlade({ maxReleasesPerPickBatch: 20, pickDelay: 30, outerId: blade.outerId }, 'New Fulfillment center');
+                        showDetailBlade({ maxReleasesPerPickBatch: 20, pickDelay: 30, outerId: blade.outerId, organizationId: blade.organizationId }, 'New Fulfillment Center');
                     },
                     canExecuteMethod: function () {
                         return true;
