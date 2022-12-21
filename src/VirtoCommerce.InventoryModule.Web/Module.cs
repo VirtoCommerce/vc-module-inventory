@@ -14,9 +14,12 @@ using VirtoCommerce.InventoryModule.Core.Model.Search;
 using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.InventoryModule.Data.ExportImport;
 using VirtoCommerce.InventoryModule.Data.Handlers;
+using VirtoCommerce.InventoryModule.Data.MySql;
+using VirtoCommerce.InventoryModule.Data.PostgreSql;
 using VirtoCommerce.InventoryModule.Data.Repositories;
 using VirtoCommerce.InventoryModule.Data.Search.Indexing;
 using VirtoCommerce.InventoryModule.Data.Services;
+using VirtoCommerce.InventoryModule.Data.SqlServer;
 using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
@@ -29,9 +32,10 @@ using VirtoCommerce.SearchModule.Core.Model;
 
 namespace VirtoCommerce.InventoryModule.Web
 {
-    public class Module : IModule, IExportSupport, IImportSupport
+    public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration
     {
         public ManifestModuleInfo ModuleInfo { get; set; }
+        public IConfiguration Configuration { get; set; }
 
         private IApplicationBuilder _appBuilder;
 
@@ -39,9 +43,23 @@ namespace VirtoCommerce.InventoryModule.Web
         {
             serviceCollection.AddDbContext<InventoryDbContext>((provider, options) =>
             {
-                var configuration = provider.GetRequiredService<IConfiguration>();
-                options.UseSqlServer(configuration.GetConnectionString(ModuleInfo.Id) ?? configuration.GetConnectionString("VirtoCommerce"));
+                var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
+                var connectionString = Configuration.GetConnectionString(ModuleInfo.Id) ?? Configuration.GetConnectionString("VirtoCommerce");
+
+                switch (databaseProvider)
+                {
+                    case "MySql":
+                        options.UseMySqlDatabase(connectionString);
+                        break;
+                    case "PostgreSql":
+                        options.UsePostgreSqlDatabase(connectionString);
+                        break;
+                    default:
+                        options.UseSqlServerDatabase(connectionString);
+                        break;
+                }
             });
+
             serviceCollection.AddTransient<IInventoryRepository, InventoryRepositoryImpl>();
             serviceCollection.AddTransient<Func<IInventoryRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IInventoryRepository>());
             serviceCollection.AddTransient<IInventoryService, InventoryServiceImpl>();
@@ -73,9 +91,12 @@ namespace VirtoCommerce.InventoryModule.Web
             //Force migrations
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {
+                var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
                 var inventoryDbContext = serviceScope.ServiceProvider.GetRequiredService<InventoryDbContext>();
-                inventoryDbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
-                inventoryDbContext.Database.EnsureCreated();
+                if (databaseProvider == "SqlServer")
+                {
+                    inventoryDbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
+                }
                 inventoryDbContext.Database.Migrate();
             }
 

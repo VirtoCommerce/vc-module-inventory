@@ -1,7 +1,6 @@
-﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace VirtoCommerce.InventoryModule.Data.Migrations
+namespace VirtoCommerce.InventoryModule.Data.SqlServer.Migrations
 {
     public partial class InitialInventory : Migration
     {
