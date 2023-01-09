@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace VirtoCommerce.InventoryModule.Data.Migrations
+namespace VirtoCommerce.InventoryModule.Data.SqlServer.Migrations
 {
     public partial class AddOrganizationId : Migration
     {

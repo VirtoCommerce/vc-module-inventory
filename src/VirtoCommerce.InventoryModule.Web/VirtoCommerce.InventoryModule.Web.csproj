@@ -28,6 +28,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.InventoryModule.Core\VirtoCommerce.InventoryModule.Core.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.InventoryModule.Data.MySql\VirtoCommerce.InventoryModule.Data.MySql.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.InventoryModule.Data.PostgreSql\VirtoCommerce.InventoryModule.Data.PostgreSql.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.InventoryModule.Data.SqlServer\VirtoCommerce.InventoryModule.Data.SqlServer.csproj" />
     <ProjectReference Include="..\VirtoCommerce.InventoryModule.Data\VirtoCommerce.InventoryModule.Data.csproj" />
   </ItemGroup>
 </Project>
