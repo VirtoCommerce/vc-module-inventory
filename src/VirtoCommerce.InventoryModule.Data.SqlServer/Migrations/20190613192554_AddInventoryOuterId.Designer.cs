@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtoCommerce.InventoryModule.Data.Repositories;
 
-namespace VirtoCommerce.InventoryModule.Data.Migrations
+namespace VirtoCommerce.InventoryModule.Data.SqlServer.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    [Migration("20000000000000_UpdateInventoryV2")]
-    partial class UpdateInventoryV2
+    [Migration("20190613192554_AddInventoryOuterId")]
+    partial class AddInventoryOuterId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,6 +70,9 @@ namespace VirtoCommerce.InventoryModule.Data.Migrations
                     b.Property<string>("Organization")
                         .HasMaxLength(128);
 
+                    b.Property<string>("OuterId")
+                        .HasMaxLength(128);
+
                     b.Property<string>("PostalCode")
                         .HasMaxLength(32);
 
@@ -114,6 +118,9 @@ namespace VirtoCommerce.InventoryModule.Data.Migrations
                         .HasMaxLength(64);
 
                     b.Property<DateTime?>("ModifiedDate");
+
+                    b.Property<string>("OuterId")
+                        .HasMaxLength(128);
 
                     b.Property<DateTime?>("PreorderAvailabilityDate");
 

@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace VirtoCommerce.InventoryModule.Data.Migrations
+namespace VirtoCommerce.InventoryModule.Data.SqlServer.Migrations
 {
     public partial class AddInventoryOuterId : Migration
     {
