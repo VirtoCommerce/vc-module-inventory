@@ -46,6 +46,17 @@
                         <span class="table-descr">{{ 'catalog.properties.geoPoint.description' | translate }}</span>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="form-label">{{ 'inventory.properties.outerId.title' | translate }}</label>
+                    <div class="form-input">
+                        <input ng-model="blade.currentEntity.outerId"
+                               name="outerId"
+                               placeholder="{{ 'inventory.properties.outerId.placeholder' | translate }}"
+                               type="text">
+                        <span class="table-descr">{{ 'inventory.properties.outerId.description' | translate }}</span>
+                    </div>
+                </div>
                 <va-metaform blade="blade" registered-inputs="blade.metaFields"></va-metaform>
             </form>
             <va-widget-container group="fulfillmentCenterDetail" blade="blade" gridster-opts="{columns: 3}"></va-widget-container>
