@@ -80,6 +80,11 @@
         "title": "Location",
         "placeholder": "Please enter latitude and longitude",
         "description": "Please use the following format: lat,long, e.g. 41.40338,2.17403, with no space after the comma separator."
+      },
+      "outerId": {
+        "title": "Outer ID",
+        "placeholder": "Please enter ID in an outer system",
+        "description": "Unique ID for connecting the fulfillment center with an outer system."
       }
     }
   },
