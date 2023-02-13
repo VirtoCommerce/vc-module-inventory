@@ -9,6 +9,51 @@
                         <span class="table-descr">{{ 'inventory.blades.fulfillment-center-detail.description.name' | translate }}</span>
                     </div>
                 </div>
+
+                <div column-count="6" class="blade-gray-box">
+                    <div class="columns clearfix">
+                        <div class="column">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'inventory.properties.geoPoint.title' | translate }}</label>
+                                <div class="form-input">
+                                    <input ng-model="blade.currentEntity.geoLocation"
+                                           name="geoLocation"
+                                           ng-pattern="/^(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)$/"
+                                           placeholder="{{ 'inventory.properties.geoPoint.placeholder' | translate }}"
+                                           type="text">
+                                    <span class="table-descr">{{ 'catalog.properties.geoPoint.description' | translate }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="form-group">
+                                <label class="form-label">{{ 'inventory.properties.outerId.title' | translate }}</label>
+                                <div class="form-input">
+                                    <input ng-model="blade.currentEntity.outerId"
+                                           name="outerId"
+                                           placeholder="{{ 'inventory.properties.outerId.placeholder' | translate }}"
+                                           type="text">
+                                    <span class="table-descr">{{ 'inventory.properties.outerId.description' | translate }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <va-widget-container group="fulfillmentCenterDetail" blade="blade" gridster-opts="{columns: 3}"></va-widget-container>
+
+                <div class="form-group">
+                    <label class="form-label">{{ 'inventory.blades.fulfillment-center-detail.labels.short-description' | translate }}</label>
+                    <div class="form-input" style="margin: 0">
+                        <textarea class="form-control"
+                                  style="height: 150px"
+                                  placeholder="{{ 'inventory.blades.fulfillment-center-detail.placeholders.description' | translate }}"
+                                  ng-model="blade.currentEntity.shortDescription"
+                                  id="shortDescriptionEditor"></textarea>
+                        <span class="table-descr">{{ 'inventory.blades.fulfillment-center-detail.description.short-description' | translate }}</span>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="form-label">{{ 'inventory.blades.fulfillment-center-detail.labels.description' | translate }}</label>
                     <div class="form-input" style="margin: 0">
@@ -22,44 +67,9 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">{{ 'inventory.blades.fulfillment-center-detail.labels.short-description' | translate }}</label>
-                    <div class="form-input" style="margin: 0">
-                        <input id="fileUploader" type="file" multiple style="display: none;" uploader="fileUploader" nv-file-select />
-                        <textarea class="form-control"
-                                  vc-uk-htmleditor placeholder="{{ 'inventory.blades.fulfillment-center-detail.placeholders.description' | translate }}"
-                                  ng-model="blade.currentEntity.shortDescription"
-                                  file-uploader="fileUploader"
-                                  id="shortDescriptionEditor"></textarea>
-                        <span class="table-descr">{{ 'inventory.blades.fulfillment-center-detail.description.short-description' | translate }}</span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">{{ 'inventory.properties.geoPoint.title' | translate }}</label>
-                    <div class="form-input">
-                        <input ng-model="blade.currentEntity.geoLocation"
-                               name="geoLocation"
-                               ng-pattern="/^(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)$/"
-                               placeholder="{{ 'inventory.properties.geoPoint.placeholder' | translate }}"
-                               type="text">
-                        <span class="table-descr">{{ 'catalog.properties.geoPoint.description' | translate }}</span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">{{ 'inventory.properties.outerId.title' | translate }}</label>
-                    <div class="form-input">
-                        <input ng-model="blade.currentEntity.outerId"
-                               name="outerId"
-                               placeholder="{{ 'inventory.properties.outerId.placeholder' | translate }}"
-                               type="text">
-                        <span class="table-descr">{{ 'inventory.properties.outerId.description' | translate }}</span>
-                    </div>
-                </div>
                 <va-metaform blade="blade" registered-inputs="blade.metaFields"></va-metaform>
             </form>
-            <va-widget-container group="fulfillmentCenterDetail" blade="blade" gridster-opts="{columns: 3}"></va-widget-container>
+            
         </div>
     </div>
 </div>
