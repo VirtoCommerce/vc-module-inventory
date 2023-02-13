@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.InventoryModule.Core.Model.Search;
 using VirtoCommerce.InventoryModule.Core.Services;
+using VirtoCommerce.InventoryModule.Data.Caching;
 using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.InventoryModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
-using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.Platform.Data.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-using VirtoCommerce.InventoryModule.Data.Caching;
 
 namespace VirtoCommerce.InventoryModule.Data.Services
 {
@@ -45,10 +45,10 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                     result.TotalCount = await query.CountAsync();
                     if (criteria.Take > 0)
                     {
-                        var ids = await query.AsNoTracking().OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
+                        var idQuery = query.AsNoTracking().OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
                                             .Select(x => x.Id)
-                                            .Skip(criteria.Skip).Take(criteria.Take)
-                                            .ToArrayAsync();
+                                            .Skip(criteria.Skip).Take(criteria.Take);
+                        var ids = await idQuery.ToArrayAsync();
 
                         result.Results = (await _inventoryService.GetByIdsAsync(ids)).OrderBy(x => Array.IndexOf(ids, x.Id)).ToList();
                     }

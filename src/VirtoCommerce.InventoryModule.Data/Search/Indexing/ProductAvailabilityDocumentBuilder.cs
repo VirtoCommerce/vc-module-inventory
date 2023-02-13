@@ -29,12 +29,16 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
             {
                 var document = new IndexDocument(productInventories.Key);
                 foreach (var inventory in productInventories)
-                {                   
+                {
                     if (inventory.IsAvailableOn(now))
                     {
                         document.Add(new IndexDocumentField("available_in", inventory.FulfillmentCenterId.ToLowerInvariant()) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
                         document.Add(new IndexDocumentField("fulfillmentCenter_name", inventory.FulfillmentCenterName.ToLowerInvariant()) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
                         document.Add(new IndexDocumentField("inStock_quantity", inventory.InStockQuantity) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
+                    }
+                    else
+                    {
+                        document.Add(new IndexDocumentField("inStock_quantity", 0L) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
                     }
                     result.Add(document);
                 }
