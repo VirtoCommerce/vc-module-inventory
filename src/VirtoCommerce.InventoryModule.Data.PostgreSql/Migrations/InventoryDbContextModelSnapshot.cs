@@ -22,6 +22,85 @@ namespace VirtoCommerce.InventoryModule.Data.PostgreSql.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("VirtoCommerce.InventoryModule.Data.Model.FulfillmentCenterDynamicPropertyObjectValueEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<bool?>("BooleanValue")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DateTimeValue")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal?>("DecimalValue")
+                        .HasColumnType("numeric(18,5)");
+
+                    b.Property<string>("DictionaryItemId")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<int?>("IntegerValue")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Locale")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("LongTextValue")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ObjectId")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<string>("ObjectType")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("PropertyId")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<string>("PropertyName")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("ShortTextValue")
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<string>("ValueType")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ObjectId");
+
+                    b.HasIndex("ObjectType", "ObjectId")
+                        .HasDatabaseName("IX_ObjectType_ObjectId");
+
+                    b.ToTable("FulfillmentCenterDynamicPropertyObjectValue", (string)null);
+                });
+
             modelBuilder.Entity("VirtoCommerce.InventoryModule.Data.Model.FulfillmentCenterEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -194,6 +273,16 @@ namespace VirtoCommerce.InventoryModule.Data.PostgreSql.Migrations
                     b.ToTable("Inventory", (string)null);
                 });
 
+            modelBuilder.Entity("VirtoCommerce.InventoryModule.Data.Model.FulfillmentCenterDynamicPropertyObjectValueEntity", b =>
+                {
+                    b.HasOne("VirtoCommerce.InventoryModule.Data.Model.FulfillmentCenterEntity", "FulfillmentCenter")
+                        .WithMany("DynamicPropertyObjectValues")
+                        .HasForeignKey("ObjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("FulfillmentCenter");
+                });
+
             modelBuilder.Entity("VirtoCommerce.InventoryModule.Data.Model.InventoryEntity", b =>
                 {
                     b.HasOne("VirtoCommerce.InventoryModule.Data.Model.FulfillmentCenterEntity", "FulfillmentCenter")
@@ -203,6 +292,11 @@ namespace VirtoCommerce.InventoryModule.Data.PostgreSql.Migrations
                         .IsRequired();
 
                     b.Navigation("FulfillmentCenter");
+                });
+
+            modelBuilder.Entity("VirtoCommerce.InventoryModule.Data.Model.FulfillmentCenterEntity", b =>
+                {
+                    b.Navigation("DynamicPropertyObjectValues");
                 });
 #pragma warning restore 612, 618
         }
