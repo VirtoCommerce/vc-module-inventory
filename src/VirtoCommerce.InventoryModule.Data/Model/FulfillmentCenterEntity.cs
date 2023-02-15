@@ -1,7 +1,10 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Domain;
+using VirtoCommerce.Platform.Core.DynamicProperties;
 
 namespace VirtoCommerce.InventoryModule.Data.Model
 {
@@ -56,6 +59,9 @@ namespace VirtoCommerce.InventoryModule.Data.Model
         [StringLength(128)]
         public string OuterId { get; set; }
 
+        public virtual ObservableCollection<FulfillmentCenterDynamicPropertyObjectValueEntity> DynamicPropertyObjectValues { get; set; }
+            = new NullCollection<FulfillmentCenterDynamicPropertyObjectValueEntity>();
+
         public virtual FulfillmentCenter ToModel(FulfillmentCenter center)
         {
             center.Id = Id;
@@ -84,6 +90,16 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             center.GeoLocation = GeoLocation;
 
             center.OrganizationId = OrganizationId;
+
+            center.DynamicProperties = DynamicPropertyObjectValues.GroupBy(x => x.PropertyId ?? x.PropertyName)
+                .Select(x =>
+                {
+                    var property = AbstractTypeFactory<DynamicObjectProperty>.TryCreateInstance();
+                    property.Id = x.First()?.PropertyId;
+                    property.Name = x.FirstOrDefault()?.PropertyName;
+                    property.Values = x.Select(y => y.ToModel(AbstractTypeFactory<DynamicPropertyObjectValue>.TryCreateInstance())).ToArray();
+                    return property;
+                }).ToArray();
 
             return center;
         }
@@ -119,6 +135,14 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             GeoLocation = center.GeoLocation;
             OrganizationId = center.OrganizationId;
 
+            if (center.DynamicProperties != null)
+            {
+                DynamicPropertyObjectValues = new ObservableCollection<FulfillmentCenterDynamicPropertyObjectValueEntity>(center
+                    .DynamicProperties
+                    .SelectMany(x => x.Values.Select(y => AbstractTypeFactory<FulfillmentCenterDynamicPropertyObjectValueEntity>.TryCreateInstance().FromModel(y, center, x)))
+                    .OfType<FulfillmentCenterDynamicPropertyObjectValueEntity>());
+            }
+
             return this;
         }
 
@@ -140,6 +164,12 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             target.GeoLocation = GeoLocation;
             target.OuterId = OuterId;
             target.OrganizationId = OrganizationId;
+
+            if (!DynamicPropertyObjectValues.IsNullCollection())
+            {
+                DynamicPropertyObjectValues.Patch(target.DynamicPropertyObjectValues, (sourceDynamicPropertyObjectValues, targetDynamicPropertyObjectValues)
+                    => sourceDynamicPropertyObjectValues.Patch(targetDynamicPropertyObjectValues));
+            }
         }
     }
 }
