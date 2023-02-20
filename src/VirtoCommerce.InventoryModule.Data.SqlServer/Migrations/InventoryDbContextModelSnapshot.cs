@@ -96,7 +96,7 @@ namespace VirtoCommerce.InventoryModule.Data.SqlServer.Migrations
                     b.HasIndex("ObjectId");
 
                     b.HasIndex("ObjectType", "ObjectId")
-                        .HasDatabaseName("IX_ObjectType_ObjectId");
+                        .HasDatabaseName("IX_FulfillmentCenterDynamicPropertyObjectValue_ObjectType_ObjectId");
 
                     b.ToTable("FulfillmentCenterDynamicPropertyObjectValue", (string)null);
                 });

@@ -43,7 +43,7 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
                 .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<FulfillmentCenterDynamicPropertyObjectValueEntity>().HasIndex(x => new { x.ObjectType, x.ObjectId })
                 .IsUnique(false)
-                .HasDatabaseName("IX_ObjectType_ObjectId");
+                .HasDatabaseName("IX_FulfillmentCenterDynamicPropertyObjectValue_ObjectType_ObjectId");
 
             base.OnModelCreating(modelBuilder);
 
