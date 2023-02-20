@@ -65,6 +65,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up Node 16
+        uses: actions/setup-node@v2
+        with:
+            node-version: '16'
+
       - name: Install VirtoCommerce.GlobalTool
         uses: VirtoCommerce/vc-github-actions/setup-vcbuild@master
 
