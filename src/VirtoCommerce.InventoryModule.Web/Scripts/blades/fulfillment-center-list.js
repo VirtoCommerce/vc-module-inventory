@@ -8,7 +8,7 @@ angular.module('virtoCommerce.inventoryModule')
             blade.title = 'core.blades.fulfillment-center-list.title';
             blade.subtitle = 'core.blades.fulfillment-center-list.subtitle';
 
-            blade.refresh = function (parentRefresh) {
+            blade.refresh = function (parentRefresh = false) {
                 blade.isLoading = true;
 
                 fulfillments.search({
@@ -22,7 +22,7 @@ angular.module('virtoCommerce.inventoryModule')
                     blade.isLoading = false;
                     $scope.pageSettings.totalItems = response.totalCount;
                     blade.currentEntities = response.results;
-                    if (parentRefresh === true) {
+                    if (parentRefresh === true && blade.parentBlade && blade.parentBlade.refresh) {
                         blade.parentBlade.refresh(true);
                     }
                     return response.results;
