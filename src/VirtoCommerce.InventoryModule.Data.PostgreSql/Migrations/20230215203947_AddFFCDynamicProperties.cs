@@ -1,4 +1,3 @@
-﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -49,7 +48,7 @@ namespace VirtoCommerce.InventoryModule.Data.PostgreSql.Migrations
                 column: "ObjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ObjectType_ObjectId",
+                name: "IX_FulfillmentCenterDynamicPropertyObjectValue_ObjectType_ObjectId",
                 table: "FulfillmentCenterDynamicPropertyObjectValue",
                 columns: new[] { "ObjectType", "ObjectId" });
         }
