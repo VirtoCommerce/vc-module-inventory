@@ -57,7 +57,7 @@ angular.module(moduleName, [])
                 widgetService.registerWidget({
                     controller: 'platformWebApp.dynamicPropertyWidgetController',
                     template: '$(Platform)/Scripts/app/dynamicProperties/widgets/dynamicPropertyWidget.tpl.html',
-                    isVisible: function (blade) { return !blade.isNew && authService.checkPermission('platform:dynamic_properties:read'); }
+                    isVisible: function (blade) { return blade.currentEntityId && authService.checkPermission('platform:dynamic_properties:read'); }
                 }, 'fulfillmentCenterDetail');
 
                 widgetService.registerWidget({
