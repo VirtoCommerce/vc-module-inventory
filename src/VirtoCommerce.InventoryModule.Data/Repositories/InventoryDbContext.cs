@@ -35,6 +35,16 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             modelBuilder.Entity<FulfillmentCenterEntity>().ToTable("FulfillmentCenter").HasKey(x => x.Id);
             modelBuilder.Entity<FulfillmentCenterEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
 
+            modelBuilder.Entity<FulfillmentCenterDynamicPropertyObjectValueEntity>().ToTable("FulfillmentCenterDynamicPropertyObjectValue").HasKey(x => x.Id);
+            modelBuilder.Entity<FulfillmentCenterDynamicPropertyObjectValueEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
+            modelBuilder.Entity<FulfillmentCenterDynamicPropertyObjectValueEntity>().Property(x => x.DecimalValue).HasColumnType("decimal(18,5)");
+            modelBuilder.Entity<FulfillmentCenterDynamicPropertyObjectValueEntity>().HasOne(p => p.FulfillmentCenter)
+                .WithMany(s => s.DynamicPropertyObjectValues).HasForeignKey(k => k.ObjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<FulfillmentCenterDynamicPropertyObjectValueEntity>().HasIndex(x => new { x.ObjectType, x.ObjectId })
+                .IsUnique(false)
+                .HasDatabaseName("IX_FulfillmentCenterDynamicPropertyObjectValue_ObjectType_ObjectId");
+
             base.OnModelCreating(modelBuilder);
 
             // Allows configuration for an entity type for different database types.
