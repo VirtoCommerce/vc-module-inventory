@@ -10,7 +10,7 @@ angular.module('virtoCommerce.inventoryModule')
             function ($scope, dialogService, bladeNavigationService, fulfillments, metaFormsService, FileUploader) {
                 var blade = $scope.blade;
                 blade.updatePermission = 'inventory:fulfillment:edit';
-                blade.refresh = function (parentRefresh) {
+                blade.refresh = function (parentRefresh = false) {
                     if (!blade.currentEntityId) {
                         initializeBlade(blade.currentEntity);
                         return;
@@ -20,7 +20,7 @@ angular.module('virtoCommerce.inventoryModule')
                     fulfillments.get({ id: blade.currentEntityId },
                         function (data) {
                             initializeBlade(data);
-                            if (parentRefresh) {
+                            if (parentRefresh && blade.parentBlade && blade.parentBlade.refresh) {
                                 blade.parentBlade.refresh(true);
                             }
                         });
@@ -121,7 +121,9 @@ angular.module('virtoCommerce.inventoryModule')
 
                                 fulfillments.remove({ ids: blade.currentEntityId }, function () {
                                     $scope.bladeClose();
-                                    blade.parentBlade.refresh(true);
+                                    if (blade.parentBlade && blade.parentBlade.refresh) {
+                                        blade.parentBlade.refresh(true);
+                                    }
                                 }, function (error) {
                                     bladeNavigationService.setError('Error ' + error.status, blade);
                                 });

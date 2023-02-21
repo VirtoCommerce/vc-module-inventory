@@ -22,6 +22,7 @@ using VirtoCommerce.InventoryModule.Data.Services;
 using VirtoCommerce.InventoryModule.Data.SqlServer;
 using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Core.Modularity;
@@ -87,6 +88,10 @@ namespace VirtoCommerce.InventoryModule.Web
 
             var permissionsProvider = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
             permissionsProvider.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions.Select(x => new Permission() { GroupName = "Inventory", Name = x }).ToArray());
+
+            // register dynamic properties
+            var dynamicPropertyRegistrar = appBuilder.ApplicationServices.GetRequiredService<IDynamicPropertyRegistrar>();
+            dynamicPropertyRegistrar.RegisterType<FulfillmentCenter>();
 
             //Force migrations
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())

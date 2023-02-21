@@ -21,6 +21,8 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
 
         public IQueryable<FulfillmentCenterEntity> FulfillmentCenters => DbContext.Set<FulfillmentCenterEntity>();
 
+        public IQueryable<FulfillmentCenterDynamicPropertyObjectValueEntity> DynamicPropertyObjectValues => DbContext.Set<FulfillmentCenterDynamicPropertyObjectValueEntity>();
+
         public virtual async Task<IEnumerable<InventoryEntity>> GetProductsInventoriesAsync(IEnumerable<string> productIds, string responseGroup = null)
         {
             var query = Inventories.Where(x => productIds.Contains(x.Sku));
@@ -35,7 +37,12 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
 
         public virtual async Task<IEnumerable<FulfillmentCenterEntity>> GetFulfillmentCentersAsync(IEnumerable<string> ids)
         {
-            return await FulfillmentCenters.Where(x => ids.Contains(x.Id)).ToListAsync();
+            var centers = await FulfillmentCenters.Where(x => ids.Contains(x.Id)).ToListAsync();
+
+            var centersIds = centers.Select(x => x.Id).ToList();
+            await DynamicPropertyObjectValues.Where(x => centersIds.Contains(x.ObjectId)).LoadAsync();
+
+            return centers;
         }
 
         public async Task<IEnumerable<InventoryEntity>> GetByIdsAsync(string[] ids, string responseGroup = null)

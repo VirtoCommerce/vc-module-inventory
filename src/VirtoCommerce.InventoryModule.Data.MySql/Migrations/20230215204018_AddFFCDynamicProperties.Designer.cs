@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtoCommerce.InventoryModule.Data.Repositories;
 
@@ -10,9 +11,10 @@ using VirtoCommerce.InventoryModule.Data.Repositories;
 namespace VirtoCommerce.InventoryModule.Data.MySql.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    partial class InventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230215204018_AddFFCDynamicProperties")]
+    partial class AddFFCDynamicProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,7 +95,7 @@ namespace VirtoCommerce.InventoryModule.Data.MySql.Migrations
                     b.HasIndex("ObjectId");
 
                     b.HasIndex("ObjectType", "ObjectId")
-                        .HasDatabaseName("IX_FulfillmentCenterDynamicPropertyObjectValue_ObjectType_ObjectId");
+                        .HasDatabaseName("IX_ObjectType_ObjectId");
 
                     b.ToTable("FulfillmentCenterDynamicPropertyObjectValue", (string)null);
                 });
