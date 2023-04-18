@@ -28,20 +28,32 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
             foreach (var productInventories in inventoriesGroupByProduct.GroupBy(x => x.ProductId))
             {
                 var document = new IndexDocument(productInventories.Key);
+                var isInStock = false;
+                var totalInStockQuantity = 0L;
+
                 foreach (var inventory in productInventories)
                 {
                     if (inventory.IsAvailableOn(now))
                     {
                         document.Add(new IndexDocumentField("available_in", inventory.FulfillmentCenterId.ToLowerInvariant()) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
                         document.Add(new IndexDocumentField("fulfillmentCenter_name", inventory.FulfillmentCenterName.ToLowerInvariant()) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
-                        document.Add(new IndexDocumentField("inStock_quantity", inventory.InStockQuantity) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
+                        totalInStockQuantity += inventory.InStockQuantity;
+                        isInStock = true;
                     }
-                    else
-                    {
-                        document.Add(new IndexDocumentField("inStock_quantity", 0L) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
-                    }
-                    result.Add(document);
                 }
+
+                document.Add(new IndexDocumentField("inStock_quantity", totalInStockQuantity) { IsRetrievable = true, IsFilterable = true, IsCollection = false });
+
+                if (isInStock)
+                {
+                    document.Add(new IndexDocumentField("availability", "InStock") { IsRetrievable = true, IsFilterable = true, IsCollection = false });
+                }
+                else
+                {
+                    document.Add(new IndexDocumentField("availability", "OutOfStock") { IsRetrievable = true, IsFilterable = true, IsCollection = false });
+                }
+
+                result.Add(document);
             }
             return await Task.FromResult(result);
         }
