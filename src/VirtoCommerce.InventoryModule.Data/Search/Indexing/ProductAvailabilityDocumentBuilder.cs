@@ -40,15 +40,12 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
 
                 if (inventoriesGroupByProduct.TryGetValue(documentId, out var productInventories))
                 {
-                    foreach (var inventory in productInventories)
+                    foreach (var inventory in productInventories.Where(i => i.IsAvailableOn(now)))
                     {
-                        if (inventory.IsAvailableOn(now))
-                        {
-                            document.Add(new IndexDocumentField("available_in", inventory.FulfillmentCenterId.ToLowerInvariant()) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
-                            document.Add(new IndexDocumentField("fulfillmentCenter_name", inventory.FulfillmentCenterName.ToLowerInvariant()) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
-                            totalInStockQuantity += inventory.InStockQuantity;
-                            isInStock = true;
-                        }
+                        document.Add(new IndexDocumentField("available_in", inventory.FulfillmentCenterId.ToLowerInvariant()) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
+                        document.Add(new IndexDocumentField("fulfillmentCenter_name", inventory.FulfillmentCenterName.ToLowerInvariant()) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
+                        totalInStockQuantity += inventory.InStockQuantity;
+                        isInStock = true;
                     }
                 }
 
