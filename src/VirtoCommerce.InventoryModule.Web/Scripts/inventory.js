@@ -43,7 +43,7 @@ angular.module(moduleName, [])
 
                 //Register widgets in catalog item details
                 widgetService.registerWidget({
-                    isVisible: function (blade) { return blade.productType !== 'Digital' && authService.checkPermission('inventory:update'); },
+                    isVisible: function (blade) { return blade.currentEntityId && authService.checkPermission('inventory:update'); },
                     controller: 'virtoCommerce.inventoryModule.inventoryWidgetController',
                     template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/widgets/inventoryWidget.tpl.html'
                 }, 'itemDetail');
