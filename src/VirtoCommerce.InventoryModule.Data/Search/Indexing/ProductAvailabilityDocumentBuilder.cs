@@ -24,24 +24,35 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
         {
             var now = DateTime.UtcNow;
             var result = new List<IndexDocument>();
-            var inventoriesGroupByProduct = await _inventoryService.GetProductsInventoryInfosAsync(documentIds.ToArray());
-            foreach (var productInventories in inventoriesGroupByProduct.GroupBy(x => x.ProductId))
+
+            var inventories = await _inventoryService.GetProductsInventoryInfosAsync(documentIds.ToArray());
+
+            var inventoriesGroupByProduct = inventories
+                .GroupBy(x => x.ProductId)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            foreach (var documentId in documentIds)
             {
-                var document = new IndexDocument(productInventories.Key);
-                foreach (var inventory in productInventories)
+                var document = new IndexDocument(documentId);
+
+                var isInStock = false;
+                var totalInStockQuantity = 0L;
+
+                if (inventoriesGroupByProduct.TryGetValue(documentId, out var productInventories))
                 {
-                    if (inventory.IsAvailableOn(now))
+                    foreach (var inventory in productInventories.Where(i => i.IsAvailableOn(now)))
                     {
                         document.Add(new IndexDocumentField("available_in", inventory.FulfillmentCenterId.ToLowerInvariant()) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
                         document.Add(new IndexDocumentField("fulfillmentCenter_name", inventory.FulfillmentCenterName.ToLowerInvariant()) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
-                        document.Add(new IndexDocumentField("inStock_quantity", inventory.InStockQuantity) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
+                        totalInStockQuantity += inventory.InStockQuantity;
+                        isInStock = true;
                     }
-                    else
-                    {
-                        document.Add(new IndexDocumentField("inStock_quantity", 0L) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
-                    }
-                    result.Add(document);
                 }
+
+                document.Add(new IndexDocumentField("inStock_quantity", totalInStockQuantity) { IsRetrievable = true, IsFilterable = true, IsCollection = false });
+                document.Add(new IndexDocumentField("availability", isInStock ? "InStock" : "OutOfStock") { IsRetrievable = true, IsFilterable = true, IsCollection = false });
+
+                result.Add(document);
             }
             return await Task.FromResult(result);
         }

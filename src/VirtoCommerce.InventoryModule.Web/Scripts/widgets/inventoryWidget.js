@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.inventoryModule')
+angular.module('virtoCommerce.inventoryModule')
 .controller('virtoCommerce.inventoryModule.inventoryWidgetController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.inventoryModule.inventories', function ($scope, bladeNavigationService, inventories) {
     var blade = $scope.blade;
 
@@ -13,7 +13,6 @@
                 $scope.currentInventory = 'N/A';
             }
         }, function (error) {
-            //bladeNavigationService.setError('Error ' + error.status, $scope.blade);
         });
     }
 
@@ -32,11 +31,6 @@
         }
     };
 
-    $scope.$watch('blade.origItem.productType', function (productType) {
-        if (productType && productType === 'Digital') {
-            $scope.widget.widgetsInContainer.splice($scope.widget.widgetsInContainer.indexOf($scope.widget), 1);
-        }
-    });
 
     refresh();
 }]);
