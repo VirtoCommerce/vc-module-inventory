@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.Platform.Core.Common;
@@ -20,6 +21,8 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
         public IQueryable<InventoryEntity> Inventories => DbContext.Set<InventoryEntity>();
 
         public IQueryable<FulfillmentCenterEntity> FulfillmentCenters => DbContext.Set<FulfillmentCenterEntity>();
+
+        public IQueryable<InventoryReservationTransactionEntity> InventoryReservationTransactions => DbContext.Set<InventoryReservationTransactionEntity>();
 
         public IQueryable<FulfillmentCenterDynamicPropertyObjectValueEntity> DynamicPropertyObjectValues => DbContext.Set<FulfillmentCenterDynamicPropertyObjectValueEntity>();
 
@@ -56,6 +59,48 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             }
             var inventories = await query.ToListAsync();
             return inventories;
+        }
+
+        public async Task<IEnumerable<InventoryReservationTransactionEntity>> GetInventoryReservationTransactionsAsync(IEnumerable<string> ids, string responseGroup = null)
+        {
+            var query = InventoryReservationTransactions.Where(x => ids.Contains(x.Id));
+
+            var result = await query.ToListAsync();
+            return result;
+        }
+
+        public async Task<IEnumerable<InventoryReservationTransactionEntity>> GetItemInventoryReservationTransactionsAsync(string itemId, string itemType, int transactionType)
+        {
+            var query = InventoryReservationTransactions.Where(x => x.OuterId == itemId && x.OuterType == itemType && x.Type == transactionType);
+
+            var result = await query.ToListAsync();
+            return result;
+        }
+
+        public async Task<IEnumerable<InventoryReservationTransactionEntity>> GetParentInventoryReservationTransactionsAsync(string parentId)
+        {
+            var query = InventoryReservationTransactions.Where(x => x.ParentId == parentId);
+
+            var result = await query.ToListAsync();
+            return result;
+        }
+
+        public async Task StoreStockTransactions(IEnumerable<InventoryReservationTransactionEntity> transactions, IEnumerable<InventoryEntity> inventories)
+        {
+            using var transactionScope = new TransactionScope();
+
+            foreach (var transaction in transactions)
+            {
+                Add(transaction);
+            }
+
+            foreach (var inventory in inventories)
+            {
+                Update(inventory);
+            }
+
+            await UnitOfWork.CommitAsync();
+            transactionScope.Complete();
         }
 
         #endregion
