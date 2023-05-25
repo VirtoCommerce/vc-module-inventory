@@ -100,6 +100,11 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             foreach (var itemTransactionsEntity in itemTransactionsEntities)
             {
                 var productStock = productStocks.FirstOrDefault(x => x.FulfillmentCenterId == itemTransactionsEntity.FulfillmentCenterId);
+                if (productStock == null)
+                {
+                    continue;
+                }
+
                 productStock.InStockQuantity = itemTransactionsEntity.Quantity;
 
                 newTransactions.Add(PrepareTransaction(productStock, itemTransactionsEntity));
