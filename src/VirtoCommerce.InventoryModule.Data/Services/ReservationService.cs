@@ -86,7 +86,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         {
             using var repository = _repositoryFactory();
             var productIds = request.Items.Select(x => x.ProductId).ToList();
-            var productStocks = await GetProductStocks(repository, request.FulfillmentCenterIds, productIds);
+            var productStocks = GetProductStocks(repository, request.FulfillmentCenterIds, productIds);
 
             var newTransactions = new List<InventoryReservationTransactionEntity>();
             var modifiedProductStocks = new List<InventoryEntity>();
@@ -196,9 +196,9 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             await repository.StoreStockTransactions(newTransactions, modifiedProductStocks);
         }
 
-        protected virtual async Task<List<InventoryEntity>> GetProductStocks(IInventoryRepository repository, IList<string> fulfillmentCenterIds, IList<string> productIds)
+        protected virtual InventoryEntity[] GetProductStocks(IInventoryRepository repository, IList<string> fulfillmentCenterIds, IList<string> productIds)
         {
-            var productStocks = await repository
+            var productStocks = repository
                 .Inventories
                 .Where(x => productIds.Contains(x.Sku) &&
                             fulfillmentCenterIds.Contains(x.FulfillmentCenterId) &&
@@ -206,7 +206,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 .OrderByDescending(x => x.FulfillmentCenterId == fulfillmentCenterIds.First())
                 .ThenByDescending(x => x.InStockQuantity)
                 .ThenBy(x => x.Id)
-                .ToListAsync();
+                .ToArray();
 
             return productStocks;
         }
