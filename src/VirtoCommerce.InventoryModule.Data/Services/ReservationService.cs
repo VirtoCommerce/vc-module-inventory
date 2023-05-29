@@ -32,7 +32,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             _logger = logger;
         }
 
-        public virtual async Task ReserveStockAsync(ReserveStockRequest request)
+        public virtual Task ReserveStockAsync(ReserveStockRequest request)
         {
             if (request == null)
             {
@@ -49,10 +49,10 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 throw new ArgumentException(nameof(request.Items));
             }
 
-            await ReserveStockInternalAsync(request);
+            return ReserveStockInternalAsync(request);
         }
 
-        public virtual async Task ReleaseStockAsync(ReleaseStockRequest request)
+        public virtual Task ReleaseStockAsync(ReleaseStockRequest request)
         {
             if (request == null)
             {
@@ -64,7 +64,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 throw new ArgumentException(nameof(request.Items));
             }
 
-            await ReleaseStockInternalAsync(request);
+            return ReleaseStockInternalAsync(request);
         }
 
 
