@@ -155,7 +155,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         {
             using var repository = _repositoryFactory();
             var outerIds = request.Items.Select(x => x.OuterId).ToList();
-            var itemTransactionsEntities = await repository.GetItemInventoryReservationTransactionsAsync(outerIds, request.OuterType, (int)TransactionType.Reservation);
+            var itemTransactionsEntities = await repository.GetInventoryReservationTransactionsAsync(outerIds, request.OuterType, (int)TransactionType.Reservation);
 
             if (itemTransactionsEntities == null || !itemTransactionsEntities.Any())
             {

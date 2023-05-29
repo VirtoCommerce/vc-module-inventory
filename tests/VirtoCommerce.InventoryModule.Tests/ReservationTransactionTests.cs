@@ -22,6 +22,7 @@ namespace VirtoCommerce.InventoryModule.Tests
         private readonly Mock<ILogger<ReservationService>> _loggerMock;
 
         private readonly List<InventoryEntity> _initialStocks = new List<InventoryEntity>();
+        private readonly List<InventoryReservationTransactionEntity> _initialReservationTransactions = new List<InventoryReservationTransactionEntity>();
 
         private readonly List<InventoryEntity> _newStocks = new List<InventoryEntity>();
 
@@ -45,7 +46,12 @@ namespace VirtoCommerce.InventoryModule.Tests
                     _newTransactions.AddRange(transactions.ToList());
                 });
 
+            _repositoryMock
+                .Setup(x => x.GetInventoryReservationTransactionsAsync(It.IsAny<IList<string>>(), It.IsAny<string>(), It.IsAny<int>()))
+                .ReturnsAsync((IList<string> ids, string itemType, int type) => _initialReservationTransactions);
+
             _repositoryMock.Setup(x => x.Inventories).Returns(_initialStocks.AsQueryable());
+            _repositoryMock.Setup(x => x.InventoryReservationTransactions).Returns(_initialReservationTransactions.AsQueryable());
 
             //_repositoryMock
             //    .Setup(x => x.Inventories)
@@ -53,7 +59,7 @@ namespace VirtoCommerce.InventoryModule.Tests
         }
 
         [Theory]
-        [MemberData(nameof(TestData))]
+        [MemberData(nameof(ReserveStockTestData))]
         public async Task ReserveStockTest(InventoryEntity[] stocks, ReserveStockRequest request, dynamic assert)
         {
             //Arrange
@@ -71,10 +77,31 @@ namespace VirtoCommerce.InventoryModule.Tests
             Assert.Equal(assert.UpdatedStockQuantitySumLeft, _newStocks.Sum(x => x.InStockQuantity));
             Assert.Equal(assert.FirstStockChangeFulfillmentCenterId, _newStocks.First().FulfillmentCenterId);
             Assert.Equal(request.Items.Sum(x => x.Quantity), _newTransactions.Sum(x => x.Quantity));
-
         }
 
-        public static readonly IList<object[]> TestData = new List<object[]>
+        [Theory]
+        [MemberData(nameof(ReleaseStockTestData))]
+        public async Task ReleaseStockTest(InventoryEntity[] stocks, InventoryReservationTransactionEntity[] transactions, ReleaseStockRequest request, dynamic assert)
+        {
+            //Arrange
+            _initialStocks.AddRange(stocks);
+            _initialReservationTransactions.AddRange(transactions);
+
+            var service = new ReservationService(() => _repositoryMock.Object, _platformMemoryCacheMock.Object,
+                _eventPublisherMock.Object, _loggerMock.Object);
+
+            //Act
+            await service.ReleaseStockAsync(request);
+
+            //Assert
+            Assert.Equal(assert.NewStocksCount, _newStocks.Count);
+            Assert.Equal(assert.NewTransactionsCount, _newTransactions.Count);
+            Assert.Equal(assert.UpdatedStockQuantitySumLeft, _newStocks.Sum(x => x.InStockQuantity));
+            Assert.Equal(assert.FirstStockChangeFulfillmentCenterId, _newStocks.First().FulfillmentCenterId);
+            Assert.Equal(assert.NewTransactionsSum, _newTransactions.Sum(x => x.Quantity));
+        }
+
+        public static readonly IList<object[]> ReserveStockTestData = new List<object[]>
         {
             new object[]
             {
@@ -190,6 +217,40 @@ namespace VirtoCommerce.InventoryModule.Tests
                     NewTransactionsCount = 2,
                     UpdatedStockQuantitySumLeft = 15,
                     FirstStockChangeFulfillmentCenterId = "4",
+                }
+            }
+        };
+
+        public static readonly IList<object[]> ReleaseStockTestData = new List<object[]>
+        {
+            new object[]
+            {
+                new[]
+                {
+                    new InventoryEntity { Id = "1", InStockQuantity = 10, FulfillmentCenterId = "1", Sku = "1" },
+                },
+                new[]
+                {
+                    new InventoryReservationTransactionEntity
+                    {
+                        Id = "1", Quantity = 10, FulfillmentCenterId = "1", ProductId = "1", OuterId = "1", OuterType = "LineItem", Type = 0
+                    },
+                },
+                new ReleaseStockRequest
+                {
+                    OuterType = "LineItem",
+                    Items = new List<StockRequestItem>
+                    {
+                        new() { OuterId = "1", ProductId = "1" }
+                    }
+                },
+                new
+                {
+                    NewStocksCount = 1,
+                    NewTransactionsCount = 1,
+                    UpdatedStockQuantitySumLeft = 20,
+                    FirstStockChangeFulfillmentCenterId = "1",
+                    NewTransactionsSum = -10
                 }
             }
         };
