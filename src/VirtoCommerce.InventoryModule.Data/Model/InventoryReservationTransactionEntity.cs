@@ -38,7 +38,13 @@ namespace VirtoCommerce.InventoryModule.Data.Model
 
         public void Patch(InventoryReservationTransactionEntity target)
         {
-
+            target.OuterId = OuterId;
+            target.OuterType = OuterType;
+            target.ProductId = ProductId;
+            target.FulfillmentCenterId = FulfillmentCenterId;
+            target.ParentId = ParentId;
+            target.Quantity = Quantity;
+            target.ExpirationDate = ExpirationDate;
         }
 
         public InventoryReservationTransaction ToModel(InventoryReservationTransaction transaction)

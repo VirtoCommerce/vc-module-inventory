@@ -7,6 +7,5 @@ namespace VirtoCommerce.InventoryModule.Core.Services
     {
         Task ReserveStockAsync(ReserveStockRequest request);
         Task ReleaseStockAsync(ReleaseStockRequest request);
-        //IList<InventoryReservationTransaction> GetReservationTransactions();
     }
 }
