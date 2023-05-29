@@ -85,56 +85,53 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         protected virtual async Task ProcessReserveRequest(ReserveStockRequest request)
         {
             using var repository = _repositoryFactory();
-            var productIds = request.Items.Select(x => x.ProductId);
-            var productStocks = repository
-                    .Inventories
-                    .Where(x => productIds.Contains(x.Sku) &&
-                                request.FulfillmentCenterIds.Contains(x.FulfillmentCenterId) &&
-                                (x.FulfillmentCenterId == request.FulfillmentCenterIds.First() || x.InStockQuantity > 0))
-                    .OrderByDescending(x => x.FulfillmentCenterId == request.FulfillmentCenterIds.First())
-                    .ThenByDescending(x => x.InStockQuantity)
-                    .ThenBy(x => x.Id)
-                    .ToArray();
+            var productIds = request.Items.Select(x => x.ProductId).ToList();
+            var productStocks = await GetProductStocks(repository, request.FulfillmentCenterIds, productIds);
 
             var newTransactions = new List<InventoryReservationTransactionEntity>();
             var modifiedProductStocks = new List<InventoryEntity>();
 
             foreach (var item in request.Items)
             {
-                var itemProductStocks = productStocks.Where(x => x.Sku == item.ProductId);
-                if (productStocks.IsNullOrEmpty())
+                var itemProductStocks = productStocks.Where(x => x.Sku == item.ProductId).ToArray();
+                if (itemProductStocks.IsNullOrEmpty())
                 {
                     _logger.LogInformation("ProcessReserveRequest: No stocks, item - {Item}, type - {Type}, parent - {Parent}", item.OuterId, request.OuterType, request.ParentId);
                     break;
                 }
 
-                decimal reserveQuantity = item.Quantity;
+                decimal reserveQuantityLeft = item.Quantity;
                 var index = 0;
 
                 do
                 {
-                    var productStock = productStocks[index];
+                    var productStock = itemProductStocks[index];
                     index++;
                     var fulfillmentInStockQuantity = productStock.InStockQuantity;
-                    var needToReserveQuantity = reserveQuantity;
+                    var needToReserveQuantity = reserveQuantityLeft;
+                    var isLastElement = index == itemProductStocks.Length;
 
-                    if (index != productStocks.Length && fulfillmentInStockQuantity <= 0)
+                    if (!isLastElement && fulfillmentInStockQuantity <= 0)
                     {
                         continue;
                     }
 
-                    reserveQuantity = index == productStocks.Length ? 0 : reserveQuantity - fulfillmentInStockQuantity;
-                    productStock.InStockQuantity = index == productStocks.Length || reserveQuantity <= 0
-                        ? productStock.InStockQuantity - needToReserveQuantity
-                        : 0;
+                    reserveQuantityLeft = isLastElement ? 0 : reserveQuantityLeft - fulfillmentInStockQuantity;
 
-                    newTransactions.Add(PrepareTransaction(productStock, request, item,
-                        index == productStocks.Length || reserveQuantity <= 0
-                            ? needToReserveQuantity
-                            : fulfillmentInStockQuantity));
+                    if (isLastElement || reserveQuantityLeft <= 0)
+                    {
+                        productStock.InStockQuantity -= needToReserveQuantity;
+                        newTransactions.Add(PrepareTransaction(productStock, request, item, needToReserveQuantity));
+                    }
+                    else
+                    {
+                        productStock.InStockQuantity = 0;
+                        newTransactions.Add(PrepareTransaction(productStock, request, item, fulfillmentInStockQuantity));
+                    }
+
                     modifiedProductStocks.Add(productStock);
 
-                } while (reserveQuantity > 0 && index < productStocks.Length);
+                } while (reserveQuantityLeft > 0 && index < itemProductStocks.Length);
             }
 
             await repository.StoreStockTransactions(newTransactions, modifiedProductStocks);
@@ -197,6 +194,21 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             }
 
             await repository.StoreStockTransactions(newTransactions, modifiedProductStocks);
+        }
+
+        protected virtual async Task<List<InventoryEntity>> GetProductStocks(IInventoryRepository repository, IList<string> fulfillmentCenterIds, IList<string> productIds)
+        {
+            var productStocks = await repository
+                .Inventories
+                .Where(x => productIds.Contains(x.Sku) &&
+                            fulfillmentCenterIds.Contains(x.FulfillmentCenterId) &&
+                            (x.FulfillmentCenterId == fulfillmentCenterIds.First() || x.InStockQuantity > 0))
+                .OrderByDescending(x => x.FulfillmentCenterId == fulfillmentCenterIds.First())
+                .ThenByDescending(x => x.InStockQuantity)
+                .ThenBy(x => x.Id)
+                .ToListAsync();
+
+            return productStocks;
         }
 
         protected virtual InventoryReservationTransactionEntity PrepareTransaction(InventoryEntity productStock, ReserveStockRequest request, StockRequestItem item, decimal quantity)
