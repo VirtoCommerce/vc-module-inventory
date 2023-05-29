@@ -116,9 +116,9 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                         continue;
                     }
 
-                    reserveQuantityLeft = isLastElement ? 0 : reserveQuantityLeft - fulfillmentInStockQuantity;
+                    reserveQuantityLeft = Math.Max(0, reserveQuantityLeft - fulfillmentInStockQuantity);
 
-                    if (isLastElement || reserveQuantityLeft <= 0)
+                    if (isLastElement || reserveQuantityLeft == 0)
                     {
                         productStock.InStockQuantity -= needToReserveQuantity;
                         newTransactions.Add(PrepareTransaction(productStock, request, item, needToReserveQuantity));
