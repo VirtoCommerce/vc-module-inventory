@@ -70,7 +70,7 @@ namespace VirtoCommerce.InventoryModule.Tests
             Assert.Equal(assert.NewTransactionsCount, _newTransactions.Count);
             Assert.Equal(assert.UpdatedStockQuantitySumLeft, _newStocks.Sum(x => x.InStockQuantity));
             Assert.Equal(assert.FirstStockChangeFulfillmentCenterId, _newStocks.First().FulfillmentCenterId);
-            Assert.Equal(request.Quantity, _newTransactions.Sum(x => x.Quantity));
+            Assert.Equal(request.Items.Sum(x => x.Quantity), _newTransactions.Sum(x => x.Quantity));
 
         }
 
@@ -84,7 +84,11 @@ namespace VirtoCommerce.InventoryModule.Tests
                 },
                 new ReserveStockRequest
                 {
-                    OuterId = "1", ProductId = "1", FulfillmentCenterIds = new[] { "1" }, Quantity = 15
+                    FulfillmentCenterIds = new[] { "1" },
+                    Items = new List<StockRequestItem>
+                    {
+                        new() { OuterId = "1", ProductId = "1", Quantity = 15 }
+                    }
                 },
                 new
                 {
@@ -103,7 +107,11 @@ namespace VirtoCommerce.InventoryModule.Tests
                 },
                 new ReserveStockRequest
                 {
-                    OuterId = "1", ProductId = "1", FulfillmentCenterIds = new[] { "1", "2" }, Quantity = 15
+                    FulfillmentCenterIds = new[] { "1", "2" },
+                    Items = new List<StockRequestItem>
+                    {
+                        new() { OuterId = "1", ProductId = "1", Quantity = 15 }
+                    }
                 },
                 new
                 {
@@ -122,7 +130,11 @@ namespace VirtoCommerce.InventoryModule.Tests
                 },
                 new ReserveStockRequest
                 {
-                    OuterId = "1", ProductId = "1", FulfillmentCenterIds = new[] { "1", "2" }, Quantity = 15
+                    FulfillmentCenterIds = new[] { "1", "2" },
+                    Items = new List<StockRequestItem>
+                    {
+                        new() { OuterId = "1", ProductId = "1", Quantity = 15 }
+                    }
                 },
                 new
                 {
@@ -141,7 +153,11 @@ namespace VirtoCommerce.InventoryModule.Tests
                 },
                 new ReserveStockRequest
                 {
-                    OuterId = "1", ProductId = "1", FulfillmentCenterIds = new[] { "1", "2" }, Quantity = 25
+                    FulfillmentCenterIds = new[] { "1", "2" },
+                    Items = new List<StockRequestItem>
+                    {
+                        new() { OuterId = "1", ProductId = "1", Quantity = 25 }
+                    },
                 },
                 new
                 {
@@ -162,7 +178,11 @@ namespace VirtoCommerce.InventoryModule.Tests
                 },
                 new ReserveStockRequest
                 {
-                    OuterId = "1", ProductId = "1", FulfillmentCenterIds = new[] { "1", "2", "3", "4" }, Quantity = 60
+                    FulfillmentCenterIds = new[] { "1", "2", "3", "4" },
+                    Items = new List<StockRequestItem>
+                    {
+                        new() { OuterId = "1", ProductId = "1", Quantity = 60 }
+                    },
                 },
                 new
                 {

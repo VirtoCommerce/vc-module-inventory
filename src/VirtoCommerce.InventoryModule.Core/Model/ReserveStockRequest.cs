@@ -6,8 +6,6 @@ namespace VirtoCommerce.InventoryModule.Core.Model
     public class ReserveStockRequest : StockRequest
     {
         public IList<string> FulfillmentCenterIds { get; set; }
-        public string ParentId { get; set; }
-        public long Quantity { get; set; }
         public DateTime? ExpirationDate { get; set; }
     }
 }
