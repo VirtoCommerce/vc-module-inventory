@@ -112,7 +112,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                     continue;
                 }
 
-                productStock.InStockQuantity = itemTransactionsEntity.Quantity;
+                productStock.InStockQuantity += itemTransactionsEntity.Quantity;
 
                 newTransactions.Add(PrepareTransaction(productStock, itemTransactionsEntity));
                 modifiedProductStocks.Add(productStock);

@@ -88,7 +88,7 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
 
         public async Task StoreStockTransactions(IEnumerable<InventoryReservationTransactionEntity> transactions, IEnumerable<InventoryEntity> inventories)
         {
-            using var transactionScope = new TransactionScope();
+            using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 
             foreach (var transaction in transactions)
             {
