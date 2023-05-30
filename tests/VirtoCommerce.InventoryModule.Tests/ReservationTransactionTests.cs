@@ -218,15 +218,14 @@ namespace VirtoCommerce.InventoryModule.Tests
                 {
                     new InventoryReservationTransactionEntity
                     {
-                        Id = "1", Quantity = 10, FulfillmentCenterId = "1", ProductId = "1", OuterId = "1", OuterType = "LineItem", Type = 0
+                        Id = "1", Quantity = 10, FulfillmentCenterId = "1", ProductId = "1", OuterId = "1", OuterType = "LineItem", Type = 1
                     },
                 },
                 new ReleaseStockRequest
                 {
-                    OuterType = "LineItem",
                     Items = new List<StockRequestItem>
                     {
-                        new() { OuterId = "1", ProductId = "1" }
+                        new() { OuterId = "1", ProductId = "1", OuterType = "LineItem" }
                     }
                 },
                 new

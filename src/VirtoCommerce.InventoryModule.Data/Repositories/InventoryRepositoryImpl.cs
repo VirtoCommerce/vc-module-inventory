@@ -61,8 +61,7 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             return inventories;
         }
 
-        public async Task<IList<InventoryReservationTransactionEntity>> GetInventoryReservationTransactionsAsync(
-            IList<string> itemIds, string itemType, int transactionType)
+        public async Task<IList<InventoryReservationTransactionEntity>> GetInventoryReservationTransactionsAsync(IList<string> itemIds, string itemType, int transactionType)
         {
             var query = InventoryReservationTransactions.Where(x => itemIds.Contains(x.OuterId) && x.OuterType == itemType && x.Type == transactionType);
 
@@ -70,17 +69,7 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             return result;
         }
 
-        public async Task<IList<InventoryReservationTransactionEntity>> GetParentInventoryReservationTransactionsAsync(
-            string parentId)
-        {
-            var query = InventoryReservationTransactions.Where(x => x.ParentId == parentId);
-
-            var result = await query.ToListAsync();
-            return result;
-        }
-
-        public async Task StoreStockTransactions(IList<InventoryReservationTransactionEntity> transactions,
-            IList<InventoryEntity> inventories)
+        public async Task StoreStockTransactions(IList<InventoryReservationTransactionEntity> transactions, IList<InventoryEntity> inventories)
         {
             using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 

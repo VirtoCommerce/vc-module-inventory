@@ -7,12 +7,12 @@ namespace VirtoCommerce.InventoryModule.Data.Model
 {
     public class InventoryReservationTransactionEntity : AuditableEntity, IDataEntity<InventoryReservationTransactionEntity, InventoryReservationTransaction>
     {
+        public int Type { get; set; }
+        public string ParentId { get; set; }
         public string OuterId { get; set; }
         public string OuterType { get; set; }
-        public string ProductId { get; set; }
         public string FulfillmentCenterId { get; set; }
-        public string ParentId { get; set; }
-        public int Type { get; set; }
+        public string ProductId { get; set; }
         public decimal Quantity { get; set; }
         public DateTime? ExpirationDate { get; set; }
 
@@ -25,12 +25,12 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             CreatedDate = transaction.CreatedDate;
             ModifiedBy = transaction.ModifiedBy;
             ModifiedDate = transaction.ModifiedDate;
+            Type = (int)transaction.Type;
+            ParentId = transaction.ParentId;
             OuterId = transaction.OuterId;
             OuterType = transaction.OuterType;
-            ProductId = transaction.ProductId;
             FulfillmentCenterId = transaction.FulfillmentCenterId;
-            ParentId = transaction.ParentId;
-            Type = (int)transaction.Type;
+            ProductId = transaction.ProductId;
             Quantity = transaction.Quantity;
             ExpirationDate = transaction.ExpirationDate;
 
@@ -44,12 +44,12 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             transaction.CreatedDate = CreatedDate;
             transaction.ModifiedBy = ModifiedBy;
             transaction.ModifiedDate = ModifiedDate;
+            transaction.Type = EnumUtility.SafeParse(Type.ToString(), TransactionType.Reservation);
+            transaction.ParentId = ParentId;
             transaction.OuterId = OuterId;
             transaction.OuterType = OuterType;
-            transaction.ProductId = ProductId;
             transaction.FulfillmentCenterId = FulfillmentCenterId;
-            transaction.ParentId = ParentId;
-            transaction.Type = EnumUtility.SafeParse(Type.ToString(), TransactionType.Reservation);
+            transaction.ProductId = ProductId;
             transaction.Quantity = (long)Quantity;
             transaction.ExpirationDate = ExpirationDate;
 

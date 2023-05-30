@@ -87,7 +87,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 var itemProductStocks = productStocks.Where(x => x.Sku == item.ProductId).ToArray();
                 if (itemProductStocks.IsNullOrEmpty())
                 {
-                    _logger.LogInformation("ProcessReserveRequest: No stocks, item - {Item}, type - {Type}, parent - {Parent}", item.OuterId, request.OuterType, request.ParentId);
+                    _logger.LogInformation("ProcessReserveRequest: No stocks, item - {Item}, type - {Type}, parent - {Parent}", item.OuterId, item.OuterType, request.ParentId);
                     break;
                 }
 
@@ -146,11 +146,12 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         {
             using var repository = _repositoryFactory();
             var outerIds = request.Items.Select(x => x.OuterId).ToList();
-            var itemTransactionsEntities = await repository.GetInventoryReservationTransactionsAsync(outerIds, request.OuterType, (int)TransactionType.Reservation);
+            var outerType = request.Items.FirstOrDefault()?.OuterType;
+            var itemTransactionsEntities = await repository.GetInventoryReservationTransactionsAsync(outerIds, outerType, (int)TransactionType.Reservation);
 
             if (itemTransactionsEntities == null || !itemTransactionsEntities.Any())
             {
-                _logger.LogInformation("ProcessReleaseRequest: No reserve transactions, parent - {Parent}, type - {Type}", request.ParentId, request.OuterType);
+                _logger.LogInformation("ProcessReleaseRequest: No reserve transactions, parent - {Parent}, type - {Type}", request.ParentId, outerType);
                 return;
             }
 
@@ -163,7 +164,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
             if (productStocks.IsNullOrEmpty())
             {
-                _logger.LogInformation("ProcessReleaseRequest: No stocks, parent - {Parent}, type - {Type}", request.ParentId, request.OuterType);
+                _logger.LogInformation("ProcessReleaseRequest: No stocks, parent - {Parent}, type - {Type}", request.ParentId, outerType);
                 return;
             }
 
@@ -210,7 +211,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             transaction.ExpirationDate = request.ExpirationDate;
             transaction.Quantity = quantity;
             transaction.OuterId = item.OuterId;
-            transaction.OuterType = request.OuterType;
+            transaction.OuterType = item.OuterType;
             transaction.ParentId = request.ParentId;
             transaction.ProductId = item.ProductId;
             transaction.Type = (int)TransactionType.Reservation;
