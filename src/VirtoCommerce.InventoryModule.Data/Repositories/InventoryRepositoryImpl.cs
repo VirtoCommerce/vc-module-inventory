@@ -61,14 +61,6 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             return inventories;
         }
 
-        public async Task<IEnumerable<InventoryReservationTransactionEntity>> GetInventoryReservationTransactionsAsync(IEnumerable<string> ids, string responseGroup = null)
-        {
-            var query = InventoryReservationTransactions.Where(x => ids.Contains(x.Id));
-
-            var result = await query.ToListAsync();
-            return result;
-        }
-
         public async Task<IList<InventoryReservationTransactionEntity>> GetInventoryReservationTransactionsAsync(
             IList<string> itemIds, string itemType, int transactionType)
         {
@@ -78,7 +70,8 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             return result;
         }
 
-        public async Task<IEnumerable<InventoryReservationTransactionEntity>> GetParentInventoryReservationTransactionsAsync(string parentId)
+        public async Task<IList<InventoryReservationTransactionEntity>> GetParentInventoryReservationTransactionsAsync(
+            string parentId)
         {
             var query = InventoryReservationTransactions.Where(x => x.ParentId == parentId);
 
@@ -86,7 +79,8 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             return result;
         }
 
-        public async Task StoreStockTransactions(IEnumerable<InventoryReservationTransactionEntity> transactions, IEnumerable<InventoryEntity> inventories)
+        public async Task StoreStockTransactions(IList<InventoryReservationTransactionEntity> transactions,
+            IList<InventoryEntity> inventories)
         {
             using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 

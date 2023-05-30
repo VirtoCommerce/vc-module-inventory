@@ -4,29 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using VirtoCommerce.InventoryModule.Core.Events;
 using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.InventoryModule.Data.Repositories;
-using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.Events;
-using VirtoCommerce.Platform.Data.GenericCrud;
 
 namespace VirtoCommerce.InventoryModule.Data.Services
 {
-    public class ReservationService : CrudService<InventoryReservationTransaction, InventoryReservationTransactionEntity, InventoryReservationTransactionChangingEvent, InventoryReservationTransactionChangedEvent>, IReservationService
+    public class ReservationService : IReservationService
     {
-        private new readonly Func<IInventoryRepository> _repositoryFactory;
+        private readonly Func<IInventoryRepository> _repositoryFactory;
         private readonly ILogger<ReservationService> _logger;
 
-        public ReservationService(
-            Func<IInventoryRepository> repositoryFactory,
-            IPlatformMemoryCache platformMemoryCache,
-            IEventPublisher eventPublisher,
-            ILogger<ReservationService> logger)
-                : base(repositoryFactory, platformMemoryCache, eventPublisher)
+        public ReservationService(Func<IInventoryRepository> repositoryFactory, ILogger<ReservationService> logger)
         {
             _repositoryFactory = repositoryFactory;
             _logger = logger;
@@ -241,11 +232,6 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             transaction.Type = (int)TransactionType.Release;
 
             return transaction;
-        }
-
-        protected override async Task<IEnumerable<InventoryReservationTransactionEntity>> LoadEntities(IRepository repository, IEnumerable<string> ids, string responseGroup)
-        {
-            return await ((IInventoryRepository)repository).GetInventoryReservationTransactionsAsync(ids.ToArray(), responseGroup);
         }
     }
 }

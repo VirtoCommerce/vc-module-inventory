@@ -7,8 +7,6 @@ using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.InventoryModule.Data.Repositories;
 using VirtoCommerce.InventoryModule.Data.Services;
-using VirtoCommerce.Platform.Core.Caching;
-using VirtoCommerce.Platform.Core.Events;
 using Xunit;
 
 namespace VirtoCommerce.InventoryModule.Tests
@@ -17,28 +15,23 @@ namespace VirtoCommerce.InventoryModule.Tests
     public class ReservationTransactionTests
     {
         private readonly Mock<IInventoryRepository> _repositoryMock;
-        private readonly Mock<IPlatformMemoryCache> _platformMemoryCacheMock;
-        private readonly Mock<IEventPublisher> _eventPublisherMock;
         private readonly Mock<ILogger<ReservationService>> _loggerMock;
 
-        private readonly List<InventoryEntity> _initialStocks = new List<InventoryEntity>();
-        private readonly List<InventoryReservationTransactionEntity> _initialReservationTransactions = new List<InventoryReservationTransactionEntity>();
+        private readonly List<InventoryEntity> _initialStocks = new();
+        private readonly List<InventoryReservationTransactionEntity> _initialReservationTransactions = new();
 
-        private readonly List<InventoryEntity> _newStocks = new List<InventoryEntity>();
+        private readonly List<InventoryEntity> _newStocks = new();
 
-        private readonly List<InventoryReservationTransactionEntity> _newTransactions =
-            new List<InventoryReservationTransactionEntity>();
+        private readonly List<InventoryReservationTransactionEntity> _newTransactions = new();
 
         public ReservationTransactionTests()
         {
             _repositoryMock = new Mock<IInventoryRepository>();
-            _platformMemoryCacheMock = new Mock<IPlatformMemoryCache>();
-            _eventPublisherMock = new Mock<IEventPublisher>();
             _loggerMock = new Mock<ILogger<ReservationService>>();
 
             _repositoryMock
-                .Setup(x => x.StoreStockTransactions(It.IsAny<IEnumerable<InventoryReservationTransactionEntity>>(),
-                    It.IsAny<IEnumerable<InventoryEntity>>()))
+                .Setup(x => x.StoreStockTransactions(It.IsAny<IList<InventoryReservationTransactionEntity>>(),
+                    It.IsAny<IList<InventoryEntity>>()))
                 .Callback((IEnumerable<InventoryReservationTransactionEntity> transactions,
                     IEnumerable<InventoryEntity> inventories) =>
                 {
@@ -52,10 +45,6 @@ namespace VirtoCommerce.InventoryModule.Tests
 
             _repositoryMock.Setup(x => x.Inventories).Returns(_initialStocks.AsQueryable());
             _repositoryMock.Setup(x => x.InventoryReservationTransactions).Returns(_initialReservationTransactions.AsQueryable());
-
-            //_repositoryMock
-            //    .Setup(x => x.Inventories)
-            //    .Callback()
         }
 
         [Theory]
@@ -64,9 +53,7 @@ namespace VirtoCommerce.InventoryModule.Tests
         {
             //Arrange
             _initialStocks.AddRange(stocks);
-
-            var service = new ReservationService(() => _repositoryMock.Object, _platformMemoryCacheMock.Object,
-                _eventPublisherMock.Object, _loggerMock.Object);
+            var service = new ReservationService(() => _repositoryMock.Object, _loggerMock.Object);
 
             //Act
             await service.ReserveStockAsync(request);
@@ -86,9 +73,7 @@ namespace VirtoCommerce.InventoryModule.Tests
             //Arrange
             _initialStocks.AddRange(stocks);
             _initialReservationTransactions.AddRange(transactions);
-
-            var service = new ReservationService(() => _repositoryMock.Object, _platformMemoryCacheMock.Object,
-                _eventPublisherMock.Object, _loggerMock.Object);
+            var service = new ReservationService(() => _repositoryMock.Object, _loggerMock.Object);
 
             //Act
             await service.ReleaseStockAsync(request);

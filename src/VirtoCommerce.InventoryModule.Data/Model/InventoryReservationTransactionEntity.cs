@@ -15,6 +15,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
         public int Type { get; set; }
         public decimal Quantity { get; set; }
         public DateTime? ExpirationDate { get; set; }
+
         public InventoryReservationTransactionEntity FromModel(InventoryReservationTransaction transaction, PrimaryKeyResolvingMap pkMap)
         {
             pkMap.AddPair(transaction, this);
@@ -36,17 +37,6 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             return this;
         }
 
-        public void Patch(InventoryReservationTransactionEntity target)
-        {
-            target.OuterId = OuterId;
-            target.OuterType = OuterType;
-            target.ProductId = ProductId;
-            target.FulfillmentCenterId = FulfillmentCenterId;
-            target.ParentId = ParentId;
-            target.Quantity = Quantity;
-            target.ExpirationDate = ExpirationDate;
-        }
-
         public InventoryReservationTransaction ToModel(InventoryReservationTransaction transaction)
         {
             transaction.Id = Id;
@@ -57,12 +47,18 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             transaction.OuterId = OuterId;
             transaction.OuterType = OuterType;
             transaction.ProductId = ProductId;
+            transaction.FulfillmentCenterId = FulfillmentCenterId;
+            transaction.ParentId = ParentId;
             transaction.Type = EnumUtility.SafeParse(Type.ToString(), TransactionType.Reservation);
             transaction.Quantity = (long)Quantity;
             transaction.ExpirationDate = ExpirationDate;
-            transaction.ParentId = ParentId;
 
             return transaction;
+        }
+
+        public void Patch(InventoryReservationTransactionEntity target)
+        {
+            //Transaction isn't available for modifying
         }
     }
 }

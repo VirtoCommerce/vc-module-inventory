@@ -16,7 +16,7 @@ namespace VirtoCommerce.InventoryModule.Core.Model
 
         public object Clone()
         {
-            var result = MemberwiseClone() as InventoryReservationTransaction;
+            var result = (InventoryReservationTransaction)MemberwiseClone();
 
             return result;
         }
