@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace VirtoCommerce.InventoryModule.Core.Model
 {
-    public class StockRequest
+    public class InventoryReleaseRequest
     {
         public string ParentId { get; set; }
-        public IList<StockRequestItem> Items { get; set; }
+        public IList<InventoryReservationRequestItem> Items { get; set; }
     }
 }

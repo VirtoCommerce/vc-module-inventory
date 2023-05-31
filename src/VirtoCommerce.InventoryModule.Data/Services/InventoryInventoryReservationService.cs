@@ -12,18 +12,18 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.InventoryModule.Data.Services
 {
-    public class ReservationService : IReservationService
+    public class InventoryInventoryReservationService : IInventoryReservationService
     {
         private readonly Func<IInventoryRepository> _repositoryFactory;
-        private readonly ILogger<ReservationService> _logger;
+        private readonly ILogger<InventoryInventoryReservationService> _logger;
 
-        public ReservationService(Func<IInventoryRepository> repositoryFactory, ILogger<ReservationService> logger)
+        public InventoryInventoryReservationService(Func<IInventoryRepository> repositoryFactory, ILogger<InventoryInventoryReservationService> logger)
         {
             _repositoryFactory = repositoryFactory;
             _logger = logger;
         }
 
-        public virtual Task ReserveStockAsync(ReserveStockRequest request)
+        public virtual Task ReserveAsync(InventoryReserveRequest request)
         {
             if (request == null)
             {
@@ -40,10 +40,10 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 throw new ArgumentException(nameof(request.Items));
             }
 
-            return ReserveStockInternalAsync(request);
+            return ReserveInternalAsync(request);
         }
 
-        public virtual Task ReleaseStockAsync(ReleaseStockRequest request)
+        public virtual Task ReleaseAsync(InventoryReleaseRequest request)
         {
             if (request == null)
             {
@@ -55,11 +55,11 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 throw new ArgumentException(nameof(request.Items));
             }
 
-            return ReleaseStockInternalAsync(request);
+            return ReleaseInternalAsync(request);
         }
 
 
-        protected virtual async Task ReserveStockInternalAsync(ReserveStockRequest request)
+        protected virtual async Task ReserveInternalAsync(InventoryReserveRequest request)
         {
             try
             {
@@ -67,27 +67,27 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                _logger.Log(LogLevel.Error, ex, "ReserveStockAsync: Concurrent exception occur");
+                _logger.LogError(ex, "{MethodName}: Concurrent exception occur", nameof(ReserveInternalAsync));
                 //Try to process one more time
                 await ProcessReserveRequest(request);
             }
         }
 
-        protected virtual async Task ProcessReserveRequest(ReserveStockRequest request)
+        protected virtual async Task ProcessReserveRequest(InventoryReserveRequest request)
         {
             using var repository = _repositoryFactory();
             var productIds = request.Items.Select(x => x.ProductId).ToList();
-            var productStocks = GetProductStocks(repository, request.FulfillmentCenterIds, productIds);
+            var inventoryEntities = await GetInventoryEntities(repository, request.FulfillmentCenterIds, productIds);
 
             var newTransactions = new List<InventoryReservationTransactionEntity>();
-            var modifiedProductStocks = new List<InventoryEntity>();
+            var modifiedInventoryEntities = new List<InventoryEntity>();
 
             foreach (var item in request.Items)
             {
-                var itemProductStocks = productStocks.Where(x => x.Sku == item.ProductId).ToArray();
-                if (itemProductStocks.IsNullOrEmpty())
+                var itemInventoryEntities = inventoryEntities.Where(x => x.Sku == item.ProductId).ToArray();
+                if (itemInventoryEntities.IsNullOrEmpty())
                 {
-                    _logger.LogInformation("ProcessReserveRequest: No stocks, parent: {Parent}, type: {Type}, item: {Item}", request.ParentId, item.OuterType, item.OuterId);
+                    _logger.LogInformation("{MethodName}: No inventory, parent: {Parent}, type: {Type}, item: {Item}", nameof(ProcessReserveRequest), request.ParentId, item.OuterType, item.OuterId);
                     break;
                 }
 
@@ -96,11 +96,11 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
                 do
                 {
-                    var productStock = itemProductStocks[index];
-                    index++;
-                    var fulfillmentInStockQuantity = productStock.InStockQuantity;
+                    var inventoryEntity = itemInventoryEntities[index];
+                    var fulfillmentInStockQuantity = inventoryEntity.InStockQuantity;
                     var needToReserveQuantity = reserveQuantityLeft;
-                    var isLastElement = index == itemProductStocks.Length;
+                    index++;
+                    var isLastElement = index == itemInventoryEntities.Length;
 
                     if (!isLastElement && fulfillmentInStockQuantity <= 0)
                     {
@@ -111,24 +111,24 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
                     if (isLastElement || reserveQuantityLeft == 0)
                     {
-                        productStock.InStockQuantity -= needToReserveQuantity;
-                        newTransactions.Add(BuildReservationTransaction(productStock, request, item, needToReserveQuantity));
+                        inventoryEntity.InStockQuantity -= needToReserveQuantity;
+                        newTransactions.Add(BuildReservationTransaction(inventoryEntity, request, item, needToReserveQuantity));
                     }
                     else
                     {
-                        productStock.InStockQuantity = 0;
-                        newTransactions.Add(BuildReservationTransaction(productStock, request, item, fulfillmentInStockQuantity));
+                        inventoryEntity.InStockQuantity = 0;
+                        newTransactions.Add(BuildReservationTransaction(inventoryEntity, request, item, fulfillmentInStockQuantity));
                     }
 
-                    modifiedProductStocks.Add(productStock);
-
-                } while (reserveQuantityLeft > 0 && index < itemProductStocks.Length);
+                    modifiedInventoryEntities.Add(inventoryEntity);
+                }
+                while (reserveQuantityLeft > 0 && index < itemInventoryEntities.Length);
             }
 
-            await repository.SaveInventoryReservationTransactions(newTransactions, modifiedProductStocks);
+            await repository.SaveInventoryReservationTransactions(newTransactions, modifiedInventoryEntities);
         }
 
-        protected virtual async Task ReleaseStockInternalAsync(ReleaseStockRequest request)
+        protected virtual async Task ReleaseInternalAsync(InventoryReleaseRequest request)
         {
             try
             {
@@ -136,13 +136,13 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                _logger.Log(LogLevel.Error, ex, "ReleaseStockAsync: Concurrent exception occur");
+                _logger.LogError(ex, "{MethodName}: Concurrent exception occur", nameof(ReleaseInternalAsync));
                 //Try to process one more time
                 await ProcessReleaseRequest(request);
             }
         }
 
-        protected virtual async Task ProcessReleaseRequest(ReleaseStockRequest request)
+        protected virtual async Task ProcessReleaseRequest(InventoryReleaseRequest request)
         {
             using var repository = _repositoryFactory();
             var outerIds = request.Items.Select(x => x.OuterId).ToList();
@@ -151,48 +151,49 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
             if (itemTransactionsEntities == null || !itemTransactionsEntities.Any())
             {
-                _logger.LogInformation("ProcessReleaseRequest: No reserve transactions, parent: {Parent}, type: {Type}", request.ParentId, outerType);
+                _logger.LogInformation("{MethodName}: No reserve transactions, parent: {Parent}, type: {Type}", nameof(ProcessReleaseRequest), request.ParentId, outerType);
                 return;
             }
 
             var fulfillmentCenterIds = itemTransactionsEntities.Select(x => x.FulfillmentCenterId);
             var productIds = request.Items.Select(x => x.ProductId);
-            var productStocks = repository
+
+            var inventoryEntities = await repository
                 .Inventories
                 .Where(x => productIds.Contains(x.Sku) && fulfillmentCenterIds.Contains(x.FulfillmentCenterId))
-                .ToList();
+                .ToListAsync();
 
-            if (productStocks.IsNullOrEmpty())
+            if (inventoryEntities.IsNullOrEmpty())
             {
-                _logger.LogInformation("ProcessReleaseRequest: No stocks, parent: {Parent}, type: {Type}", request.ParentId, outerType);
+                _logger.LogInformation("{MethodName}: No stocks, parent: {Parent}, type: {Type}", nameof(ProcessReleaseRequest), request.ParentId, outerType);
                 return;
             }
 
             var newTransactions = new List<InventoryReservationTransactionEntity>();
-            var modifiedProductStocks = new List<InventoryEntity>();
+            var modifiedInventoryEntities = new List<InventoryEntity>();
 
             foreach (var itemTransactionsEntity in itemTransactionsEntities)
             {
-                var productStock = productStocks.FirstOrDefault(x => x.FulfillmentCenterId == itemTransactionsEntity.FulfillmentCenterId);
-                if (productStock == null)
+                var inventoryEntity = inventoryEntities.FirstOrDefault(x => x.FulfillmentCenterId == itemTransactionsEntity.FulfillmentCenterId);
+                if (inventoryEntity == null)
                 {
                     continue;
                 }
 
-                productStock.InStockQuantity += itemTransactionsEntity.Quantity;
+                inventoryEntity.InStockQuantity += itemTransactionsEntity.Quantity;
 
-                newTransactions.Add(BuildReleaseTransaction(productStock, itemTransactionsEntity));
-                modifiedProductStocks.Add(productStock);
+                newTransactions.Add(BuildReleaseTransaction(inventoryEntity, itemTransactionsEntity));
+                modifiedInventoryEntities.Add(inventoryEntity);
             }
 
-            await repository.SaveInventoryReservationTransactions(newTransactions, modifiedProductStocks);
+            await repository.SaveInventoryReservationTransactions(newTransactions, modifiedInventoryEntities);
         }
 
-        protected virtual IList<InventoryEntity> GetProductStocks(IInventoryRepository repository, IList<string> fulfillmentCenterIds, IList<string> productIds)
+        protected virtual async Task<IList<InventoryEntity>> GetInventoryEntities(IInventoryRepository repository, IList<string> fulfillmentCenterIds, IList<string> productIds)
         {
             //Will return all inventories for all products in first fulfillment center list and
             //all inventories for product-fulfillment pairs with InStockQuantity > 0
-            return repository
+            return await repository
                 .Inventories
                 .Where(x => productIds.Contains(x.Sku) &&
                             fulfillmentCenterIds.Contains(x.FulfillmentCenterId) &&
@@ -200,14 +201,14 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 .OrderByDescending(x => x.FulfillmentCenterId == fulfillmentCenterIds.First())
                 .ThenByDescending(x => x.InStockQuantity)
                 .ThenBy(x => x.Id)
-                .ToList();
+                .ToListAsync();
         }
 
-        protected virtual InventoryReservationTransactionEntity BuildReservationTransaction(InventoryEntity productStock, ReserveStockRequest request, StockRequestItem item, decimal quantity)
+        protected virtual InventoryReservationTransactionEntity BuildReservationTransaction(InventoryEntity inventoryEntity, InventoryReserveRequest request, InventoryReservationRequestItem item, decimal quantity)
         {
             var transaction = AbstractTypeFactory<InventoryReservationTransactionEntity>.TryCreateInstance();
 
-            transaction.FulfillmentCenterId = productStock.FulfillmentCenterId;
+            transaction.FulfillmentCenterId = inventoryEntity.FulfillmentCenterId;
             transaction.ExpirationDate = request.ExpirationDate;
             transaction.Quantity = quantity;
             transaction.OuterId = item.OuterId;
@@ -219,11 +220,11 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             return transaction;
         }
 
-        protected virtual InventoryReservationTransactionEntity BuildReleaseTransaction(InventoryEntity productStock, InventoryReservationTransactionEntity transactionEntity)
+        protected virtual InventoryReservationTransactionEntity BuildReleaseTransaction(InventoryEntity inventoryEntity, InventoryReservationTransactionEntity transactionEntity)
         {
             var transaction = AbstractTypeFactory<InventoryReservationTransactionEntity>.TryCreateInstance();
 
-            transaction.FulfillmentCenterId = productStock.FulfillmentCenterId;
+            transaction.FulfillmentCenterId = inventoryEntity.FulfillmentCenterId;
             transaction.ExpirationDate = transactionEntity.ExpirationDate;
             transaction.Quantity = -transactionEntity.Quantity;
             transaction.OuterId = transactionEntity.OuterId;
