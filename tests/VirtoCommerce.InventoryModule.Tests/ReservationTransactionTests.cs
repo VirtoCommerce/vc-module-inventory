@@ -19,7 +19,7 @@ namespace VirtoCommerce.InventoryModule.Tests
     public class ReservationTransactionTests
     {
         private readonly Mock<IInventoryRepository> _repositoryMock;
-        private readonly Mock<ILogger<InventoryInventoryReservationService>> _loggerMock;
+        private readonly Mock<ILogger<InventoryReservationService>> _loggerMock;
 
         private readonly List<InventoryEntity> _initialStocks = new();
         private readonly List<InventoryReservationTransactionEntity> _initialReservationTransactions = new();
@@ -31,7 +31,7 @@ namespace VirtoCommerce.InventoryModule.Tests
         public ReservationTransactionTests()
         {
             _repositoryMock = new Mock<IInventoryRepository>();
-            _loggerMock = new Mock<ILogger<InventoryInventoryReservationService>>();
+            _loggerMock = new Mock<ILogger<InventoryReservationService>>();
 
             _repositoryMock
                 .Setup(x => x.SaveInventoryReservationTransactions(It.IsAny<IList<InventoryReservationTransactionEntity>>(),
@@ -57,7 +57,7 @@ namespace VirtoCommerce.InventoryModule.Tests
         {
             //Arrange
             _initialStocks.AddRange(stocks);
-            var service = new InventoryInventoryReservationService(() => _repositoryMock.Object, _loggerMock.Object);
+            var service = new InventoryReservationService(() => _repositoryMock.Object, _loggerMock.Object);
 
             //Act
             await service.ReserveAsync(request);
@@ -77,7 +77,7 @@ namespace VirtoCommerce.InventoryModule.Tests
             //Arrange
             _initialStocks.AddRange(stocks);
             _initialReservationTransactions.AddRange(transactions);
-            var service = new InventoryInventoryReservationService(() => _repositoryMock.Object, _loggerMock.Object);
+            var service = new InventoryReservationService(() => _repositoryMock.Object, _loggerMock.Object);
 
             //Act
             await service.ReleaseAsync(request);
@@ -103,7 +103,7 @@ namespace VirtoCommerce.InventoryModule.Tests
                     FulfillmentCenterIds = new[] { "1" },
                     Items = new List<InventoryReservationRequestItem>
                     {
-                        new() { OuterId = "1", ProductId = "1", Quantity = 15 }
+                        new() { ItemId = "1", ProductId = "1", Quantity = 15 }
                     }
                 },
                 new
@@ -126,7 +126,7 @@ namespace VirtoCommerce.InventoryModule.Tests
                     FulfillmentCenterIds = new[] { "1", "2" },
                     Items = new List<InventoryReservationRequestItem>
                     {
-                        new() { OuterId = "1", ProductId = "1", Quantity = 15 }
+                        new() { ItemId = "1", ProductId = "1", Quantity = 15 }
                     }
                 },
                 new
@@ -149,7 +149,7 @@ namespace VirtoCommerce.InventoryModule.Tests
                     FulfillmentCenterIds = new[] { "1", "2" },
                     Items = new List<InventoryReservationRequestItem>
                     {
-                        new() { OuterId = "1", ProductId = "1", Quantity = 15 }
+                        new() { ItemId = "1", ProductId = "1", Quantity = 15 }
                     }
                 },
                 new
@@ -172,7 +172,7 @@ namespace VirtoCommerce.InventoryModule.Tests
                     FulfillmentCenterIds = new[] { "1", "2" },
                     Items = new List<InventoryReservationRequestItem>
                     {
-                        new() { OuterId = "1", ProductId = "1", Quantity = 25 }
+                        new() { ItemId = "1", ProductId = "1", Quantity = 25 }
                     },
                 },
                 new
@@ -197,7 +197,7 @@ namespace VirtoCommerce.InventoryModule.Tests
                     FulfillmentCenterIds = new[] { "1", "2", "3", "4" },
                     Items = new List<InventoryReservationRequestItem>
                     {
-                        new() { OuterId = "1", ProductId = "1", Quantity = 60 }
+                        new() { ItemId = "1", ProductId = "1", Quantity = 60 }
                     },
                 },
                 new
@@ -222,14 +222,14 @@ namespace VirtoCommerce.InventoryModule.Tests
                 {
                     new InventoryReservationTransactionEntity
                     {
-                        Id = "1", Quantity = 10, FulfillmentCenterId = "1", ProductId = "1", OuterId = "1", OuterType = "LineItem", Type = 1
+                        Id = "1", Quantity = 10, FulfillmentCenterId = "1", ProductId = "1", ItemId = "1", ItemType = "LineItem", Type = 1
                     },
                 },
                 new InventoryReleaseRequest
                 {
                     Items = new List<InventoryReservationRequestItem>
                     {
-                        new() { OuterId = "1", ProductId = "1", OuterType = "LineItem" }
+                        new() { ItemId = "1", ProductId = "1", ItemType = "LineItem" }
                     }
                 },
                 new

@@ -12,12 +12,12 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.InventoryModule.Data.Services
 {
-    public class InventoryInventoryReservationService : IInventoryReservationService
+    public class InventoryReservationService : IInventoryReservationService
     {
         private readonly Func<IInventoryRepository> _repositoryFactory;
-        private readonly ILogger<InventoryInventoryReservationService> _logger;
+        private readonly ILogger<InventoryReservationService> _logger;
 
-        public InventoryInventoryReservationService(Func<IInventoryRepository> repositoryFactory, ILogger<InventoryInventoryReservationService> logger)
+        public InventoryReservationService(Func<IInventoryRepository> repositoryFactory, ILogger<InventoryReservationService> logger)
         {
             _repositoryFactory = repositoryFactory;
             _logger = logger;
@@ -87,7 +87,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                 var itemInventoryEntities = inventoryEntities.Where(x => x.Sku == item.ProductId).ToArray();
                 if (itemInventoryEntities.IsNullOrEmpty())
                 {
-                    _logger.LogInformation("{MethodName}: No inventory, parent: {Parent}, type: {Type}, item: {Item}", nameof(ProcessReserveRequest), request.ParentId, item.OuterType, item.OuterId);
+                    _logger.LogInformation("{MethodName}: No inventory, parent: {Parent}, type: {Type}, item: {Item}", nameof(ProcessReserveRequest), request.ParentId, item.ItemType, item.ItemId);
                     break;
                 }
 
@@ -145,8 +145,8 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         protected virtual async Task ProcessReleaseRequest(InventoryReleaseRequest request)
         {
             using var repository = _repositoryFactory();
-            var outerIds = request.Items.Select(x => x.OuterId).ToList();
-            var outerType = request.Items.FirstOrDefault()?.OuterType;
+            var outerIds = request.Items.Select(x => x.ItemId).ToList();
+            var outerType = request.Items.FirstOrDefault()?.ItemType;
             var itemTransactionsEntities = await repository.GetInventoryReservationTransactionsAsync((int)TransactionType.Reservation, outerType, outerIds);
 
             if (itemTransactionsEntities == null || !itemTransactionsEntities.Any())
@@ -211,8 +211,8 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             transaction.FulfillmentCenterId = inventoryEntity.FulfillmentCenterId;
             transaction.ExpirationDate = request.ExpirationDate;
             transaction.Quantity = quantity;
-            transaction.OuterId = item.OuterId;
-            transaction.OuterType = item.OuterType;
+            transaction.ItemId = item.ItemId;
+            transaction.ItemType = item.ItemType;
             transaction.ParentId = request.ParentId;
             transaction.ProductId = item.ProductId;
             transaction.Type = (int)TransactionType.Reservation;
@@ -227,8 +227,8 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             transaction.FulfillmentCenterId = inventoryEntity.FulfillmentCenterId;
             transaction.ExpirationDate = transactionEntity.ExpirationDate;
             transaction.Quantity = -transactionEntity.Quantity;
-            transaction.OuterId = transactionEntity.OuterId;
-            transaction.OuterType = transactionEntity.OuterType;
+            transaction.ItemId = transactionEntity.ItemId;
+            transaction.ItemType = transactionEntity.ItemType;
             transaction.ParentId = transactionEntity.ParentId;
             transaction.ProductId = transactionEntity.ProductId;
             transaction.Type = (int)TransactionType.Release;

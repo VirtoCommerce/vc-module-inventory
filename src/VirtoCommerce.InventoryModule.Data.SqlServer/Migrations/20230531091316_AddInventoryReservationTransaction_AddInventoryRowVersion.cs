@@ -21,12 +21,12 @@ namespace VirtoCommerce.InventoryModule.Data.SqlServer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    OuterId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    OuterType = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ProductId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FulfillmentCenterId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ParentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Type = table.Column<int>(type: "int", nullable: false),
+                    ParentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ItemType = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ItemId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    FulfillmentCenterId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ProductId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Quantity = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -40,11 +40,11 @@ namespace VirtoCommerce.InventoryModule.Data.SqlServer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_InventoryReservationTransaction_OuterId_OuterType_FulfillmentCenterId_Type",
+                name: "IX_InventoryReservationTransaction_ItemId_FulfillmentCenterId_ItemType_Type",
                 table: "InventoryReservationTransaction",
-                columns: new[] { "OuterId", "OuterType", "FulfillmentCenterId", "Type" },
+                columns: new[] { "ItemId", "FulfillmentCenterId", "ItemType", "Type" },
                 unique: true,
-                filter: "[OuterId] IS NOT NULL AND [OuterType] IS NOT NULL AND [FulfillmentCenterId] IS NOT NULL");
+                filter: "[ItemId] IS NOT NULL AND [FulfillmentCenterId] IS NOT NULL AND [ItemType] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

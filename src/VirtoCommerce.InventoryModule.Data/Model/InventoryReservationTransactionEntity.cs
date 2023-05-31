@@ -9,8 +9,8 @@ namespace VirtoCommerce.InventoryModule.Data.Model
     {
         public int Type { get; set; }
         public string ParentId { get; set; }
-        public string OuterId { get; set; }
-        public string OuterType { get; set; }
+        public string ItemType { get; set; }
+        public string ItemId { get; set; }
         public string FulfillmentCenterId { get; set; }
         public string ProductId { get; set; }
         public decimal Quantity { get; set; }
@@ -27,8 +27,8 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             ModifiedDate = transaction.ModifiedDate;
             Type = (int)transaction.Type;
             ParentId = transaction.ParentId;
-            OuterId = transaction.OuterId;
-            OuterType = transaction.OuterType;
+            ItemType = transaction.ItemType;
+            ItemId = transaction.ItemId;
             FulfillmentCenterId = transaction.FulfillmentCenterId;
             ProductId = transaction.ProductId;
             Quantity = transaction.Quantity;
@@ -46,8 +46,8 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             transaction.ModifiedDate = ModifiedDate;
             transaction.Type = EnumUtility.SafeParse(Type.ToString(), TransactionType.Reservation);
             transaction.ParentId = ParentId;
-            transaction.OuterId = OuterId;
-            transaction.OuterType = OuterType;
+            transaction.ItemType = ItemType;
+            transaction.ItemId = ItemId;
             transaction.FulfillmentCenterId = FulfillmentCenterId;
             transaction.ProductId = ProductId;
             transaction.Quantity = (long)Quantity;

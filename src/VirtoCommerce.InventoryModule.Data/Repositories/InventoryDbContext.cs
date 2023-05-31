@@ -49,7 +49,7 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             modelBuilder.Entity<InventoryReservationTransactionEntity>().ToTable("InventoryReservationTransaction").HasKey(x => x.Id);
             modelBuilder.Entity<InventoryReservationTransactionEntity>().Property(x => x.Id).HasMaxLength(MaxLength).ValueGeneratedOnAdd();
             modelBuilder.Entity<InventoryReservationTransactionEntity>().Property(x => x.Quantity).HasPrecision(18, 2);
-            modelBuilder.Entity<InventoryReservationTransactionEntity>().HasIndex(x => new { x.OuterId, x.OuterType, x.FulfillmentCenterId, x.Type }).IsUnique();
+            modelBuilder.Entity<InventoryReservationTransactionEntity>().HasIndex(x => new { x.ItemId, x.FulfillmentCenterId, x.ItemType, x.Type }).IsUnique();
 
             base.OnModelCreating(modelBuilder);
 
