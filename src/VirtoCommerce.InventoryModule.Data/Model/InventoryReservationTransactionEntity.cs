@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Domain;
@@ -7,13 +8,26 @@ namespace VirtoCommerce.InventoryModule.Data.Model
 {
     public class InventoryReservationTransactionEntity : AuditableEntity, IDataEntity<InventoryReservationTransactionEntity, InventoryReservationTransaction>
     {
-        public int Type { get; set; }
+        [StringLength(128)]
+        public string Type { get; set; }
+
+        [StringLength(128)]
         public string ParentId { get; set; }
+
+        [StringLength(256)]
         public string ItemType { get; set; }
+
+        [StringLength(128)]
         public string ItemId { get; set; }
+
+        [StringLength(128)]
         public string FulfillmentCenterId { get; set; }
+
+        [StringLength(128)]
         public string ProductId { get; set; }
+
         public decimal Quantity { get; set; }
+
         public DateTime? ExpirationDate { get; set; }
 
         public InventoryReservationTransactionEntity FromModel(InventoryReservationTransaction transaction, PrimaryKeyResolvingMap pkMap)
@@ -25,7 +39,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             CreatedDate = transaction.CreatedDate;
             ModifiedBy = transaction.ModifiedBy;
             ModifiedDate = transaction.ModifiedDate;
-            Type = (int)transaction.Type;
+            Type = transaction.Type.ToString();
             ParentId = transaction.ParentId;
             ItemType = transaction.ItemType;
             ItemId = transaction.ItemId;
@@ -44,7 +58,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
             transaction.CreatedDate = CreatedDate;
             transaction.ModifiedBy = ModifiedBy;
             transaction.ModifiedDate = ModifiedDate;
-            transaction.Type = EnumUtility.SafeParse(Type.ToString(), TransactionType.Reservation);
+            transaction.Type = EnumUtility.SafeParse(Type, TransactionType.Undefined);
             transaction.ParentId = ParentId;
             transaction.ItemType = ItemType;
             transaction.ItemId = ItemId;

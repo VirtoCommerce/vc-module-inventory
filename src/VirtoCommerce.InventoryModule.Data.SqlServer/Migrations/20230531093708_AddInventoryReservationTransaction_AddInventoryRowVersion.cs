@@ -21,12 +21,12 @@ namespace VirtoCommerce.InventoryModule.Data.SqlServer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    ParentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ItemType = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ItemId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    FulfillmentCenterId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ProductId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
+                    ParentId = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
+                    ItemType = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ItemId = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
+                    FulfillmentCenterId = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
+                    ProductId = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
                     Quantity = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -44,7 +44,7 @@ namespace VirtoCommerce.InventoryModule.Data.SqlServer.Migrations
                 table: "InventoryReservationTransaction",
                 columns: new[] { "ItemId", "FulfillmentCenterId", "ItemType", "Type" },
                 unique: true,
-                filter: "[ItemId] IS NOT NULL AND [FulfillmentCenterId] IS NOT NULL AND [ItemType] IS NOT NULL");
+                filter: "[ItemId] IS NOT NULL AND [FulfillmentCenterId] IS NOT NULL AND [ItemType] IS NOT NULL AND [Type] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

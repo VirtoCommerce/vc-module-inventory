@@ -44,8 +44,8 @@ namespace VirtoCommerce.InventoryModule.Tests
                 });
 
             _repositoryMock
-                .Setup(x => x.GetInventoryReservationTransactionsAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IList<string>>()))
-                .ReturnsAsync((int type, string itemType, IList<string> ids) => _initialReservationTransactions);
+                .Setup(x => x.GetInventoryReservationTransactionsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<string>>()))
+                .ReturnsAsync((string type, string itemType, IList<string> ids) => _initialReservationTransactions);
 
             _repositoryMock.Setup(x => x.Inventories).Returns(_initialStocks.AsAsyncQueryable());
             _repositoryMock.Setup(x => x.InventoryReservationTransactions).Returns(_initialReservationTransactions.AsAsyncQueryable());
@@ -222,7 +222,7 @@ namespace VirtoCommerce.InventoryModule.Tests
                 {
                     new InventoryReservationTransactionEntity
                     {
-                        Id = "1", Quantity = 10, FulfillmentCenterId = "1", ProductId = "1", ItemId = "1", ItemType = "LineItem", Type = 1
+                        Id = "1", Quantity = 10, FulfillmentCenterId = "1", ProductId = "1", ItemId = "1", ItemType = "LineItem", Type = TransactionType.Reservation.ToString()
                     },
                 },
                 new InventoryReleaseRequest

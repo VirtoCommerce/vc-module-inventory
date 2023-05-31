@@ -296,13 +296,16 @@ namespace VirtoCommerce.InventoryModule.Data.SqlServer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FulfillmentCenterId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ItemId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ItemType")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(64)
@@ -312,23 +315,26 @@ namespace VirtoCommerce.InventoryModule.Data.SqlServer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ParentId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<decimal>("Quantity")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ItemId", "FulfillmentCenterId", "ItemType", "Type")
                         .IsUnique()
-                        .HasFilter("[ItemId] IS NOT NULL AND [FulfillmentCenterId] IS NOT NULL AND [ItemType] IS NOT NULL");
+                        .HasFilter("[ItemId] IS NOT NULL AND [FulfillmentCenterId] IS NOT NULL AND [ItemType] IS NOT NULL AND [Type] IS NOT NULL");
 
                     b.ToTable("InventoryReservationTransaction", (string)null);
                 });

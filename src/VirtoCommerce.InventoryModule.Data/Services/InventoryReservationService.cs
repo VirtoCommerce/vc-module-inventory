@@ -147,7 +147,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             using var repository = _repositoryFactory();
             var outerIds = request.Items.Select(x => x.ItemId).ToList();
             var outerType = request.Items.FirstOrDefault()?.ItemType;
-            var itemTransactionsEntities = await repository.GetInventoryReservationTransactionsAsync((int)TransactionType.Reservation, outerType, outerIds);
+            var itemTransactionsEntities = await repository.GetInventoryReservationTransactionsAsync(TransactionType.Reservation.ToString(), outerType, outerIds);
 
             if (itemTransactionsEntities == null || !itemTransactionsEntities.Any())
             {
@@ -208,14 +208,14 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         {
             var transaction = AbstractTypeFactory<InventoryReservationTransactionEntity>.TryCreateInstance();
 
-            transaction.FulfillmentCenterId = inventoryEntity.FulfillmentCenterId;
-            transaction.ExpirationDate = request.ExpirationDate;
-            transaction.Quantity = quantity;
-            transaction.ItemId = item.ItemId;
-            transaction.ItemType = item.ItemType;
+            transaction.Type = TransactionType.Reservation.ToString();
             transaction.ParentId = request.ParentId;
+            transaction.ItemType = item.ItemType;
+            transaction.ItemId = item.ItemId;
+            transaction.FulfillmentCenterId = inventoryEntity.FulfillmentCenterId;
             transaction.ProductId = item.ProductId;
-            transaction.Type = (int)TransactionType.Reservation;
+            transaction.Quantity = quantity;
+            transaction.ExpirationDate = request.ExpirationDate;
 
             return transaction;
         }
@@ -224,14 +224,13 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         {
             var transaction = AbstractTypeFactory<InventoryReservationTransactionEntity>.TryCreateInstance();
 
-            transaction.FulfillmentCenterId = inventoryEntity.FulfillmentCenterId;
-            transaction.ExpirationDate = transactionEntity.ExpirationDate;
-            transaction.Quantity = -transactionEntity.Quantity;
-            transaction.ItemId = transactionEntity.ItemId;
-            transaction.ItemType = transactionEntity.ItemType;
+            transaction.Type = TransactionType.Release.ToString();
             transaction.ParentId = transactionEntity.ParentId;
+            transaction.ItemType = transactionEntity.ItemType;
+            transaction.ItemId = transactionEntity.ItemId;
+            transaction.FulfillmentCenterId = inventoryEntity.FulfillmentCenterId;
             transaction.ProductId = transactionEntity.ProductId;
-            transaction.Type = (int)TransactionType.Release;
+            transaction.Quantity = -transactionEntity.Quantity;
 
             return transaction;
         }

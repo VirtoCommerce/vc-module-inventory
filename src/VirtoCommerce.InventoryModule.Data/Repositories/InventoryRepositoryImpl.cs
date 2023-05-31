@@ -61,7 +61,7 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             return inventories;
         }
 
-        public virtual async Task<IList<InventoryReservationTransactionEntity>> GetInventoryReservationTransactionsAsync(int transactionType, string itemType, IList<string> itemIds)
+        public virtual async Task<IList<InventoryReservationTransactionEntity>> GetInventoryReservationTransactionsAsync(string transactionType, string itemType, IList<string> itemIds)
         {
             var query = InventoryReservationTransactions.Where(x => x.Type == transactionType && x.ItemType == itemType && itemIds.Contains(x.ItemId));
 

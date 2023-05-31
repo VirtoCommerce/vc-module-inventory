@@ -14,7 +14,7 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
         Task<IEnumerable<InventoryEntity>> GetProductsInventoriesAsync(IEnumerable<string> productIds, string responseGroup = null);
         Task<IEnumerable<FulfillmentCenterEntity>> GetFulfillmentCentersAsync(IEnumerable<string> ids);
         Task<IEnumerable<InventoryEntity>> GetByIdsAsync(string[] ids, string responseGroup = null);
-        Task<IList<InventoryReservationTransactionEntity>> GetInventoryReservationTransactionsAsync(int transactionType, string itemType, IList<string> itemIds);
+        Task<IList<InventoryReservationTransactionEntity>> GetInventoryReservationTransactionsAsync(string transactionType, string itemType, IList<string> itemIds);
         Task SaveInventoryReservationTransactions(IList<InventoryReservationTransactionEntity> transactions, IList<InventoryEntity> inventories);
     }
 }
