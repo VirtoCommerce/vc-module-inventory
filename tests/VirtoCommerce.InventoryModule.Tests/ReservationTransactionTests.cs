@@ -259,7 +259,6 @@ namespace VirtoCommerce.InventoryModule.Tests
     {
         public AsyncQueryable(IEnumerable<TEntity> enumerable) : base(enumerable) { }
         public AsyncQueryable(Expression expression) : base(expression) { }
-        public IAsyncEnumerator<TEntity> GetEnumerator() => new AsyncEnumerator(this.AsEnumerable().GetEnumerator());
         public IAsyncEnumerator<TEntity> GetAsyncEnumerator(CancellationToken cancellationToken = default) => new AsyncEnumerator(this.AsEnumerable().GetEnumerator());
         IQueryProvider IQueryable.Provider => new AsyncQueryProvider(this);
 
@@ -267,7 +266,6 @@ namespace VirtoCommerce.InventoryModule.Tests
         {
             private readonly IEnumerator<TEntity> _inner;
             public AsyncEnumerator(IEnumerator<TEntity> inner) => _inner = inner;
-            public void Dispose() => _inner.Dispose();
             public TEntity Current => _inner.Current;
             public ValueTask<bool> MoveNextAsync() => new(_inner.MoveNext());
 #pragma warning disable CS1998 // Nothing to await
@@ -283,7 +281,6 @@ namespace VirtoCommerce.InventoryModule.Tests
             public IQueryable<TElement> CreateQuery<TElement>(Expression expression) => new AsyncQueryable<TElement>(expression);
             public object Execute(Expression expression) => _inner.Execute(expression);
             public TResult Execute<TResult>(Expression expression) => _inner.Execute<TResult>(expression);
-            public IAsyncEnumerable<TResult> ExecuteAsync<TResult>(Expression expression) => new AsyncQueryable<TResult>(expression);
             TResult IAsyncQueryProvider.ExecuteAsync<TResult>(Expression expression, CancellationToken cancellationToken) => Execute<TResult>(expression);
         }
     }
