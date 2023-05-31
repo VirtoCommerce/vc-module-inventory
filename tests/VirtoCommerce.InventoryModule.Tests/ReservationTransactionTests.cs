@@ -21,10 +21,10 @@ namespace VirtoCommerce.InventoryModule.Tests
         private readonly Mock<IInventoryRepository> _repositoryMock;
         private readonly Mock<ILogger<InventoryReservationService>> _loggerMock;
 
-        private readonly List<InventoryEntity> _initialStocks = new();
+        private readonly List<InventoryEntity> _initialInventories = new();
         private readonly List<InventoryReservationTransactionEntity> _initialReservationTransactions = new();
 
-        private readonly List<InventoryEntity> _newStocks = new();
+        private readonly List<InventoryEntity> _modifiedInventoryEntities = new();
 
         private readonly List<InventoryReservationTransactionEntity> _newTransactions = new();
 
@@ -39,7 +39,7 @@ namespace VirtoCommerce.InventoryModule.Tests
                 .Callback((IEnumerable<InventoryReservationTransactionEntity> transactions,
                     IEnumerable<InventoryEntity> inventories) =>
                 {
-                    _newStocks.AddRange(inventories.ToList());
+                    _modifiedInventoryEntities.AddRange(inventories.ToList());
                     _newTransactions.AddRange(transactions.ToList());
                 });
 
@@ -47,35 +47,35 @@ namespace VirtoCommerce.InventoryModule.Tests
                 .Setup(x => x.GetInventoryReservationTransactionsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<string>>()))
                 .ReturnsAsync((string type, string itemType, IList<string> ids) => _initialReservationTransactions);
 
-            _repositoryMock.Setup(x => x.Inventories).Returns(_initialStocks.AsAsyncQueryable());
+            _repositoryMock.Setup(x => x.Inventories).Returns(_initialInventories.AsAsyncQueryable());
             _repositoryMock.Setup(x => x.InventoryReservationTransactions).Returns(_initialReservationTransactions.AsAsyncQueryable());
         }
 
         [Theory]
         [MemberData(nameof(ReserveStockTestData))]
-        public async Task ReserveStockTest(InventoryEntity[] stocks, InventoryReserveRequest request, dynamic assert)
+        public async Task ReserveStockTest(InventoryEntity[] inventoryEntities, InventoryReserveRequest request, dynamic assert)
         {
             //Arrange
-            _initialStocks.AddRange(stocks);
+            _initialInventories.AddRange(inventoryEntities);
             var service = new InventoryReservationService(() => _repositoryMock.Object, _loggerMock.Object);
 
             //Act
             await service.ReserveAsync(request);
 
             //Assert
-            Assert.Equal(assert.NewStocksCount, _newStocks.Count);
+            Assert.Equal(assert.ModifiedInventoriesCount, _modifiedInventoryEntities.Count);
             Assert.Equal(assert.NewTransactionsCount, _newTransactions.Count);
-            Assert.Equal(assert.UpdatedStockQuantitySumLeft, _newStocks.Sum(x => x.InStockQuantity));
-            Assert.Equal(assert.FirstStockChangeFulfillmentCenterId, _newStocks.First().FulfillmentCenterId);
+            Assert.Equal(assert.ModifiedInventoryQuantitySumLeft, _modifiedInventoryEntities.Sum(x => x.InStockQuantity));
+            Assert.Equal(assert.FirstModifiedInventoryFulfillmentCenterId, _modifiedInventoryEntities.First().FulfillmentCenterId);
             Assert.Equal(request.Items.Sum(x => x.Quantity), _newTransactions.Sum(x => x.Quantity));
         }
 
         [Theory]
         [MemberData(nameof(ReleaseStockTestData))]
-        public async Task ReleaseStockTest(InventoryEntity[] stocks, InventoryReservationTransactionEntity[] transactions, InventoryReleaseRequest request, dynamic assert)
+        public async Task ReleaseStockTest(InventoryEntity[] inventoryEntities, InventoryReservationTransactionEntity[] transactions, InventoryReleaseRequest request, dynamic assert)
         {
             //Arrange
-            _initialStocks.AddRange(stocks);
+            _initialInventories.AddRange(inventoryEntities);
             _initialReservationTransactions.AddRange(transactions);
             var service = new InventoryReservationService(() => _repositoryMock.Object, _loggerMock.Object);
 
@@ -83,10 +83,10 @@ namespace VirtoCommerce.InventoryModule.Tests
             await service.ReleaseAsync(request);
 
             //Assert
-            Assert.Equal(assert.NewStocksCount, _newStocks.Count);
+            Assert.Equal(assert.ModifiedInventoriesCount, _modifiedInventoryEntities.Count);
             Assert.Equal(assert.NewTransactionsCount, _newTransactions.Count);
-            Assert.Equal(assert.UpdatedStockQuantitySumLeft, _newStocks.Sum(x => x.InStockQuantity));
-            Assert.Equal(assert.FirstStockChangeFulfillmentCenterId, _newStocks.First().FulfillmentCenterId);
+            Assert.Equal(assert.ModifiedInventoryQuantitySumLeft, _modifiedInventoryEntities.Sum(x => x.InStockQuantity));
+            Assert.Equal(assert.FirstModifiedInventoryFulfillmentCenterId, _modifiedInventoryEntities.First().FulfillmentCenterId);
             Assert.Equal(assert.NewTransactionsSum, _newTransactions.Sum(x => x.Quantity));
         }
 
@@ -108,10 +108,10 @@ namespace VirtoCommerce.InventoryModule.Tests
                 },
                 new
                 {
-                    NewStocksCount = 1,
+                    ModifiedInventoriesCount = 1,
                     NewTransactionsCount = 1,
-                    UpdatedStockQuantitySumLeft = -5,
-                    FirstStockChangeFulfillmentCenterId = "1",
+                    ModifiedInventoryQuantitySumLeft = -5,
+                    FirstModifiedInventoryFulfillmentCenterId = "1",
                 }
             },
             new object[]
@@ -131,10 +131,10 @@ namespace VirtoCommerce.InventoryModule.Tests
                 },
                 new
                 {
-                    NewStocksCount = 1,
+                    ModifiedInventoriesCount = 1,
                     NewTransactionsCount = 1,
-                    UpdatedStockQuantitySumLeft = -5,
-                    FirstStockChangeFulfillmentCenterId = "1",
+                    ModifiedInventoryQuantitySumLeft = -5,
+                    FirstModifiedInventoryFulfillmentCenterId = "1",
                 }
             },
             new object[]
@@ -154,10 +154,10 @@ namespace VirtoCommerce.InventoryModule.Tests
                 },
                 new
                 {
-                    NewStocksCount = 1,
+                    ModifiedInventoriesCount = 1,
                     NewTransactionsCount = 1,
-                    UpdatedStockQuantitySumLeft = -10,
-                    FirstStockChangeFulfillmentCenterId = "2",
+                    ModifiedInventoryQuantitySumLeft = -10,
+                    FirstModifiedInventoryFulfillmentCenterId = "2",
                 }
             },
             new object[]
@@ -177,10 +177,10 @@ namespace VirtoCommerce.InventoryModule.Tests
                 },
                 new
                 {
-                    NewStocksCount = 1,
+                    ModifiedInventoriesCount = 1,
                     NewTransactionsCount = 1,
-                    UpdatedStockQuantitySumLeft = -35,
-                    FirstStockChangeFulfillmentCenterId = "1",
+                    ModifiedInventoryQuantitySumLeft = -35,
+                    FirstModifiedInventoryFulfillmentCenterId = "1",
                 }
             },
             new object[]
@@ -202,10 +202,10 @@ namespace VirtoCommerce.InventoryModule.Tests
                 },
                 new
                 {
-                    NewStocksCount = 2,
+                    ModifiedInventoriesCount = 2,
                     NewTransactionsCount = 2,
-                    UpdatedStockQuantitySumLeft = 15,
-                    FirstStockChangeFulfillmentCenterId = "4",
+                    ModifiedInventoryQuantitySumLeft = 15,
+                    FirstModifiedInventoryFulfillmentCenterId = "4",
                 }
             }
         };
@@ -234,10 +234,10 @@ namespace VirtoCommerce.InventoryModule.Tests
                 },
                 new
                 {
-                    NewStocksCount = 1,
+                    ModifiedInventoriesCount = 1,
                     NewTransactionsCount = 1,
-                    UpdatedStockQuantitySumLeft = 20,
-                    FirstStockChangeFulfillmentCenterId = "1",
+                    ModifiedInventoryQuantitySumLeft = 20,
+                    FirstModifiedInventoryFulfillmentCenterId = "1",
                     NewTransactionsSum = -10
                 }
             }
