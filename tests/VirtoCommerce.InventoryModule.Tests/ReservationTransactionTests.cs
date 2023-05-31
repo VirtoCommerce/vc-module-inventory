@@ -30,7 +30,7 @@ namespace VirtoCommerce.InventoryModule.Tests
             _loggerMock = new Mock<ILogger<ReservationService>>();
 
             _repositoryMock
-                .Setup(x => x.StoreStockTransactions(It.IsAny<IList<InventoryReservationTransactionEntity>>(),
+                .Setup(x => x.SaveInventoryReservationTransactions(It.IsAny<IList<InventoryReservationTransactionEntity>>(),
                     It.IsAny<IList<InventoryEntity>>()))
                 .Callback((IEnumerable<InventoryReservationTransactionEntity> transactions,
                     IEnumerable<InventoryEntity> inventories) =>
@@ -40,8 +40,8 @@ namespace VirtoCommerce.InventoryModule.Tests
                 });
 
             _repositoryMock
-                .Setup(x => x.GetInventoryReservationTransactionsAsync(It.IsAny<IList<string>>(), It.IsAny<string>(), It.IsAny<int>()))
-                .ReturnsAsync((IList<string> ids, string itemType, int type) => _initialReservationTransactions);
+                .Setup(x => x.GetInventoryReservationTransactionsAsync(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<IList<string>>()))
+                .ReturnsAsync((int type, string itemType, IList<string> ids) => _initialReservationTransactions);
 
             _repositoryMock.Setup(x => x.Inventories).Returns(_initialStocks.AsQueryable());
             _repositoryMock.Setup(x => x.InventoryReservationTransactions).Returns(_initialReservationTransactions.AsQueryable());
