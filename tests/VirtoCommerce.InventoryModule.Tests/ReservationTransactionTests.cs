@@ -222,7 +222,7 @@ namespace VirtoCommerce.InventoryModule.Tests
                 {
                     new InventoryReservationTransactionEntity
                     {
-                        Id = "1", Quantity = 10, FulfillmentCenterId = "1", ProductId = "1", ItemId = "1", ItemType = "LineItem", Type = TransactionType.Reservation.ToString()
+                        Id = "1", Quantity = 10, FulfillmentCenterId = "1", ProductId = "1", ItemId = "1", ItemType = "LineItem", Type = TransactionType.Reserve.ToString()
                     },
                 },
                 new InventoryReleaseRequest

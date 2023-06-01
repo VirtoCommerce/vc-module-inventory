@@ -147,7 +147,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             using var repository = _repositoryFactory();
             var outerIds = request.Items.Select(x => x.ItemId).ToList();
             var outerType = request.Items.FirstOrDefault()?.ItemType;
-            var itemTransactionsEntities = await repository.GetInventoryReservationTransactionsAsync(TransactionType.Reservation.ToString(), outerType, outerIds);
+            var itemTransactionsEntities = await repository.GetInventoryReservationTransactionsAsync(TransactionType.Reserve.ToString(), outerType, outerIds);
 
             if (itemTransactionsEntities == null || !itemTransactionsEntities.Any())
             {
@@ -208,7 +208,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         {
             var transaction = AbstractTypeFactory<InventoryReservationTransactionEntity>.TryCreateInstance();
 
-            transaction.Type = TransactionType.Reservation.ToString();
+            transaction.Type = TransactionType.Reserve.ToString();
             transaction.ParentId = request.ParentId;
             transaction.ItemType = item.ItemType;
             transaction.ItemId = item.ItemId;
