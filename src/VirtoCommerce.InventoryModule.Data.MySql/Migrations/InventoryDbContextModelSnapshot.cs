@@ -252,6 +252,11 @@ namespace VirtoCommerce.InventoryModule.Data.MySql.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<DateTime?>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp(6)");
+
                     b.Property<string>("Sku")
                         .IsRequired()
                         .HasMaxLength(128)
@@ -268,6 +273,66 @@ namespace VirtoCommerce.InventoryModule.Data.MySql.Migrations
                         .HasDatabaseName("IX_Inventory_Sku_ModifiedDate");
 
                     b.ToTable("Inventory", (string)null);
+                });
+
+            modelBuilder.Entity("VirtoCommerce.InventoryModule.Data.Model.InventoryReservationTransactionEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("ExpirationDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("FulfillmentCenterId")
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("ItemId")
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("ItemType")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ParentId")
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("ProductId")
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Type")
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId", "FulfillmentCenterId", "ItemType", "Type")
+                        .IsUnique();
+
+                    b.ToTable("InventoryReservationTransaction", (string)null);
                 });
 
             modelBuilder.Entity("VirtoCommerce.InventoryModule.Data.Model.FulfillmentCenterDynamicPropertyObjectValueEntity", b =>

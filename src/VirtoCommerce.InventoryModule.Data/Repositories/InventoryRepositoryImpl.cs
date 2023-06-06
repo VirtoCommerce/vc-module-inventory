@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.Platform.Core.Common;
@@ -20,6 +21,8 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
         public IQueryable<InventoryEntity> Inventories => DbContext.Set<InventoryEntity>();
 
         public IQueryable<FulfillmentCenterEntity> FulfillmentCenters => DbContext.Set<FulfillmentCenterEntity>();
+
+        public IQueryable<InventoryReservationTransactionEntity> InventoryReservationTransactions => DbContext.Set<InventoryReservationTransactionEntity>();
 
         public IQueryable<FulfillmentCenterDynamicPropertyObjectValueEntity> DynamicPropertyObjectValues => DbContext.Set<FulfillmentCenterDynamicPropertyObjectValueEntity>();
 
@@ -56,6 +59,32 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             }
             var inventories = await query.ToListAsync();
             return inventories;
+        }
+
+        public virtual async Task<IList<InventoryReservationTransactionEntity>> GetInventoryReservationTransactionsAsync(string transactionType, string itemType, IList<string> itemIds)
+        {
+            var query = InventoryReservationTransactions.Where(x => x.Type == transactionType && x.ItemType == itemType && itemIds.Contains(x.ItemId));
+
+            var result = await query.ToListAsync();
+            return result;
+        }
+
+        public virtual async Task SaveInventoryReservationTransactions(IList<InventoryReservationTransactionEntity> transactions, IList<InventoryEntity> inventories)
+        {
+            using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
+            foreach (var transaction in transactions)
+            {
+                Add(transaction);
+            }
+
+            foreach (var inventory in inventories)
+            {
+                Update(inventory);
+            }
+
+            await UnitOfWork.CommitAsync();
+            transactionScope.Complete();
         }
 
         #endregion

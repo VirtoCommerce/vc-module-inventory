@@ -7,6 +7,8 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
 {
     public class InventoryDbContext : DbContextWithTriggers
     {
+        private const int _maxLength = 128;
+
 #pragma warning disable S109
         public InventoryDbContext(DbContextOptions<InventoryDbContext> options)
             : base(options)
@@ -44,6 +46,11 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             modelBuilder.Entity<FulfillmentCenterDynamicPropertyObjectValueEntity>().HasIndex(x => new { x.ObjectType, x.ObjectId })
                 .IsUnique(false)
                 .HasDatabaseName("IX_FulfillmentCenterDynamicPropertyObjectValue_ObjectType_ObjectId");
+
+            modelBuilder.Entity<InventoryReservationTransactionEntity>().ToTable("InventoryReservationTransaction").HasKey(x => x.Id);
+            modelBuilder.Entity<InventoryReservationTransactionEntity>().Property(x => x.Id).HasMaxLength(_maxLength).ValueGeneratedOnAdd();
+            modelBuilder.Entity<InventoryReservationTransactionEntity>().Property(x => x.Quantity).HasPrecision(18, 2);
+            modelBuilder.Entity<InventoryReservationTransactionEntity>().HasIndex(x => new { x.ItemId, x.FulfillmentCenterId, x.ItemType, x.Type }).IsUnique();
 
             base.OnModelCreating(modelBuilder);
 
