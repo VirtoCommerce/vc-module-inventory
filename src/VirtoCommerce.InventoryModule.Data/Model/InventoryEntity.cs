@@ -56,6 +56,9 @@ namespace VirtoCommerce.InventoryModule.Data.Model
 
         #endregion
 
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
+
         public virtual InventoryInfo ToModel(InventoryInfo inventory)
         {
             inventory.Id = Id;
