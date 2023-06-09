@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Core.Model.Search;
 using VirtoCommerce.InventoryModule.Core.Services;
@@ -9,23 +9,22 @@ using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.InventoryModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Data.GenericCrud;
 
 namespace VirtoCommerce.InventoryModule.Data.Services
 {
     public class FulfillmentCenterSearchService : SearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter, FulfillmentCenterEntity>, IFulfillmentCenterSearchService
     {
-        public FulfillmentCenterSearchService(Func<IInventoryRepository> repositoryFactory, IFulfillmentCenterService fulfillmentService, IPlatformMemoryCache platformMemoryCache)
-             : base(repositoryFactory, platformMemoryCache, fulfillmentService)
+        public FulfillmentCenterSearchService(
+            Func<IInventoryRepository> repositoryFactory,
+            IPlatformMemoryCache platformMemoryCache,
+            IFulfillmentCenterService crudService,
+            IOptions<CrudOptions> crudOptions)
+             : base(repositoryFactory, platformMemoryCache, crudService, crudOptions)
         {
         }
 
-        // TODO: Remove after 1 year (2023-08-02)
-        [Obsolete("Use SearchAsync()")]
-        public virtual Task<FulfillmentCenterSearchResult> SearchCentersAsync(FulfillmentCenterSearchCriteria criteria)
-        {
-            return SearchAsync(criteria);
-        }
 
         protected override IQueryable<FulfillmentCenterEntity> BuildQuery(IRepository repository, FulfillmentCenterSearchCriteria criteria)
         {
@@ -57,6 +56,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         protected override IList<SortInfo> BuildSortExpression(FulfillmentCenterSearchCriteria criteria)
         {
             var sortInfos = criteria.SortInfos;
+
             if (sortInfos.IsNullOrEmpty())
             {
                 sortInfos = new[] { new SortInfo { SortColumn = nameof(FulfillmentCenterEntity.Name) } };

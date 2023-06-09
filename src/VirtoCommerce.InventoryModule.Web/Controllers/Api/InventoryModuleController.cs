@@ -80,7 +80,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Route("inventory/fulfillmentcenters/search")]
         public async Task<ActionResult<FulfillmentCenterSearchResult>> SearchFulfillmentCenters([FromBody] FulfillmentCenterSearchCriteria searchCriteria)
         {
-            var retVal = await _fulfillmentCenterSearchService.SearchAsync(searchCriteria);
+            var retVal = await _fulfillmentCenterSearchService.SearchNoCloneAsync(searchCriteria);
             return Ok(retVal);
         }
 
@@ -92,7 +92,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Route("inventory/fulfillmentcenters/{id}")]
         public async Task<ActionResult<FulfillmentCenter>> GetFulfillmentCenter([FromRoute] string id)
         {
-            var retVal = await _fulfillmentCenterService.GetByIdAsync(id);
+            var retVal = await _fulfillmentCenterService.GetNoCloneAsync(id);
             return Ok(retVal);
         }
 
@@ -104,7 +104,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Route("inventory/fulfillmentcenters/plenty")]
         public async Task<ActionResult<IEnumerable<FulfillmentCenter>>> GetFulfillmentCenters([FromBody] List<string> ids)
         {
-            var retVal = await _fulfillmentCenterService.GetAsync(ids);
+            var retVal = await _fulfillmentCenterService.GetNoCloneAsync(ids);
             return Ok(retVal);
         }
 

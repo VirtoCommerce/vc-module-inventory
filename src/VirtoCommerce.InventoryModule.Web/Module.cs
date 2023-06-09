@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.InventoryModule.Core;
 using VirtoCommerce.InventoryModule.Core.Events;
 using VirtoCommerce.InventoryModule.Core.Model;
-using VirtoCommerce.InventoryModule.Core.Model.Search;
 using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.InventoryModule.Data.ExportImport;
 using VirtoCommerce.InventoryModule.Data.Handlers;
@@ -24,7 +23,6 @@ using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.ExportImport;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
@@ -42,7 +40,7 @@ namespace VirtoCommerce.InventoryModule.Web
 
         public void Initialize(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddDbContext<InventoryDbContext>((provider, options) =>
+            serviceCollection.AddDbContext<InventoryDbContext>(options =>
             {
                 var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
                 var connectionString = Configuration.GetConnectionString(ModuleInfo.Id) ?? Configuration.GetConnectionString("VirtoCommerce");
@@ -66,9 +64,7 @@ namespace VirtoCommerce.InventoryModule.Web
             serviceCollection.AddTransient<IInventoryService, InventoryServiceImpl>();
             serviceCollection.AddTransient<IInventorySearchService, InventorySearchService>();
             serviceCollection.AddTransient<IFulfillmentCenterSearchService, FulfillmentCenterSearchService>();
-            serviceCollection.AddTransient(x => (ISearchService<FulfillmentCenterSearchCriteria, FulfillmentCenterSearchResult, FulfillmentCenter>)x.GetRequiredService<IFulfillmentCenterSearchService>());
             serviceCollection.AddTransient<IFulfillmentCenterService, FulfillmentCenterService>();
-            serviceCollection.AddTransient(x => (ICrudService<FulfillmentCenter>)x.GetRequiredService<IFulfillmentCenterService>());
             serviceCollection.AddTransient<IProductInventorySearchService, ProductInventorySearchService>();
             serviceCollection.AddTransient<IFulfillmentCenterGeoService, FulfillmentCenterGeoService>();
             serviceCollection.AddTransient<IInventoryReservationService, InventoryReservationService>();
@@ -87,8 +83,8 @@ namespace VirtoCommerce.InventoryModule.Web
             var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
             settingsRegistrar.RegisterSettings(ModuleConstants.Settings.AllSettings, ModuleInfo.Id);
 
-            var permissionsProvider = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
-            permissionsProvider.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions.Select(x => new Permission() { GroupName = "Inventory", Name = x }).ToArray());
+            var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
+            permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "Inventory", ModuleConstants.Security.Permissions.AllPermissions);
 
             // register dynamic properties
             var dynamicPropertyRegistrar = appBuilder.ApplicationServices.GetRequiredService<IDynamicPropertyRegistrar>();
@@ -107,10 +103,11 @@ namespace VirtoCommerce.InventoryModule.Web
             }
 
             //Register product availability indexation 
-            #region Search
+            var productIndexingConfigurations = appBuilder.ApplicationServices.GetServices<IndexDocumentConfiguration>()
+                .Where(x => x.DocumentType == KnownDocumentTypes.Product)
+                .ToList();
 
-            var productIndexingConfigurations = appBuilder.ApplicationServices.GetServices<IndexDocumentConfiguration>();
-            if (productIndexingConfigurations != null)
+            if (productIndexingConfigurations.Any())
             {
                 var productAvailabilitySource = new IndexDocumentSource
                 {
@@ -118,22 +115,17 @@ namespace VirtoCommerce.InventoryModule.Web
                     DocumentBuilder = appBuilder.ApplicationServices.GetService<ProductAvailabilityDocumentBuilder>(),
                 };
 
-                foreach (var configuration in productIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Product))
+                foreach (var configuration in productIndexingConfigurations)
                 {
-                    if (configuration.RelatedSources == null)
-                    {
-                        configuration.RelatedSources = new List<IndexDocumentSource>();
-                    }
+                    configuration.RelatedSources ??= new List<IndexDocumentSource>();
                     configuration.RelatedSources.Add(productAvailabilitySource);
                 }
             }
 
-            #endregion
-
-            var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
-            inProcessBus.RegisterHandler<InventoryChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
-            inProcessBus.RegisterHandler<InventoryChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<IndexInventoryChangedEventHandler>().Handle(message));
-            inProcessBus.RegisterHandler<FulfillmentCenterChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<FulfillmentCenterChangedEventHandler>().Handle(message));
+            var handlerRegistrar = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
+            handlerRegistrar.RegisterHandler<InventoryChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
+            handlerRegistrar.RegisterHandler<InventoryChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<IndexInventoryChangedEventHandler>().Handle(message));
+            handlerRegistrar.RegisterHandler<FulfillmentCenterChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<FulfillmentCenterChangedEventHandler>().Handle(message));
         }
 
         public void Uninstall()

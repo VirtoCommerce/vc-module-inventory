@@ -105,7 +105,7 @@ namespace VirtoCommerce.InventoryModule.Tests
             _fulfillmentCenters = fulfillmentCenters;
         }
 
-        public Task<FulfillmentCenterSearchResult> SearchAsync(FulfillmentCenterSearchCriteria criteria)
+        public Task<FulfillmentCenterSearchResult> SearchAsync(FulfillmentCenterSearchCriteria criteria, bool clone = true)
         {
             var querable = _fulfillmentCenters.AsQueryable();
 
