@@ -75,7 +75,6 @@ namespace VirtoCommerce.InventoryModule.Web
             {
                 var inventoryDbContext = serviceScope.ServiceProvider.GetRequiredService<InventoryDbContext>();
                 inventoryDbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
-                inventoryDbContext.Database.EnsureCreated();
                 inventoryDbContext.Database.Migrate();
             }
 
