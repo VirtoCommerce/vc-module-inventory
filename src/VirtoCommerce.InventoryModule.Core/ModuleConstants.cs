@@ -33,7 +33,7 @@ namespace VirtoCommerce.InventoryModule.Core
                     Name = "Inventory.ExportImport.PageSize",
                     GroupName = "Inventory | General",
                     ValueType = SettingValueType.PositiveInteger,
-                    DefaultValue = "50",
+                    DefaultValue = 50,
                 };
 
                 public static SettingDescriptor LogInventoryChanges { get; } = new SettingDescriptor

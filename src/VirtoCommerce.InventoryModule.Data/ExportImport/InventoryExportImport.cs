@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -11,7 +10,6 @@ using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Settings;
-using VirtoCommerce.Platform.Data.ExportImport;
 
 namespace VirtoCommerce.InventoryModule.Data.ExportImport
 {
@@ -30,10 +28,7 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
         {
             get
             {
-                if (_batchSize == null)
-                {
-                    _batchSize = _settingsManager.GetValue(ModuleConstants.Settings.General.PageSize.Name, 50);
-                }
+                _batchSize ??= _settingsManager.GetValue<int>(ModuleConstants.Settings.General.PageSize);
 
                 return (int)_batchSize;
             }
@@ -67,12 +62,12 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
                 await writer.WriteStartObjectAsync();
 
                 await writer.WritePropertyNameAsync("FulfillmentCenters");
-                await writer.SerializeJsonArrayWithPagingAsync(_jsonSerializer, BatchSize, async (skip, take) =>
+                await writer.SerializeArrayWithPagingAsync(_jsonSerializer, BatchSize, async (skip, take) =>
                 {
                     var searchCriteria = AbstractTypeFactory<FulfillmentCenterSearchCriteria>.TryCreateInstance();
                     searchCriteria.Take = take;
                     searchCriteria.Skip = skip;
-                    var searchResult = await _fulfillmentCenterSearchService.SearchAsync(searchCriteria);
+                    var searchResult = await _fulfillmentCenterSearchService.SearchNoCloneAsync(searchCriteria);
                     return (GenericSearchResult<FulfillmentCenter>)searchResult;
                 }, (processedCount, totalCount) =>
                 {
@@ -84,7 +79,7 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
                 progressCallback(progressInfo);
 
                 await writer.WritePropertyNameAsync("Inventories");
-                await writer.SerializeJsonArrayWithPagingAsync(_jsonSerializer, BatchSize, async (skip, take) =>
+                await writer.SerializeArrayWithPagingAsync(_jsonSerializer, BatchSize, async (skip, take) =>
                 {
                     var searchCriteria = AbstractTypeFactory<InventorySearchCriteria>.TryCreateInstance();
                     searchCriteria.Take = take;
@@ -111,14 +106,14 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
             using (var streamReader = new StreamReader(inputStream))
             using (var reader = new JsonTextReader(streamReader))
             {
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     if (reader.TokenType == JsonToken.PropertyName)
                     {
                         if (reader.Value.ToString() == "FulfillmentCenters")
                         {
-                            await reader.DeserializeJsonArrayWithPagingAsync<FulfillmentCenter>(_jsonSerializer, BatchSize,
-                                items => _fulfillmentCenterService.SaveChangesAsync(items.ToArray()), processedCount =>
+                            await reader.DeserializeArrayWithPagingAsync<FulfillmentCenter>(_jsonSerializer, BatchSize,
+                                items => _fulfillmentCenterService.SaveChangesAsync(items), processedCount =>
                                 {
                                     progressInfo.Description = $"{processedCount} FulfillmentCenters have been imported";
                                     progressCallback(progressInfo);
@@ -126,8 +121,8 @@ namespace VirtoCommerce.InventoryModule.Data.ExportImport
                         }
                         else if (reader.Value.ToString() == "Inventories")
                         {
-                            await reader.DeserializeJsonArrayWithPagingAsync<InventoryInfo>(_jsonSerializer, BatchSize,
-                                items => _inventoryService.SaveChangesAsync(items.ToArray()), processedCount =>
+                            await reader.DeserializeArrayWithPagingAsync<InventoryInfo>(_jsonSerializer, BatchSize,
+                                items => _inventoryService.SaveChangesAsync(items), processedCount =>
                                 {
                                     progressInfo.Description = $"{processedCount} Inventories have been imported";
                                     progressCallback(progressInfo);
