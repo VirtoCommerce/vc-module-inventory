@@ -40,8 +40,11 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                     repository.DisableChangesTracking();
                     var entities = await repository.GetByIdsAsync(missingIds.ToArray(), responseGroup);
 
-                    return entities
-                        .Select(x => x.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance()));
+                    IList<InventoryInfo> models = entities
+                        .Select(x => x.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance()))
+                        .ToList();
+
+                    return models;
                 },
                 (cacheOptions, id, model) =>
                 {
@@ -73,10 +76,13 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                     repository.DisableChangesTracking();
                     var entities = await repository.GetProductsInventoriesAsync(missingIds, responseGroup);
 
-                    return entities
+                    IList<CacheEntity> models = entities
                         .Select(x => x.ToModel(AbstractTypeFactory<InventoryInfo>.TryCreateInstance()))
                         .GroupBy(x => x.ProductId)
-                        .Select(g => new CacheEntity(g.Key, g));
+                        .Select(g => new CacheEntity(g.Key, g))
+                        .ToList();
+
+                    return models;
                 },
                 (cacheOptions, id, model) =>
                 {
@@ -112,7 +118,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             var changedEntries = new List<GenericChangedEntry<InventoryInfo>>();
             using (var repository = _repositoryFactory())
             {
-                var dataExistInventories = await repository.GetProductsInventoriesAsync(inventoryInfos.Select(x => x.ProductId));
+                var dataExistInventories = await repository.GetProductsInventoriesAsync(inventoryInfos.Select(x => x.ProductId).ToList());
                 foreach (var changedInventory in inventoryInfos)
                 {
                     InventoryEntity originalEntity = null;

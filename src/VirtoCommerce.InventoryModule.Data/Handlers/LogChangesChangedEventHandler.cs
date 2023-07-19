@@ -30,7 +30,7 @@ namespace VirtoCommerce.InventoryModule.Data.Handlers
 
         protected virtual async Task InnerHandle<T>(GenericChangedEntryEvent<T> @event) where T : IEntity
         {
-            var logInventoryChangesEnabled = await _settingsManager.GetValueAsync(ModuleConstants.Settings.General.LogInventoryChanges.Name, (bool)ModuleConstants.Settings.General.LogInventoryChanges.DefaultValue);
+            var logInventoryChangesEnabled = await _settingsManager.GetValueAsync<bool>(ModuleConstants.Settings.General.LogInventoryChanges);
 
             if (logInventoryChangesEnabled)
             {
