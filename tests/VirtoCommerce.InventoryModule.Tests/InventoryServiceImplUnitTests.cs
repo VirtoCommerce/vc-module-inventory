@@ -44,9 +44,9 @@ namespace VirtoCommerce.InventoryModule.Tests
                 .ReturnsAsync((string[] ids, string _) => _inventories.Where(x => ids.Contains(x.Id)).ToList());
 
             _repositoryMock
-                .Setup(x => x.GetProductsInventoriesAsync(It.IsAny<IEnumerable<string>>(), It.IsAny<string>()))
+                .Setup(x => x.GetProductsInventoriesAsync(It.IsAny<IList<string>>(), It.IsAny<string>()))
                 .Callback(() => _getProductsInventoriesCallsCount++)
-                .ReturnsAsync((IEnumerable<string> productIds, string _) => _inventories.Where(x => productIds.Contains(x.Sku)).ToList());
+                .ReturnsAsync((IList<string> productIds, string _) => _inventories.Where(x => productIds.Contains(x.Sku)).ToList());
         }
 
         [Fact]

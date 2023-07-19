@@ -9,11 +9,8 @@
     <!--<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>-->
   </PropertyGroup>
   <PropertyGroup>
-      <!-- Project is not a test project -->
-      <SonarQubeTestProject>false</SonarQubeTestProject>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;1705;1591</NoWarn>
+    <!-- Project is not a test project -->
+    <SonarQubeTestProject>false</SonarQubeTestProject>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="dist\**" />
@@ -22,9 +19,6 @@
     <EmbeddedResource Remove="node_modules\**" />
     <None Remove="dist\**" />
     <None Remove="node_modules\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.InventoryModule.Core\VirtoCommerce.InventoryModule.Core.csproj" />

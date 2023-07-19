@@ -12,11 +12,10 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
 {
     public class InventoryRepositoryImpl : DbContextRepositoryBase<InventoryDbContext>, IInventoryRepository
     {
-        public InventoryRepositoryImpl(InventoryDbContext dbContext, IUnitOfWork unitOfWork = null) : base(dbContext, unitOfWork)
+        public InventoryRepositoryImpl(InventoryDbContext dbContext, IUnitOfWork unitOfWork = null)
+            : base(dbContext, unitOfWork)
         {
         }
-
-        #region IFoundationInventoryRepository Members
 
         public IQueryable<InventoryEntity> Inventories => DbContext.Set<InventoryEntity>();
 
@@ -26,7 +25,7 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
 
         public IQueryable<FulfillmentCenterDynamicPropertyObjectValueEntity> DynamicPropertyObjectValues => DbContext.Set<FulfillmentCenterDynamicPropertyObjectValueEntity>();
 
-        public virtual async Task<IEnumerable<InventoryEntity>> GetProductsInventoriesAsync(IEnumerable<string> productIds, string responseGroup = null)
+        public virtual async Task<IList<InventoryEntity>> GetProductsInventoriesAsync(IList<string> productIds, string responseGroup = null)
         {
             var query = Inventories.Where(x => productIds.Contains(x.Sku));
             var inventoryResponseGroup = EnumUtility.SafeParseFlags(responseGroup, InventoryResponseGroup.Full);
@@ -38,7 +37,7 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             return inventories;
         }
 
-        public virtual async Task<IEnumerable<FulfillmentCenterEntity>> GetFulfillmentCentersAsync(IEnumerable<string> ids)
+        public virtual async Task<IList<FulfillmentCenterEntity>> GetFulfillmentCentersAsync(IList<string> ids)
         {
             var centers = await FulfillmentCenters.Where(x => ids.Contains(x.Id)).ToListAsync();
 
@@ -48,7 +47,7 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             return centers;
         }
 
-        public async Task<IEnumerable<InventoryEntity>> GetByIdsAsync(string[] ids, string responseGroup = null)
+        public async Task<IList<InventoryEntity>> GetByIdsAsync(IList<string> ids, string responseGroup = null)
         {
             var query = Inventories.Where(x => ids.Contains(x.Id));
 
@@ -86,7 +85,5 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
             await UnitOfWork.CommitAsync();
             transactionScope.Complete();
         }
-
-        #endregion
     }
 }

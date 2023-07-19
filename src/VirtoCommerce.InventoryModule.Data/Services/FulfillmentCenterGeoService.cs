@@ -8,6 +8,7 @@ using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.InventoryModule.Data.Caching;
 using VirtoCommerce.InventoryModule.Data.Extensions;
 using VirtoCommerce.Platform.Core.Caching;
+using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.InventoryModule.Data.Services
 {
@@ -65,13 +66,13 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         {
             var result = new List<FulfillmentCenterGeoPoint>();
 
-            var countResult = await _searchService.SearchAsync(new FulfillmentCenterSearchCriteria());
+            var countResult = await _searchService.SearchNoCloneAsync(new FulfillmentCenterSearchCriteria());
 
             var pageSize = 20;
 
             for (var i = 0; i < countResult.TotalCount; i += pageSize)
             {
-                var searchResult = await _searchService.SearchAsync(new FulfillmentCenterSearchCriteria
+                var searchResult = await _searchService.SearchNoCloneAsync(new FulfillmentCenterSearchCriteria
                 {
                     Skip = i,
                     Take = pageSize,
