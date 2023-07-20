@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using VirtoCommerce.InventoryModule.Core.Events;
 using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Core.Services;
+using VirtoCommerce.InventoryModule.Data.Caching;
 using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.InventoryModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
@@ -138,6 +139,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
             await _eventPublisher.Publish(new InventoryChangingEvent(changedEntries));
             await repository.SaveInventoryReservationTransactions(newTransactions, modifiedInventoryEntities);
+            ClearCache(changedEntries.Select(x => x.OldEntry));
             await _eventPublisher.Publish(new InventoryChangedEvent(changedEntries));
         }
 
@@ -206,6 +208,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
             await _eventPublisher.Publish(new InventoryChangingEvent(changedEntries));
             await repository.SaveInventoryReservationTransactions(newTransactions, modifiedInventoryEntities);
+            ClearCache(changedEntries.Select(x => x.OldEntry));
             await _eventPublisher.Publish(new InventoryChangedEvent(changedEntries));
         }
 
@@ -253,6 +256,16 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             transaction.Quantity = -transactionEntity.Quantity;
 
             return transaction;
+        }
+
+        protected virtual void ClearCache(IEnumerable<InventoryInfo> inventories)
+        {
+            InventorySearchCacheRegion.ExpireRegion();
+
+            foreach (var inventory in inventories)
+            {
+                InventoryCacheRegion.ExpireInventory(inventory);
+            }
         }
     }
 }
