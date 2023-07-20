@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.InventoryModule.Core.Services;
+using VirtoCommerce.SearchModule.Core.Extensions;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 
@@ -42,15 +43,15 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
                 {
                     foreach (var inventory in productInventories.Where(i => i.IsAvailableOn(now)))
                     {
-                        document.Add(new IndexDocumentField("available_in", inventory.FulfillmentCenterId.ToLowerInvariant()) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
-                        document.Add(new IndexDocumentField("fulfillmentCenter_name", inventory.FulfillmentCenterName.ToLowerInvariant()) { IsRetrievable = true, IsFilterable = true, IsCollection = true });
+                        document.AddFilterableCollection("available_in", inventory.FulfillmentCenterId.ToLowerInvariant());
+                        document.AddFilterableCollection("fulfillmentCenter_name", inventory.FulfillmentCenterName.ToLowerInvariant());
                         totalInStockQuantity += inventory.InStockQuantity;
                         isInStock = true;
                     }
                 }
 
-                document.Add(new IndexDocumentField("inStock_quantity", totalInStockQuantity) { IsRetrievable = true, IsFilterable = true, IsCollection = false });
-                document.Add(new IndexDocumentField("availability", isInStock ? "InStock" : "OutOfStock") { IsRetrievable = true, IsFilterable = true, IsCollection = false });
+                document.AddFilterableInteger("inStock_quantity", (int)totalInStockQuantity);
+                document.AddFilterableString("availability", isInStock ? "InStock" : "OutOfStock");
 
                 result.Add(document);
             }
