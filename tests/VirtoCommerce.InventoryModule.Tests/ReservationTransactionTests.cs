@@ -11,6 +11,7 @@ using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.InventoryModule.Data.Repositories;
 using VirtoCommerce.InventoryModule.Data.Services;
+using VirtoCommerce.Platform.Core.Events;
 using Xunit;
 
 namespace VirtoCommerce.InventoryModule.Tests
@@ -20,6 +21,7 @@ namespace VirtoCommerce.InventoryModule.Tests
     {
         private readonly Mock<IInventoryRepository> _repositoryMock;
         private readonly Mock<ILogger<InventoryReservationService>> _loggerMock;
+        private readonly Mock<IEventPublisher> _eventPublisherMock;
 
         private readonly List<InventoryEntity> _initialInventories = new();
         private readonly List<InventoryReservationTransactionEntity> _initialReservationTransactions = new();
@@ -32,6 +34,7 @@ namespace VirtoCommerce.InventoryModule.Tests
         {
             _repositoryMock = new Mock<IInventoryRepository>();
             _loggerMock = new Mock<ILogger<InventoryReservationService>>();
+            _eventPublisherMock = new Mock<IEventPublisher>();
 
             _repositoryMock
                 .Setup(x => x.SaveInventoryReservationTransactions(It.IsAny<IList<InventoryReservationTransactionEntity>>(),
@@ -57,7 +60,7 @@ namespace VirtoCommerce.InventoryModule.Tests
         {
             //Arrange
             _initialInventories.AddRange(inventoryEntities);
-            var service = new InventoryReservationService(() => _repositoryMock.Object, _loggerMock.Object);
+            var service = new InventoryReservationService(() => _repositoryMock.Object, _loggerMock.Object, _eventPublisherMock.Object);
 
             //Act
             await service.ReserveAsync(request);
@@ -77,7 +80,7 @@ namespace VirtoCommerce.InventoryModule.Tests
             //Arrange
             _initialInventories.AddRange(inventoryEntities);
             _initialReservationTransactions.AddRange(transactions);
-            var service = new InventoryReservationService(() => _repositoryMock.Object, _loggerMock.Object);
+            var service = new InventoryReservationService(() => _repositoryMock.Object, _loggerMock.Object, _eventPublisherMock.Object);
 
             //Act
             await service.ReleaseAsync(request);
