@@ -10,15 +10,25 @@ using VirtoCommerce.SearchModule.Core.Services;
 namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
 {
     /// <summary>
-    /// Extend product indexation process and provides available_in field for indexed products
+    /// Extends product indexation process and provides available_in field for indexed products
     /// </summary>
-    public class ProductAvailabilityDocumentBuilder : IIndexDocumentBuilder
+    public class ProductAvailabilityDocumentBuilder : IIndexSchemaBuilder, IIndexDocumentBuilder
     {
         private readonly IInventoryService _inventoryService;
 
         public ProductAvailabilityDocumentBuilder(IInventoryService inventoryService)
         {
             _inventoryService = inventoryService;
+        }
+
+        public Task BuildSchemaAsync(IndexDocument schema)
+        {
+            schema.AddFilterableCollection("available_in");
+            schema.AddFilterableCollection("fulfillmentCenter_name");
+            schema.AddFilterableInteger("inStock_quantity");
+            schema.AddFilterableString("availability");
+
+            return Task.CompletedTask;
         }
 
         public async Task<IList<IndexDocument>> GetDocumentsAsync(IList<string> documentIds)
