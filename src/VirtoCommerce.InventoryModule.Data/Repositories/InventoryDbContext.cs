@@ -1,11 +1,11 @@
 using System.Reflection;
-using EntityFrameworkCore.Triggers;
 using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.InventoryModule.Data.Model;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.InventoryModule.Data.Repositories
 {
-    public class InventoryDbContext : DbContextWithTriggers
+    public class InventoryDbContext : DbContextBase
     {
         private const int _maxLength = 128;
 
