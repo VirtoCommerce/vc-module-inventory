@@ -2,23 +2,23 @@
     <div class="blade-inner">
         <div class="inner-block">
             <form class="form" name="detailForm">
-                <div class="columns __inline clearfix">
+                <div class="columns clearfix">
                     <div class="form-group" ng-init="setForm(detailForm)">
                         <label class="form-label">{{ 'inventory.blades.inventory-detail.labels.in-stock' | translate }}</label>
-                        <div class="form-input __mini __number">
-                            <input smart-float num-type="float" ng-model="blade.currentEntity.inStockQuantity" type="text" required>
+                        <div class="form-input">
+                            <input smart-float num-type="number" ng-model="blade.currentEntity.inStockQuantity" type="text" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">{{ 'inventory.blades.inventory-detail.labels.reserved' | translate }}</label>
-                        <div class="form-input __mini __number">
-                            <input smart-float num-type="float" ng-model="blade.currentEntity.reservedQuantity">
+                        <div class="form-input">
+                            <input smart-float num-type="number" ng-model="blade.currentEntity.reservedQuantity">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">{{ 'inventory.blades.inventory-detail.labels.reorder-min-quantity' | translate }}</label>
-                        <div class="form-input __mini __number">
-                            <input smart-float num-type="float" ng-model="blade.currentEntity.reorderMinQuantity">
+                        <div class="form-input">
+                            <input smart-float num-type="number" ng-model="blade.currentEntity.reorderMinQuantity">
                         </div>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                     <div class="form-group" ng-class="{'__disabled': !blade.currentEntity.allowPreorder}">
                         <label class="form-label">{{ 'inventory.blades.inventory-detail.labels.reorder-quantity' | translate }}</label>
                         <div class="form-input">
-                            <input smart-float num-type="float" ng-model="blade.currentEntity.preorderQuantity" type="text" ng-disabled="!blade.currentEntity.allowPreorder">
+                            <input smart-float num-type="number" ng-model="blade.currentEntity.preorderQuantity" type="text" ng-disabled="!blade.currentEntity.allowPreorder">
                         </div>
                     </div>
                     <div class="form-group" ng-class="{'__disabled': !blade.currentEntity.allowPreorder}">
@@ -59,7 +59,7 @@
                     <div class="form-group" ng-class="{'__disabled': !blade.currentEntity.allowBackorder}">
                         <label class="form-label">{{ 'inventory.blades.inventory-detail.labels.backorder-quantity' | translate }}</label>
                         <div class="form-input">
-                            <input smart-float num-type="float" ng-model="blade.currentEntity.backorderQuantity" ng-disabled="!blade.currentEntity.allowBackorder">
+                            <input smart-float num-type="number" ng-model="blade.currentEntity.backorderQuantity" ng-disabled="!blade.currentEntity.allowBackorder">
                         </div>
                     </div>
                     <div class="form-group" ng-class="{'__disabled': !blade.currentEntity.allowBackorder}">
