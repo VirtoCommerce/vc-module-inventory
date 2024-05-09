@@ -9,7 +9,7 @@
     <dependency id="VirtoCommerce.Core" version="3.800.0" />
     <dependency id="VirtoCommerce.Search" version="3.800.0" />
   </dependencies>
-  <title>Inventory module</title>
+  <title>Inventory</title>
   <description>Simplify inventory management functionality</description>
   <authors>
     <author>Virto Commerce</author>
