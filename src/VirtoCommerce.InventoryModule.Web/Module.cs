@@ -19,9 +19,9 @@ using VirtoCommerce.InventoryModule.Data.Repositories;
 using VirtoCommerce.InventoryModule.Data.Search.Indexing;
 using VirtoCommerce.InventoryModule.Data.Services;
 using VirtoCommerce.InventoryModule.Data.SqlServer;
-using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
+using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
@@ -122,10 +122,9 @@ namespace VirtoCommerce.InventoryModule.Web
                 }
             }
 
-            var handlerRegistrar = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
-            handlerRegistrar.RegisterHandler<InventoryChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<LogChangesChangedEventHandler>().Handle(message));
-            handlerRegistrar.RegisterHandler<InventoryChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<IndexInventoryChangedEventHandler>().Handle(message));
-            handlerRegistrar.RegisterHandler<FulfillmentCenterChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<FulfillmentCenterChangedEventHandler>().Handle(message));
+            appBuilder.RegisterEventHandler<InventoryChangedEvent, LogChangesChangedEventHandler>();
+            appBuilder.RegisterEventHandler<InventoryChangedEvent, IndexInventoryChangedEventHandler>();
+            appBuilder.RegisterEventHandler<FulfillmentCenterChangedEvent, FulfillmentCenterChangedEventHandler>();
         }
 
         public void Uninstall()
