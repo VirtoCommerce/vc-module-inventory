@@ -190,7 +190,8 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
             foreach (var itemTransactionsEntity in itemTransactionsEntities)
             {
-                var inventoryEntity = inventoryEntities.FirstOrDefault(x => x.FulfillmentCenterId == itemTransactionsEntity.FulfillmentCenterId);
+                var inventoryEntity = inventoryEntities.FirstOrDefault(x => x.FulfillmentCenterId == itemTransactionsEntity.FulfillmentCenterId &&
+                    x.Sku == itemTransactionsEntity.ProductId);
                 if (inventoryEntity == null)
                 {
                     continue;
