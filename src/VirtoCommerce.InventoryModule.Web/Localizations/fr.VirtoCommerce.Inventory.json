@@ -1,0 +1,125 @@
+{
+  "inventory": {
+    "blades": {
+      "inventory-detail": {
+        "subtitle": "Modifier l'inventaire",
+        "labels": {
+          "in-stock": "En stock",
+          "reserved": "Réservé",
+          "reorder-min-quantity": "Quantité minimale de réapprovisionnement",
+          "allow-preorder": "Autoriser la précommande",
+          "reorder-quantity": "Quantité de précommande",
+          "preorder-availability-date": "Date de disponibilité de la précommande",
+          "allow-backorder": "Autoriser la commande en attente",
+          "backorder-quantity": "Quantité de commande en attente",
+          "backorder-availability-date": "Date de disponibilité de la commande en attente"
+        }
+      },
+      "inventory-fulfillmentcenters-list": {
+        "labels": {
+          "no-fulfillment-centers": "Aucun centre de traitement des commandes disponible",
+          "fulfillment-center-name": "Centre de traitement des commandes",
+          "in-stock-quantity": "Quantité en stock"
+        }
+      },
+      "fulfillment-center-detail": {
+        "subtitle": "Édition du centre de traitement des commandes",
+        "labels": {
+          "name": "Nom",
+          "description": "Description",
+          "short-description": "Courte description",
+          "max-releases": "Nombre maximum de versions dans le lot sélectionné",
+          "pick-delay": "Délai de traitement"
+        },
+        "placeholders": {
+          "name": "Fournir le nom du centre de traitement des commandes",
+          "description": "Fournir la description du centre de traitement des commandes"
+        },
+        "description": {
+          "name": "Nom du centre de traitement des commandes",
+          "description": "Description du centre de traitement des commandes",
+          "short-description": "Courte description du centre de traitement des commandes"
+        }
+      }
+    },
+    "dialogs": {
+      "inventory-delete": {
+        "title": "Confirmer la suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer ce devis ?"
+      },
+      "inventory-save": {
+        "title": "Enregistrer les modifications",
+        "message": "L'inventaire a été modifié. Voulez-vous enregistrer les modifications?"
+      },
+      "fulfillment-delete": {
+        "title": "Confirmer la suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer ce centre de traitement des commandes?"
+      }
+    },
+    "widgets": {
+      "inventoryWidget": {
+        "title": "Inventaire",
+        "blade-subtitle": "Sélectionnez un centre de traitement des commandes pour la gestion de l'inventaire"
+      },
+      "fulfillmentWidget": {
+        "title": "Centres de traitement",
+        "address-detail": {
+          "subtitle": "Modifier l'adresse",
+          "no-address": "Aucune adresse",
+          "region": "État/Province",
+          "city": "Ville",
+          "address1": "Ligne d'adresse 1",
+          "zip-code": "Code postal",
+          "email": "Email",
+          "phone": "Téléphone"
+        }
+      }
+    },
+    "properties": {
+      "geoPoint": {
+        "title": "Emplacement",
+        "placeholder": "Entrez la latitude et la longitude",
+        "description": "Utilisez le format suivant : latitude,longitude, par ex. 41.40338,2.17403, sans espace après la virgule"
+      },
+      "outerId": {
+        "title": "ID externe",
+        "placeholder": "Entrez l'ID dans un système externe",
+        "description": "ID unique pour connecter le centre de traitement à un système externe"
+      }
+    }
+  },
+  "permissions": {
+    "inventory:read": "Lire les données d'inventaire",
+    "inventory:create": "Créer des données d'inventaire",
+    "inventory:update": "Mettre à jour les données d'inventaire",
+    "inventory:delete": "Supprimer les données d'inventaire",
+    "inventory:access": "Créer des données d'inventaire",
+    "inventory:fulfillment:edit": "Gérer les centres de traitement",
+    "inventory:fulfillment:delete": "Supprimer les centres de traitement"
+  },
+  "settings": {
+    "Inventory": {
+      "ExportImport.PageSize": {
+        "description": "Des valeurs élevées peuvent entraîner une performance lente",
+        "title": "Taille de page utilisée pour l'exportation / l'importation"
+      },
+      "LogInventoryChanges": {
+        "title": "Journaliser les modifications d'inventaire",
+        "description": "Journaliser les modifications de stock de produits dans le journal d'opérations de la plateforme. Cela peut affecter la taille de la base de données si le stock de produits est souvent modifié"
+      },
+      "Search": {
+        "EventBasedIndexation": {
+          "Enable": {
+            "title": "Activer l'indexation basée sur les événements pour les entités d'inventaire",
+            "description": "Tout changement d'une entité d'inventaire déclenche une tâche en arrière-plan qui applique ces changements à l'index de recherche"
+          }
+        }
+      }
+    }
+  },
+  "module": {
+    "VirtoCommerce.Inventory": {
+      "description": "Exporter ou importer des données d'inventaire"
+    }
+  }
+}

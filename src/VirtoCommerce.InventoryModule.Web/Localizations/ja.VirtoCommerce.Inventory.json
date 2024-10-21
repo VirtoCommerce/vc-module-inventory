@@ -1,0 +1,125 @@
+{
+  "inventory": {
+    "blades": {
+      "inventory-detail": {
+        "subtitle": "在庫を編集",
+        "labels": {
+          "in-stock": "在庫あり",
+          "reserved": "予約済み",
+          "reorder-min-quantity": "再注文の最小数量",
+          "allow-preorder": "予約販売を許可",
+          "reorder-quantity": "予約販売数量",
+          "preorder-availability-date": "予約販売の可用日",
+          "allow-backorder": "バックオーダーを許可",
+          "backorder-quantity": "バックオーダー数量",
+          "backorder-availability-date": "バックオーダーの可用日"
+        }
+      },
+      "inventory-fulfillmentcenters-list": {
+        "labels": {
+          "no-fulfillment-centers": "利用可能なフルフィルメントセンターはありません",
+          "fulfillment-center-name": "フルフィルメントセンター",
+          "in-stock-quantity": "在庫数量"
+        }
+      },
+      "fulfillment-center-detail": {
+        "subtitle": "フルフィルメントセンターの編集",
+        "labels": {
+          "name": "名前",
+          "description": "説明",
+          "short-description": "短い説明",
+          "max-releases": "選択したバッチの最大リリース数",
+          "pick-delay": "パッケージ遅延"
+        },
+        "placeholders": {
+          "name": "フルフィルメントセンターの名前を提供してください",
+          "description": "フルフィルメントセンターの説明を提供してください"
+        },
+        "description": {
+          "name": "フルフィルメントセンター名",
+          "description": "フルフィルメントセンターの説明",
+          "short-description": "フルフィルメントセンターの短い説明"
+        }
+      }
+    },
+    "dialogs": {
+      "inventory-delete": {
+        "title": "削除を確認",
+        "message": "この見積もりを削除してもよろしいですか？"
+      },
+      "inventory-save": {
+        "title": "変更を保存",
+        "message": "在庫が変更されました。変更を保存しますか？"
+      },
+      "fulfillment-delete": {
+        "title": "削除を確認",
+        "message": "このフルフィルメントセンターを削除してもよろしいですか？"
+      }
+    },
+    "widgets": {
+      "inventoryWidget": {
+        "title": "在庫",
+        "blade-subtitle": "在庫管理のためにフルフィルメントセンターを選択してください"
+      },
+      "fulfillmentWidget": {
+        "title": "フルフィルメントセンター",
+        "address-detail": {
+          "subtitle": "住所を編集",
+          "no-address": "住所なし",
+          "region": "州/県",
+          "city": "市",
+          "address1": "住所1行目",
+          "zip-code": "郵便番号",
+          "email": "メール",
+          "phone": "電話"
+        }
+      }
+    },
+    "properties": {
+      "geoPoint": {
+        "title": "位置情報",
+        "placeholder": "緯度と経度を入力",
+        "description": "以下の形式を使用してください: lat,long、例: 41.40338,2.17403、カンマの後にスペースを入れないこと"
+      },
+      "outerId": {
+        "title": "外部ID",
+        "placeholder": "外部システムのIDを入力",
+        "description": "フルフィルメントセンターを外部システムに接続するためのユニークなID"
+      }
+    }
+  },
+  "permissions": {
+    "inventory:read": "在庫データを読む",
+    "inventory:create": "在庫データを作成",
+    "inventory:update": "在庫データを更新",
+    "inventory:delete": "在庫データを削除",
+    "inventory:access": "在庫データにアクセス",
+    "inventory:fulfillment:edit": "フルフィルメントセンターを管理",
+    "inventory:fulfillment:delete": "フルフィルメントセンターを削除"
+  },
+  "settings": {
+    "Inventory": {
+      "ExportImport.PageSize": {
+        "description": "高い値を提供すると、パフォーマンスが遅くなる可能性があります",
+        "title": "エクスポート/インポートで使用するページサイズ"
+      },
+      "LogInventoryChanges": {
+        "title": "在庫の変更をログに記録",
+        "description": "プラットフォームの操作ログに製品の在庫変更を記録します。製品の在庫が頻繁に変更される場合、データベースのサイズに影響を与える可能性があります"
+      },
+      "Search": {
+        "EventBasedIndexation": {
+          "Enable": {
+            "title": "在庫エンティティのイベントベースのインデックス作成を有効にする",
+            "description": "在庫エンティティに対する変更は、これらの変更を検索インデックスに適用するバックグラウンドタスクをトリガーします"
+          }
+        }
+      }
+    }
+  },
+  "module": {
+    "VirtoCommerce.Inventory": {
+      "description": "在庫データをエクスポートまたはインポート"
+    }
+  }
+}

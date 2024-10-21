@@ -1,0 +1,125 @@
+{
+  "inventory": {
+    "blades": {
+      "inventory-detail": {
+        "subtitle": "Editar inventário",
+        "labels": {
+          "in-stock": "Em estoque",
+          "reserved": "Reservado",
+          "reorder-min-quantity": "Quantidade mínima para reabastecimento",
+          "allow-preorder": "Permitir pré-venda",
+          "reorder-quantity": "Quantidade de pré-venda",
+          "preorder-availability-date": "Data de disponibilidade da pré-venda",
+          "allow-backorder": "Permitir pedido em atraso",
+          "backorder-quantity": "Quantidade do pedido em atraso",
+          "backorder-availability-date": "Data de disponibilidade do pedido em atraso"
+        }
+      },
+      "inventory-fulfillmentcenters-list": {
+        "labels": {
+          "no-fulfillment-centers": "Nenhum centro de atendimento disponível",
+          "fulfillment-center-name": "Centro de atendimento",
+          "in-stock-quantity": "Quantidade em estoque"
+        }
+      },
+      "fulfillment-center-detail": {
+        "subtitle": "Edição do centro de atendimento",
+        "labels": {
+          "name": "Nome",
+          "description": "Descrição",
+          "short-description": "Descrição curta",
+          "max-releases": "Número máximo de lançamentos no lote selecionado",
+          "pick-delay": "Atraso na embalagem"
+        },
+        "placeholders": {
+          "name": "Fornecer nome do centro de atendimento",
+          "description": "Fornecer descrição do centro de atendimento"
+        },
+        "description": {
+          "name": "Nome do centro de atendimento",
+          "description": "Descrição do centro de atendimento",
+          "short-description": "Descrição curta do centro de atendimento"
+        }
+      }
+    },
+    "dialogs": {
+      "inventory-delete": {
+        "title": "Confirmar exclusão",
+        "message": "Você tem certeza de que deseja excluir esta oferta?"
+      },
+      "inventory-save": {
+        "title": "Salvar alterações",
+        "message": "O inventário foi modificado. Você deseja salvar as alterações?"
+      },
+      "fulfillment-delete": {
+        "title": "Confirmar exclusão",
+        "message": "Você tem certeza de que deseja excluir este centro de atendimento?"
+      }
+    },
+    "widgets": {
+      "inventoryWidget": {
+        "title": "Inventário",
+        "blade-subtitle": "Selecione um centro de atendimento para gerenciamento de inventário"
+      },
+      "fulfillmentWidget": {
+        "title": "Centros de atendimento",
+        "address-detail": {
+          "subtitle": "Editar endereço",
+          "no-address": "Nenhum endereço",
+          "region": "Estado/Província",
+          "city": "Cidade",
+          "address1": "Linha de endereço 1",
+          "zip-code": "Código postal",
+          "email": "Email",
+          "phone": "Telefone"
+        }
+      }
+    },
+    "properties": {
+      "geoPoint": {
+        "title": "Localização",
+        "placeholder": "Insira latitude e longitude",
+        "description": "Use o seguinte formato: lat,long, ex. 41.40338,2.17403, sem espaço após o separador de vírgula"
+      },
+      "outerId": {
+        "title": "ID Externo",
+        "placeholder": "Insira o ID em um sistema externo",
+        "description": "ID único para conectar o centro de atendimento ao sistema externo"
+      }
+    }
+  },
+  "permissions": {
+    "inventory:read": "Ler dados do inventário",
+    "inventory:create": "Criar dados do inventário",
+    "inventory:update": "Atualizar dados do inventário",
+    "inventory:delete": "Excluir dados do inventário",
+    "inventory:access": "Acessar dados do inventário",
+    "inventory:fulfillment:edit": "Gerenciar centros de atendimento",
+    "inventory:fulfillment:delete": "Excluir centros de atendimento"
+  },
+  "settings": {
+    "Inventory": {
+      "ExportImport.PageSize": {
+        "description": "Fornecer valores altos pode levar a um desempenho lento",
+        "title": "Tamanho da página utilizada para exportação / importação"
+      },
+      "LogInventoryChanges": {
+        "title": "Registrar alterações no inventário",
+        "description": "Registrar alterações no estoque de produtos no log de operações da plataforma. Isso pode afetar o tamanho do banco de dados se o estoque de produtos for alterado frequentemente"
+      },
+      "Search": {
+        "EventBasedIndexation": {
+          "Enable": {
+            "title": "Habilitar indexação baseada em eventos para entidades de inventário",
+            "description": "Qualquer alteração em uma entidade de inventário aciona uma tarefa em segundo plano que aplica essas alterações ao índice de pesquisa"
+          }
+        }
+      }
+    }
+  },
+  "module": {
+    "VirtoCommerce.Inventory": {
+      "description": "Exportar ou importar dados de inventário"
+    }
+  }
+}

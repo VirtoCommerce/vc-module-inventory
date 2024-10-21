@@ -2,39 +2,124 @@
   "inventory": {
     "blades": {
       "inventory-detail": {
+        "subtitle": "Bestand bearbeiten",
         "labels": {
           "in-stock": "Auf Lager",
           "reserved": "Reserviert",
-          "reorder-min-quantity": "Mindestbestellmenge.",
-          "allow-preorder": "Vorbestellung zulassen",
-          "reorder-quantity": "Menge vorbestellen.",
-          "preorder-availability-date": "Vorbestellung möglich ab Datum",
-          "allow-backorder": "Rückstand zulassen",
-          "backorder-quantity": "Rückstand Anz.",
-          "backorder-availability-date": "Rückstand Verfügbarkeitsdatum"
+          "reorder-min-quantity": "Mindestmenge nachbestellen",
+          "allow-preorder": "Vorbestellung erlauben",
+          "reorder-quantity": "Vorbestellmenge",
+          "preorder-availability-date": "Verfügbarkeitsdatum für Vorbestellungen",
+          "allow-backorder": "Rückbestellung erlauben",
+          "backorder-quantity": "Rückbestellmenge",
+          "backorder-availability-date": "Verfügbarkeitsdatum für Rückbestellungen"
         }
       },
       "inventory-fulfillmentcenters-list": {
         "labels": {
-          "no-fulfillment-centers": "Keine Erfüllungszentren verfügbar"
+          "no-fulfillment-centers": "Keine Erfüllungszentren verfügbar",
+          "fulfillment-center-name": "Erfüllungszentrum",
+          "in-stock-quantity": "Menge auf Lager"
+        }
+      },
+      "fulfillment-center-detail": {
+        "subtitle": "Erfüllungszentrum bearbeiten",
+        "labels": {
+          "name": "Name",
+          "description": "Beschreibung",
+          "short-description": "Kurze Beschreibung",
+          "max-releases": "Maximale Anzahl von Freigaben in der ausgewählten Charge",
+          "pick-delay": "Paketverzögerung"
+        },
+        "placeholders": {
+          "name": "Namen des Erfüllungszentrums angeben",
+          "description": "Beschreibung des Erfüllungszentrums angeben"
+        },
+        "description": {
+          "name": "Name des Erfüllungszentrums",
+          "description": "Beschreibung des Erfüllungszentrums",
+          "short-description": "Kurze Beschreibung des Erfüllungszentrums"
         }
       }
     },
     "dialogs": {
       "inventory-delete": {
-        "title": "Bestätigung löschen",
-        "message": "Möchten Sie dieses Angebot wirklich löschen?"
+        "title": "Löschen bestätigen",
+        "message": "Sind Sie sicher, dass Sie dieses Angebot löschen möchten?"
       },
       "inventory-save": {
         "title": "Änderungen speichern",
-        "message": "Inventar wurde geändert. Möchten Sie die Änderungen speichern?"
+        "message": "Der Bestand wurde geändert. Möchten Sie die Änderungen speichern?"
+      },
+      "fulfillment-delete": {
+        "title": "Löschen bestätigen",
+        "message": "Sind Sie sicher, dass Sie dieses Erfüllungszentrum löschen möchten?"
       }
     },
     "widgets": {
       "inventoryWidget": {
-        "title": "Lager",
-        "blade-subtitle": "Wählen Sie das Erfüllungszentrum aus, um das Inventar zu bearbeiten"
+        "title": "Bestand",
+        "blade-subtitle": "Wählen Sie ein Erfüllungszentrum für die Bestandsverwaltung"
+      },
+      "fulfillmentWidget": {
+        "title": "Erfüllungszentren",
+        "address-detail": {
+          "subtitle": "Adresse bearbeiten",
+          "no-address": "Keine Adresse",
+          "region": "Bundesland/Provinz",
+          "city": "Stadt",
+          "address1": "Adresszeile 1",
+          "zip-code": "Postleitzahl",
+          "email": "E-Mail",
+          "phone": "Telefon"
+        }
       }
+    },
+    "properties": {
+      "geoPoint": {
+        "title": "Standort",
+        "placeholder": "Geben Sie Breiten- und Längengrad ein",
+        "description": "Verwenden Sie das folgende Format: Breitengrad,Längengrad, z.B. 41.40338,2.17403, ohne Leerzeichen nach dem Komma"
+      },
+      "outerId": {
+        "title": "Äußere ID",
+        "placeholder": "Geben Sie die ID in einem externen System ein",
+        "description": "Eindeutige ID zur Verbindung des Erfüllungszentrums mit einem externen System"
+      }
+    }
+  },
+  "permissions": {
+    "inventory:read": "Bestandsdaten lesen",
+    "inventory:create": "Bestandsdaten erstellen",
+    "inventory:update": "Bestandsdaten aktualisieren",
+    "inventory:delete": "Bestandsdaten löschen",
+    "inventory:access": "Bestandsdaten erstellen",
+    "inventory:fulfillment:edit": "Erfüllungszentren verwalten",
+    "inventory:fulfillment:delete": "Erfüllungszentren löschen"
+  },
+  "settings": {
+    "Inventory": {
+      "ExportImport.PageSize": {
+        "description": "Hohe Werte können zu langsamer Leistung führen",
+        "title": "Seitengröße für Export/Import"
+      },
+      "LogInventoryChanges": {
+        "title": "Bestandsänderungen protokollieren",
+        "description": "Protokollieren Sie Änderungen des Produktbestands im Plattformbetriebsprotokoll. Dies kann die Datenbankgröße beeinflussen, wenn der Produktbestand häufig geändert wird"
+      },
+      "Search": {
+        "EventBasedIndexation": {
+          "Enable": {
+            "title": "Ereignisbasierte Indizierung für Bestandsentitäten aktivieren",
+            "description": "Jede Änderung an einer Bestandsentität löst eine Hintergrundaufgabe aus, die diese Änderungen auf den Suchindex anwendet"
+          }
+        }
+      }
+    }
+  },
+  "module": {
+    "VirtoCommerce.Inventory": {
+      "description": "Bestandsdaten exportieren oder importieren"
     }
   }
 }
