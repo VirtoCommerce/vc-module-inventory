@@ -1,0 +1,125 @@
+{
+  "inventory": {
+    "blades": {
+      "inventory-detail": {
+        "subtitle": "Modifica inventario",
+        "labels": {
+          "in-stock": "Disponibile",
+          "reserved": "Riservato",
+          "reorder-min-quantity": "Quantità minima di riordino",
+          "allow-preorder": "Consenti preordine",
+          "reorder-quantity": "Quantità di preordine",
+          "preorder-availability-date": "Data di disponibilità del preordine",
+          "allow-backorder": "Consenti ordine arretrato",
+          "backorder-quantity": "Quantità di ordine arretrato",
+          "backorder-availability-date": "Data di disponibilità dell'ordine arretrato"
+        }
+      },
+      "inventory-fulfillmentcenters-list": {
+        "labels": {
+          "no-fulfillment-centers": "Nessun centro di approvvigionamento disponibile",
+          "fulfillment-center-name": "Centro di approvvigionamento",
+          "in-stock-quantity": "Quantità disponibile"
+        }
+      },
+      "fulfillment-center-detail": {
+        "subtitle": "Modifica centro di approvvigionamento",
+        "labels": {
+          "name": "Nome",
+          "description": "Descrizione",
+          "short-description": "Descrizione breve",
+          "max-releases": "Numero massimo di rilasci nel lotto selezionato",
+          "pick-delay": "Ritardo nella consegna"
+        },
+        "placeholders": {
+          "name": "Fornisci il nome del centro di approvvigionamento",
+          "description": "Fornisci la descrizione del centro di approvvigionamento"
+        },
+        "description": {
+          "name": "Nome del centro di approvvigionamento",
+          "description": "Descrizione del centro di approvvigionamento",
+          "short-description": "Descrizione breve del centro di approvvigionamento"
+        }
+      }
+    },
+    "dialogs": {
+      "inventory-delete": {
+        "title": "Conferma eliminazione",
+        "message": "Sei sicuro di voler eliminare questo preventivo?"
+      },
+      "inventory-save": {
+        "title": "Salva modifiche",
+        "message": "L'inventario è stato modificato. Vuoi salvare le modifiche?"
+      },
+      "fulfillment-delete": {
+        "title": "Conferma eliminazione",
+        "message": "Sei sicuro di voler eliminare questo centro di approvvigionamento?"
+      }
+    },
+    "widgets": {
+      "inventoryWidget": {
+        "title": "Inventario",
+        "blade-subtitle": "Seleziona un centro di approvvigionamento per la gestione dell'inventario"
+      },
+      "fulfillmentWidget": {
+        "title": "Centri di evasione",
+        "address-detail": {
+          "subtitle": "Modifica indirizzo",
+          "no-address": "Nessun indirizzo",
+          "region": "Stato/Provincia",
+          "city": "Città",
+          "address1": "Riga indirizzo 1",
+          "zip-code": "Codice postale",
+          "email": "Email",
+          "phone": "Telefono"
+        }
+      }
+    },
+    "properties": {
+      "geoPoint": {
+        "title": "Posizione",
+        "placeholder": "Inserisci latitudine e longitudine",
+        "description": "Utilizza il seguente formato: latitudine,longitudine, ad es. 41.40338,2.17403, senza spazio dopo la virgola"
+      },
+      "outerId": {
+        "title": "ID esterno",
+        "placeholder": "Inserisci ID in un sistema esterno",
+        "description": "ID unico per collegare il centro di approvvigionamento a un sistema esterno"
+      }
+    }
+  },
+  "permissions": {
+    "inventory:read": "Leggi dati di inventario",
+    "inventory:create": "Crea dati di inventario",
+    "inventory:update": "Aggiorna dati di inventario",
+    "inventory:delete": "Elimina dati di inventario",
+    "inventory:access": "Crea dati di inventario",
+    "inventory:fulfillment:edit": "Gestisci centri di evasione",
+    "inventory:fulfillment:delete": "Elimina centri di evasione"
+  },
+  "settings": {
+    "Inventory": {
+      "ExportImport.PageSize": {
+        "description": "Fornire valori elevati può portare a prestazioni lente",
+        "title": "Dimensione della pagina utilizzata per l'esportazione / importazione"
+      },
+      "LogInventoryChanges": {
+        "title": "Registra modifiche all'inventario",
+        "description": "Registra le modifiche delle scorte di prodotto nel registro delle operazioni della piattaforma. Questo può influenzare la dimensione del database se le scorte di prodotto vengono modificate frequentemente"
+      },
+      "Search": {
+        "EventBasedIndexation": {
+          "Enable": {
+            "title": "Abilita indicizzazione basata su eventi per le entità di inventario",
+            "description": "Qualsiasi modifica a un'entità di inventario attiva un'attività in background che applica queste modifiche all'indice di ricerca"
+          }
+        }
+      }
+    }
+  },
+  "module": {
+    "VirtoCommerce.Inventory": {
+      "description": "Esporta o importa dati di inventario"
+    }
+  }
+}
