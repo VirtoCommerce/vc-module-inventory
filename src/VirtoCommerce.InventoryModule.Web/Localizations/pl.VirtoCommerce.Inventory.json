@@ -1,0 +1,125 @@
+{
+  "inventory": {
+    "blades": {
+      "inventory-detail": {
+        "subtitle": "Edytuj stan magazynowy",
+        "labels": {
+          "in-stock": "Dostępny",
+          "reserved": "Zarezerwowany",
+          "reorder-min-quantity": "Minimalna ilość do zamówienia",
+          "allow-preorder": "Zezwól na przedsprzedaż",
+          "reorder-quantity": "Ilość do przedsprzedaży",
+          "preorder-availability-date": "Data dostępności przedsprzedaży",
+          "allow-backorder": "Zezwól na zamówienie spóźnione",
+          "backorder-quantity": "Ilość zamówienia spóźnionego",
+          "backorder-availability-date": "Data dostępności zamówienia spóźnionego"
+        }
+      },
+      "inventory-fulfillmentcenters-list": {
+        "labels": {
+          "no-fulfillment-centers": "Brak dostępnych centrów realizacji",
+          "fulfillment-center-name": "Centrum realizacji",
+          "in-stock-quantity": "Ilość dostępna"
+        }
+      },
+      "fulfillment-center-detail": {
+        "subtitle": "Edycja centrum realizacji",
+        "labels": {
+          "name": "Nazwa",
+          "description": "Opis",
+          "short-description": "Krótki opis",
+          "max-releases": "Maksymalna liczba wydań w wybranej partii",
+          "pick-delay": "Opóźnienie w pakowaniu"
+        },
+        "placeholders": {
+          "name": "Podaj nazwę centrum realizacji",
+          "description": "Podaj opis centrum realizacji"
+        },
+        "description": {
+          "name": "Nazwa centrum realizacji",
+          "description": "Opis centrum realizacji",
+          "short-description": "Krótki opis centrum realizacji"
+        }
+      }
+    },
+    "dialogs": {
+      "inventory-delete": {
+        "title": "Potwierdź usunięcie",
+        "message": "Czy na pewno chcesz usunąć tę ofertę?"
+      },
+      "inventory-save": {
+        "title": "Zapisz zmiany",
+        "message": "Stan magazynowy został zmodyfikowany. Czy chcesz zapisać zmiany?"
+      },
+      "fulfillment-delete": {
+        "title": "Potwierdź usunięcie",
+        "message": "Czy na pewno chcesz usunąć to centrum realizacji?"
+      }
+    },
+    "widgets": {
+      "inventoryWidget": {
+        "title": "Stan magazynowy",
+        "blade-subtitle": "Wybierz centrum realizacji do zarządzania stanem magazynowym"
+      },
+      "fulfillmentWidget": {
+        "title": "Centra realizacji",
+        "address-detail": {
+          "subtitle": "Edytuj adres",
+          "no-address": "Brak adresu",
+          "region": "Stan/Provincja",
+          "city": "Miasto",
+          "address1": "Linia adresowa 1",
+          "zip-code": "Kod pocztowy",
+          "email": "Email",
+          "phone": "Telefon"
+        }
+      }
+    },
+    "properties": {
+      "geoPoint": {
+        "title": "Lokalizacja",
+        "placeholder": "Wprowadź szerokość i długość geograficzną",
+        "description": "Użyj następującego formatu: szerokość,długość, np. 41.40338,2.17403, bez spacji po przecinku"
+      },
+      "outerId": {
+        "title": "Zewnętrzny ID",
+        "placeholder": "Wprowadź ID w systemie zewnętrznym",
+        "description": "Unikalny ID do połączenia centrum realizacji z systemem zewnętrznym"
+      }
+    }
+  },
+  "permissions": {
+    "inventory:read": "Odczyt danych stanu magazynowego",
+    "inventory:create": "Tworzenie danych stanu magazynowego",
+    "inventory:update": "Aktualizacja danych stanu magazynowego",
+    "inventory:delete": "Usuwanie danych stanu magazynowego",
+    "inventory:access": "Dostęp do danych stanu magazynowego",
+    "inventory:fulfillment:edit": "Zarządzaj centrami realizacji",
+    "inventory:fulfillment:delete": "Usuń centra realizacji"
+  },
+  "settings": {
+    "Inventory": {
+      "ExportImport.PageSize": {
+        "description": "Podawanie wysokich wartości może prowadzić do wolnej wydajności",
+        "title": "Rozmiar strony używany do eksportu / importu"
+      },
+      "LogInventoryChanges": {
+        "title": "Rejestruj zmiany stanu magazynowego",
+        "description": "Rejestruj zmiany w zapasach produktów w dzienniku operacyjnym platformy. Może to wpłynąć na rozmiar bazy danych, jeśli zapasy produktów są często zmieniane"
+      },
+      "Search": {
+        "EventBasedIndexation": {
+          "Enable": {
+            "title": "Włącz indeksowanie oparte na zdarzeniach jednostek stanu magazynowego",
+            "description": "Każda zmiana jednostki stanu magazynowego uruchamia zadanie w tle, które stosuje te zmiany do indeksu wyszukiwania"
+          }
+        }
+      }
+    }
+  },
+  "module": {
+    "VirtoCommerce.Inventory": {
+      "description": "Eksportuj lub importuj dane stanu magazynowego"
+    }
+  }
+}

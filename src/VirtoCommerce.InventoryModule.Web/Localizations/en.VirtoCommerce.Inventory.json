@@ -2,7 +2,7 @@
   "inventory": {
     "blades": {
       "inventory-detail": {
-        "subtitle": "Edit Inventory",
+        "subtitle": "Edit inventory",
         "labels": {
           "in-stock": "In stock",
           "reserved": "Reserved",
@@ -32,8 +32,8 @@
           "pick-delay": "Package delay"
         },
         "placeholders": {
-          "name": "Please provide fulfillment center name",
-          "description": "Please provide fulfillment center description"
+          "name": "Provide fulfillment center name",
+          "description": "Provide fulfillment center description"
         },
         "description": {
           "name": "Fulfillment center name",
@@ -44,22 +44,22 @@
     },
     "dialogs": {
       "inventory-delete": {
-        "title": "Confirm Delete",
+        "title": "Confirm delete",
         "message": "Are you sure you want to delete this quote?"
       },
       "inventory-save": {
-        "title": "Save Changes",
+        "title": "Save changes",
         "message": "The inventory has been modified. Do you want to save changes?"
       },
       "fulfillment-delete": {
-        "title": "Confirm Delete",
+        "title": "Confirm delete",
         "message": "Are you sure you want to delete this fulfillment center?"
       }
     },
     "widgets": {
       "inventoryWidget": {
         "title": "Inventory",
-        "blade-subtitle": "Select a fulfillment center to edit the inventory in"
+        "blade-subtitle": "Select a fulfillment center for inventory management"
       },
       "fulfillmentWidget": {
         "title": "Fulfillment centers",
@@ -78,13 +78,13 @@
     "properties": {
       "geoPoint": {
         "title": "Location",
-        "placeholder": "Please enter latitude and longitude",
-        "description": "Please use the following format: lat,long, e.g. 41.40338,2.17403, with no space after the comma separator."
+        "placeholder": "Enter latitude and longitude",
+        "description": "Use the following format: lat,long, e.g. 41.40338,2.17403, with no space after the comma separator"
       },
       "outerId": {
         "title": "Outer ID",
-        "placeholder": "Please enter ID in an outer system",
-        "description": "Unique ID for connecting the fulfillment center with an outer system."
+        "placeholder": "Enter ID in an outer system",
+        "description": "Unique ID to connect fulfillment center to external system"
       }
     }
   },
@@ -93,7 +93,7 @@
     "inventory:create": "Create inventory data",
     "inventory:update": "Update inventory data",
     "inventory:delete": "Delete inventory data",
-    "inventory:access": "Create inventory data",
+    "inventory:access": "Access inventory data",
     "inventory:fulfillment:edit": "Manage fulfillment centers",
     "inventory:fulfillment:delete": "Delete fulfillment centers"
   },
@@ -101,17 +101,17 @@
     "Inventory": {
       "ExportImport.PageSize": {
         "description": "Providing high values may lead to slow performance",
-        "title": "Page size being used for Export / Import"
+        "title": "Page size being used for export / import"
       },
       "LogInventoryChanges": {
         "title": "Log inventory changes",
-        "description": "Log product stock changes into the platform operation log. This might impact database size in case the product stock gets changed often."
+        "description": "Log product stock changes into the platform operation log. This may affect the database size if the product stock is changed often"
       },
       "Search": {
         "EventBasedIndexation": {
           "Enable": {
             "title": "Enable event-based indexing for inventory entities",
-            "description": "Any change to an inventory entity will trigger a background task that will apply these changes to the search index."
+            "description": "Any change to an inventory entity triggers a background task that applies these changes to the search index"
           }
         }
       }
