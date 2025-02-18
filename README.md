@@ -44,7 +44,7 @@ In the ecommerce sector, a day-to-day management of inventory helps increase bus
 * Installation: https://docs.virtocommerce.org/platform/user-guide/modules-installation/
 * Home: https://virtocommerce.com
 * Community: https://www.virtocommerce.org
-* [Download Latest Release](https://github.com/VirtoCommerce/vc-module-inventory/releases)
+* [Download Latest Release](https://github.com/VirtoCommerce/vc-module-inventory/releases/latest)
 
 ### License
 
