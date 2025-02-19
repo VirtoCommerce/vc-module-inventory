@@ -1,14 +1,13 @@
-# Overview
+# Virto Commerce Inventory Module
 
 [![CI status](https://github.com/VirtoCommerce/vc-module-inventory/workflows/Module%20CI/badge.svg?branch=dev)](https://github.com/VirtoCommerce/vc-module-inventory/actions?query=workflow%3A"Module+CI") [![Quality gate](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-inventory&metric=alert_status&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-inventory) [![Reliability rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-inventory&metric=reliability_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-inventory) [![Security rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-inventory&metric=security_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-inventory) [![Sqale rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-inventory&metric=sqale_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-inventory)
 
-Inventory management is a system of stock level controlling and fulfillment centers management.
+The Inventory module represents a store inventory management system. The main goal of the Inventory module is to control inventory levels and manage fulfillment centers.
 
-Inventory is often the largest item a business has in its current assets, meaning it must be accurately monitored. Inventory is counted and valued at the end of each accounting period to determine the company's profits or losses.
+Inventory is often a company's largest current asset, which means it must be monitored accurately. Inventory is counted and valued at the end of each accounting period to determine the company's profits or losses.
 
-In the ecommerce sector, a day-to-day management of inventory helps increase business intelligence and visibility. Ecommerce business owners have better ongoing control when they have constant eyes on inventory.
+In the e-commerce sector, a day-to-day management of inventory helps increase business intelligence and visibility. Ecommerce business owners have better ongoing control when they have constant eyes on inventory.
 
-**VirtoCommerce.Inventory module** represents a store inventory management system. The main goal of the Inventory module is stock level controlling and managing of fulfillment centers.
 
 ## Key features
 
