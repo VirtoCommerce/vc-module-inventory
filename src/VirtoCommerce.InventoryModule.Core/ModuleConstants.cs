@@ -12,6 +12,7 @@ namespace VirtoCommerce.InventoryModule.Core
         {
             public static class Permissions
             {
+                public const string FulfillmentRead = "inventory:fulfillment:read";
                 public const string FulfillmentEdit = "inventory:fulfillment:edit";
                 public const string FulfillmentDelete = "inventory:fulfillment:delete";
                 public const string Read = "inventory:read";
@@ -20,7 +21,10 @@ namespace VirtoCommerce.InventoryModule.Core
                 public const string Access = "inventory:access";
                 public const string Delete = "inventory:delete";
 
-                public static string[] AllPermissions { get; } = new[] { FulfillmentEdit, FulfillmentDelete, Read, Create, Update, Access, Delete };
+                public static string[] AllPermissions { get; } = [
+                    FulfillmentRead, FulfillmentEdit, FulfillmentDelete,
+                    Read, Create, Update, Access, Delete,
+                ];
             }
         }
 

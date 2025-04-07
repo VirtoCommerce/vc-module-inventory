@@ -1,14 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using VirtoCommerce.InventoryModule.Core;
 using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Core.Model.Search;
 using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
+using Permissions = VirtoCommerce.InventoryModule.Core.ModuleConstants.Security.Permissions;
 
 namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
 {
@@ -40,16 +39,9 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("inventories/search")]
-        public async Task<ActionResult<InventoryInfoSearchResult>> SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
-        {
-            var result = await _inventorySearchService.SearchInventoriesAsync(searchCriteria);
-            return Ok(result);
-        }
-
-        //TODO remove the enpoint but It needs for swagger validation
-        [HttpPost]
-        [Route("inventory/search")]
-        public Task<ActionResult<InventoryInfoSearchResult>> SearchInventory([FromBody] InventorySearchCriteria searchCriteria)
+        [Authorize(Permissions.Read)]
+        [Obsolete("Use 'inventory/search'", DiagnosticId = "VC0010", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+        public Task<ActionResult<InventoryInfoSearchResult>> SearchInventoriesObsolete([FromBody] InventorySearchCriteria searchCriteria)
         {
             return SearchInventories(searchCriteria);
         }
@@ -58,19 +50,36 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// Search inventories by given criteria
         /// </summary>
         [HttpPost]
+        [Route("inventory/search")]
+        [Authorize(Permissions.Read)]
+        public async Task<ActionResult<InventoryInfoSearchResult>> SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
+        {
+            var result = await _inventorySearchService.SearchInventoriesAsync(searchCriteria);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Search inventories by given criteria
+        /// </summary>
+        [HttpPost]
         [Route("inventory/product/inventories/search")]
+        [Authorize(Permissions.Read)]
+        [Obsolete("Use 'inventory/product/search'", DiagnosticId = "VC0010", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+        public Task<ActionResult<InventoryInfoSearchResult>> SearchProductInventoriesObsolete([FromBody] ProductInventorySearchCriteria searchCriteria)
+        {
+            return SearchProductInventories(searchCriteria);
+        }
+
+        /// <summary>
+        /// Search inventories by given criteria
+        /// </summary>
+        [HttpPost]
+        [Route("inventory/product/search")]
+        [Authorize(Permissions.Read)]
         public async Task<ActionResult<InventoryInfoSearchResult>> SearchProductInventories([FromBody] ProductInventorySearchCriteria searchCriteria)
         {
             var result = await _productInventorySearchService.SearchProductInventoriesAsync(searchCriteria);
             return Ok(result);
-        }
-
-        //TODO remove the enpoint but It needs for swagger validation
-        [HttpPost]
-        [Route("inventory/product/search")]
-        public Task<ActionResult<InventoryInfoSearchResult>> SearchProductInventory([FromBody] ProductInventorySearchCriteria searchCriteria)
-        {
-            return SearchProductInventories(searchCriteria);
         }
 
         /// <summary>
@@ -78,6 +87,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         [HttpPost]
         [Route("inventory/fulfillmentcenters/search")]
+        [Authorize(Permissions.FulfillmentRead)]
         public async Task<ActionResult<FulfillmentCenterSearchResult>> SearchFulfillmentCenters([FromBody] FulfillmentCenterSearchCriteria searchCriteria)
         {
             var retVal = await _fulfillmentCenterSearchService.SearchNoCloneAsync(searchCriteria);
@@ -90,6 +100,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="id">fulfillment center id</param>
         [HttpGet]
         [Route("inventory/fulfillmentcenters/{id}")]
+        [Authorize(Permissions.FulfillmentRead)]
         public async Task<ActionResult<FulfillmentCenter>> GetFulfillmentCenter([FromRoute] string id)
         {
             var retVal = await _fulfillmentCenterService.GetNoCloneAsync(id);
@@ -102,7 +113,8 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="ids">fulfillment center ids</param>
         [HttpPost]
         [Route("inventory/fulfillmentcenters/plenty")]
-        public async Task<ActionResult<IEnumerable<FulfillmentCenter>>> GetFulfillmentCenters([FromBody] List<string> ids)
+        [Authorize(Permissions.FulfillmentRead)]
+        public async Task<ActionResult<FulfillmentCenter[]>> GetFulfillmentCenters([FromBody] string[] ids)
         {
             var retVal = await _fulfillmentCenterService.GetNoCloneAsync(ids);
             return Ok(retVal);
@@ -114,10 +126,10 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="center">fulfillment center</param>
         [HttpPut]
         [Route("inventory/fulfillmentcenters")]
-        [Authorize(ModuleConstants.Security.Permissions.FulfillmentEdit)]
+        [Authorize(Permissions.FulfillmentEdit)]
         public async Task<ActionResult<FulfillmentCenter>> SaveFulfillmentCenter([FromBody] FulfillmentCenter center)
         {
-            await _fulfillmentCenterService.SaveChangesAsync(new[] { center });
+            await _fulfillmentCenterService.SaveChangesAsync([center]);
             return Ok(center);
         }
 
@@ -127,7 +139,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="centers">fulfillment centers</param>
         [HttpPost]
         [Route("inventory/fulfillmentcenters/batch")]
-        [Authorize(ModuleConstants.Security.Permissions.FulfillmentEdit)]
+        [Authorize(Permissions.FulfillmentEdit)]
         public async Task<ActionResult<FulfillmentCenter[]>> SaveFulfillmentCenters([FromBody] FulfillmentCenter[] centers)
         {
             await _fulfillmentCenterService.SaveChangesAsync(centers);
@@ -139,22 +151,12 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// </summary>
         [HttpDelete]
         [Route("inventory/fulfillmentcenters")]
-        [Authorize(ModuleConstants.Security.Permissions.FulfillmentDelete)]
+        [Authorize(Permissions.FulfillmentDelete)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> DeleteInventoryFulfillmentCenters([FromQuery] string[] ids)
+        public async Task<ActionResult> DeleteFulfillmentCenters([FromQuery] string[] ids)
         {
             await _fulfillmentCenterService.DeleteAsync(ids);
             return NoContent();
-        }
-
-        //TODO remove the enpoint but It needs for swagger validation
-        [HttpDelete]
-        [Route("fulfillment/centers")]
-        [Authorize(ModuleConstants.Security.Permissions.FulfillmentDelete)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
-        public Task<ActionResult> DeleteFulfillmentCenters([FromQuery] string[] ids)
-        {
-            return DeleteInventoryFulfillmentCenters(ids);
         }
 
         /// <summary>
@@ -165,12 +167,14 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="fulfillmentCenterIds">The fulfillment centers that will be used to filter product inventories</param>
         [HttpGet]
         [Route("inventory/products")]
+        [Authorize(Permissions.Read)]
         public async Task<ActionResult<InventoryInfo[]>> GetProductsInventories([FromQuery] string[] ids, [FromQuery] string[] fulfillmentCenterIds = null)
         {
             if (ids.IsNullOrEmpty() && fulfillmentCenterIds.IsNullOrEmpty())
             {
-                throw new ArgumentNullException("ids", "the products ids or fulfillmentCenters ids must be set");
+                throw new ArgumentException("Products ids or fulfillmentCenters ids must be set");
             }
+
             var criteria = AbstractTypeFactory<InventorySearchCriteria>.TryCreateInstance();
             criteria.FulfillmentCenterIds = fulfillmentCenterIds;
             criteria.ProductIds = ids;
@@ -188,6 +192,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="fulfillmentCenterIds">The fulfillment centers that will be used to filter product inventories</param>
         [HttpPost]
         [Route("inventory/products/plenty")]
+        [Authorize(Permissions.Read)]
         public Task<ActionResult<InventoryInfo[]>> GetProductsInventoriesByPlentyIds([FromBody] string[] ids, [FromQuery] string[] fulfillmentCenterIds = null)
         {
             return GetProductsInventories(ids, fulfillmentCenterIds);
@@ -200,9 +205,10 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="productId">Product id</param>
         [HttpGet]
         [Route("inventory/products/{productId}")]
+        [Authorize(Permissions.Read)]
         public Task<ActionResult<InventoryInfo[]>> GetProductInventories([FromRoute] string productId)
         {
-            return GetProductsInventories(new[] { productId });
+            return GetProductsInventories([productId]);
         }
 
         /// <summary>
@@ -212,10 +218,10 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="inventory">Inventory to update</param>
         [HttpPut]
         [Route("inventory/products/{productId}")]
-        [Authorize(ModuleConstants.Security.Permissions.Update)]
+        [Authorize(Permissions.Update)]
         public async Task<ActionResult<InventoryInfo>> UpdateProductInventory([FromBody] InventoryInfo inventory)
         {
-            await _inventoryService.SaveChangesAsync(new[] { inventory });
+            await _inventoryService.SaveChangesAsync([inventory]);
             return Ok(inventory);
         }
 
@@ -226,7 +232,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="inventories">Inventories to upsert</param>
         [HttpPut]
         [Route("inventory/plenty")]
-        [Authorize(ModuleConstants.Security.Permissions.Update)]
+        [Authorize(Permissions.Update)]
         public async Task<ActionResult> UpsertProductInventories([FromBody] InventoryInfo[] inventories)
         {
             await _inventoryService.SaveChangesAsync(inventories);
