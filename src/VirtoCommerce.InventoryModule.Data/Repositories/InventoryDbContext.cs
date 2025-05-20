@@ -8,8 +8,6 @@ namespace VirtoCommerce.InventoryModule.Data.Repositories
 {
     public class InventoryDbContext : DbContextBase
     {
-        private const int _maxLength = 128;
-
 #pragma warning disable S109
         public InventoryDbContext(DbContextOptions<InventoryDbContext> options)
             : base(options)
