@@ -17,7 +17,7 @@ namespace VirtoCommerce.InventoryModule.Data.PostgreSql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -43,7 +43,7 @@ namespace VirtoCommerce.InventoryModule.Data.PostgreSql.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal?>("DecimalValue")
-                        .HasColumnType("numeric(18,5)");
+                        .HasColumnType("decimal(18,5)");
 
                     b.Property<string>("DictionaryItemId")
                         .HasMaxLength(128)
@@ -191,6 +191,8 @@ namespace VirtoCommerce.InventoryModule.Data.PostgreSql.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OuterId");
+
                     b.ToTable("FulfillmentCenter", (string)null);
                 });
 
@@ -271,6 +273,8 @@ namespace VirtoCommerce.InventoryModule.Data.PostgreSql.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FulfillmentCenterId");
+
+                    b.HasIndex("OuterId");
 
                     b.HasIndex("Sku", "ModifiedDate")
                         .HasDatabaseName("IX_Inventory_Sku_ModifiedDate");

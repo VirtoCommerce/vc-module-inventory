@@ -17,10 +17,10 @@ namespace VirtoCommerce.InventoryModule.Data.SqlServer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("VirtoCommerce.InventoryModule.Data.Model.FulfillmentCenterDynamicPropertyObjectValueEntity", b =>
                 {
@@ -191,6 +191,8 @@ namespace VirtoCommerce.InventoryModule.Data.SqlServer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OuterId");
+
                     b.ToTable("FulfillmentCenter", (string)null);
                 });
 
@@ -271,6 +273,8 @@ namespace VirtoCommerce.InventoryModule.Data.SqlServer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FulfillmentCenterId");
+
+                    b.HasIndex("OuterId");
 
                     b.HasIndex("Sku", "ModifiedDate")
                         .HasDatabaseName("IX_Inventory_Sku_ModifiedDate");
