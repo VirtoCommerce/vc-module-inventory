@@ -265,10 +265,10 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <summary>
         /// Partial update for the specified inventory of product by id
         /// </summary>
-        /// <param name="id">Inventory of product id</param>
+        /// <param name="id">Inventory id</param>
         /// <param name="patchDocument">JsonPatchDocument object with fields to update</param>
         [HttpPatch]
-        [Route("inventory/products/{id}")]
+        [Route("inventory/{id}")]
         [Authorize(Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> PatchProductInventory(string id, [FromBody] JsonPatchDocument<InventoryInfo> patchDocument)
