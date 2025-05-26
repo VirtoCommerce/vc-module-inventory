@@ -234,7 +234,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// <param name="id">FulfillmentCenter id</param>
         /// <param name="patchDocument">JsonPatchDocument object with fields to update</param>
         [HttpPatch]
-        [Route("inventory/fulfillmentcenters{id}")]
+        [Route("inventory/fulfillmentcenters/{id}")]
         [Authorize(Permissions.FulfillmentEdit)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> PatchFulfillmentCenter(string id, [FromBody] JsonPatchDocument<FulfillmentCenter> patchDocument)
