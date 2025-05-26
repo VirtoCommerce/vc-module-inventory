@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Core.Model.Search;
@@ -13,27 +15,14 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
 {
     [Route("api")]
     [Authorize]
-    public class InventoryModuleController : Controller
+    public class InventoryModuleController(
+        IInventoryService inventoryService,
+        IInventorySearchService inventorySearchService,
+        IProductInventorySearchService fulfillmentCenterInventorySearchService,
+        IFulfillmentCenterSearchService fulfillmentCenterSearchService,
+        IFulfillmentCenterService fulfillmentCenterService
+        ) : Controller
     {
-        private readonly IInventoryService _inventoryService;
-        private readonly IInventorySearchService _inventorySearchService;
-        private readonly IProductInventorySearchService _productInventorySearchService;
-        private readonly IFulfillmentCenterSearchService _fulfillmentCenterSearchService;
-        private readonly IFulfillmentCenterService _fulfillmentCenterService;
-
-        public InventoryModuleController(IInventoryService inventoryService,
-            IInventorySearchService inventorySearchService,
-            IProductInventorySearchService fulfillmentCenterInventorySearchService,
-            IFulfillmentCenterSearchService fulfillmentCenterSearchService,
-            IFulfillmentCenterService fulfillmentCenterService)
-        {
-            _inventoryService = inventoryService;
-            _inventorySearchService = inventorySearchService;
-            _productInventorySearchService = fulfillmentCenterInventorySearchService;
-            _fulfillmentCenterSearchService = fulfillmentCenterSearchService;
-            _fulfillmentCenterService = fulfillmentCenterService;
-        }
-
         /// <summary>
         /// Search inventories by given criteria
         /// </summary>
@@ -54,7 +43,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Authorize(Permissions.Read)]
         public async Task<ActionResult<InventoryInfoSearchResult>> SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
         {
-            var result = await _inventorySearchService.SearchInventoriesAsync(searchCriteria);
+            var result = await inventorySearchService.SearchInventoriesAsync(searchCriteria);
             return Ok(result);
         }
 
@@ -78,7 +67,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Authorize(Permissions.Read)]
         public async Task<ActionResult<InventoryInfoSearchResult>> SearchProductInventories([FromBody] ProductInventorySearchCriteria searchCriteria)
         {
-            var result = await _productInventorySearchService.SearchProductInventoriesAsync(searchCriteria);
+            var result = await fulfillmentCenterInventorySearchService.SearchProductInventoriesAsync(searchCriteria);
             return Ok(result);
         }
 
@@ -90,7 +79,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Authorize(Permissions.FulfillmentRead)]
         public async Task<ActionResult<FulfillmentCenterSearchResult>> SearchFulfillmentCenters([FromBody] FulfillmentCenterSearchCriteria searchCriteria)
         {
-            var retVal = await _fulfillmentCenterSearchService.SearchNoCloneAsync(searchCriteria);
+            var retVal = await fulfillmentCenterSearchService.SearchNoCloneAsync(searchCriteria);
             return Ok(retVal);
         }
 
@@ -103,7 +92,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Authorize(Permissions.FulfillmentRead)]
         public async Task<ActionResult<FulfillmentCenter>> GetFulfillmentCenter([FromRoute] string id)
         {
-            var retVal = await _fulfillmentCenterService.GetNoCloneAsync(id);
+            var retVal = await fulfillmentCenterService.GetNoCloneAsync(id);
             return Ok(retVal);
         }
 
@@ -116,7 +105,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Authorize(Permissions.FulfillmentRead)]
         public async Task<ActionResult<FulfillmentCenter[]>> GetFulfillmentCenters([FromBody] string[] ids)
         {
-            var retVal = await _fulfillmentCenterService.GetNoCloneAsync(ids);
+            var retVal = await fulfillmentCenterService.GetNoCloneAsync(ids);
             return Ok(retVal);
         }
 
@@ -129,7 +118,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Authorize(Permissions.FulfillmentEdit)]
         public async Task<ActionResult<FulfillmentCenter>> SaveFulfillmentCenter([FromBody] FulfillmentCenter center)
         {
-            await _fulfillmentCenterService.SaveChangesAsync([center]);
+            await fulfillmentCenterService.SaveChangesAsync([center]);
             return Ok(center);
         }
 
@@ -142,7 +131,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Authorize(Permissions.FulfillmentEdit)]
         public async Task<ActionResult<FulfillmentCenter[]>> SaveFulfillmentCenters([FromBody] FulfillmentCenter[] centers)
         {
-            await _fulfillmentCenterService.SaveChangesAsync(centers);
+            await fulfillmentCenterService.SaveChangesAsync(centers);
             return Ok(centers);
         }
 
@@ -155,7 +144,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteFulfillmentCenters([FromQuery] string[] ids)
         {
-            await _fulfillmentCenterService.DeleteAsync(ids);
+            await fulfillmentCenterService.DeleteAsync(ids);
             return NoContent();
         }
 
@@ -180,7 +169,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
             criteria.ProductIds = ids;
             criteria.Take = int.MaxValue;
 
-            var result = await _inventorySearchService.SearchInventoriesAsync(criteria);
+            var result = await inventorySearchService.SearchInventoriesAsync(criteria);
             return Ok(result.Results);
         }
 
@@ -221,7 +210,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Authorize(Permissions.Update)]
         public async Task<ActionResult<InventoryInfo>> UpdateProductInventory([FromBody] InventoryInfo inventory)
         {
-            await _inventoryService.SaveChangesAsync([inventory]);
+            await inventoryService.SaveChangesAsync([inventory]);
             return Ok(inventory);
         }
 
@@ -235,8 +224,76 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Authorize(Permissions.Update)]
         public async Task<ActionResult> UpsertProductInventories([FromBody] InventoryInfo[] inventories)
         {
-            await _inventoryService.SaveChangesAsync(inventories);
+            await inventoryService.SaveChangesAsync(inventories);
             return Ok();
+        }
+
+        /// <summary>
+        /// Partial update for the specified FulfillmentCenter by id
+        /// </summary>
+        /// <param name="id">FulfillmentCenter id</param>
+        /// <param name="patchDocument">JsonPatchDocument object with fields to update</param>
+        [HttpPatch]
+        [Route("inventory/fulfillmentcenters/{id}")]
+        [Authorize(Permissions.FulfillmentEdit)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> PatchFulfillmentCenter(string id, [FromBody] JsonPatchDocument<FulfillmentCenter> patchDocument)
+        {
+            if (patchDocument == null)
+            {
+                return BadRequest();
+            }
+
+            var fulfillment = await fulfillmentCenterService.GetByIdAsync(id);
+            if (fulfillment == null)
+            {
+                return NotFound();
+            }
+
+            patchDocument.ApplyTo(fulfillment, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await fulfillmentCenterService.SaveChangesAsync([fulfillment]);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Partial update for the specified inventory of product by id
+        /// </summary>
+        /// <param name="id">Inventory id</param>
+        /// <param name="patchDocument">JsonPatchDocument object with fields to update</param>
+        [HttpPatch]
+        [Route("inventory/{id}")]
+        [Authorize(Permissions.Update)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> PatchProductInventory(string id, [FromBody] JsonPatchDocument<InventoryInfo> patchDocument)
+        {
+            if (patchDocument == null)
+            {
+                return BadRequest();
+            }
+
+            var inventory = (await inventoryService.GetByIdsAsync([id])).FirstOrDefault();
+            if (inventory == null)
+            {
+                return NotFound();
+            }
+
+            patchDocument.ApplyTo(inventory, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await inventoryService.SaveChangesAsync([inventory]);
+
+            return NoContent();
         }
     }
 }
