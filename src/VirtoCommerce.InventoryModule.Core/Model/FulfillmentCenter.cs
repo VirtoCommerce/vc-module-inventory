@@ -5,7 +5,7 @@ using VirtoCommerce.Platform.Core.DynamicProperties;
 
 namespace VirtoCommerce.InventoryModule.Core.Model
 {
-    public class FulfillmentCenter : AuditableEntity, IHasDynamicProperties, ICloneable
+    public class FulfillmentCenter : AuditableEntity, IHasDynamicProperties, ICloneable, IHasOuterId
     {
         public string Name { get; set; }
         public string Description { get; set; }

@@ -3,7 +3,7 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.InventoryModule.Core.Model
 {
-    public class InventoryInfo : AuditableEntity, ICloneable
+    public class InventoryInfo : AuditableEntity, ICloneable, IHasOuterId
     {
         public string FulfillmentCenterId { get; set; }
         public string FulfillmentCenterName { get; set; }
