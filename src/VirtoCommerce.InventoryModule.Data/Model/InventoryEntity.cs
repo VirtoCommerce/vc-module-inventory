@@ -121,6 +121,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
 
         public virtual void Patch(InventoryEntity target)
         {
+            target.OuterId = OuterId;
             target.AllowBackorder = AllowBackorder;
             target.AllowPreorder = AllowPreorder;
             target.BackorderAvailabilityDate = BackorderAvailabilityDate;
