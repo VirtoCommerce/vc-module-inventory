@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.InventoryModule.Core.Events;
 using VirtoCommerce.InventoryModule.Core.Model;
@@ -13,7 +14,7 @@ using VirtoCommerce.Platform.Data.GenericCrud;
 
 namespace VirtoCommerce.InventoryModule.Data.Services
 {
-    public class FulfillmentCenterService : CrudService<FulfillmentCenter, FulfillmentCenterEntity, FulfillmentCenterChangingEvent, FulfillmentCenterChangedEvent>, IFulfillmentCenterService
+    public class FulfillmentCenterService : OuterEntityService<FulfillmentCenter, FulfillmentCenterEntity, FulfillmentCenterChangingEvent, FulfillmentCenterChangedEvent>, IFulfillmentCenterService
     {
         public FulfillmentCenterService(Func<IInventoryRepository> repositoryFactory, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache)
           : base(repositoryFactory, platformMemoryCache, eventPublisher)
@@ -24,6 +25,11 @@ namespace VirtoCommerce.InventoryModule.Data.Services
         protected override Task<IList<FulfillmentCenterEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
         {
             return ((IInventoryRepository)repository).GetFulfillmentCentersAsync(ids);
+        }
+
+        protected override IQueryable<FulfillmentCenterEntity> GetEntitiesQuery(IRepository repository)
+        {
+            return ((IInventoryRepository)repository).FulfillmentCenters;
         }
     }
 }

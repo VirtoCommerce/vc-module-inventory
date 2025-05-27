@@ -20,8 +20,8 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         IInventorySearchService inventorySearchService,
         IProductInventorySearchService fulfillmentCenterInventorySearchService,
         IFulfillmentCenterSearchService fulfillmentCenterSearchService,
-        IFulfillmentCenterService fulfillmentCenterService
-        ) : Controller
+        IFulfillmentCenterService fulfillmentCenterService)
+        : Controller
     {
         /// <summary>
         /// Search inventories by given criteria
@@ -94,6 +94,19 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         {
             var retVal = await fulfillmentCenterService.GetNoCloneAsync(id);
             return Ok(retVal);
+        }
+
+        /// <summary>
+        /// Get fulfillment center by outer id
+        /// </summary>
+        /// <param name="outerId">fulfillment center outer id</param>
+        [HttpGet]
+        [Route("inventory/fulfillmentcenters/outer/{outerId}")]
+        [Authorize(Permissions.FulfillmentRead)]
+        public async Task<ActionResult<FulfillmentCenter>> GetFulfillmentCenterByOuterId([FromRoute] string outerId)
+        {
+            var fulfillmentCenter = await fulfillmentCenterService.GetByOuterIdAsync(outerId);
+            return Ok(fulfillmentCenter);
         }
 
         /// <summary>
