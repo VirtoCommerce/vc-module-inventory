@@ -2,10 +2,11 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Domain;
 
 namespace VirtoCommerce.InventoryModule.Data.Model
 {
-    public class InventoryEntity : AuditableEntity, IHasOuterId
+    public class InventoryEntity : AuditableEntity, IHasOuterId, IDataEntity<InventoryEntity, InventoryInfo>
     {
         [Required]
         public decimal InStockQuantity { get; set; }
@@ -120,6 +121,7 @@ namespace VirtoCommerce.InventoryModule.Data.Model
 
         public virtual void Patch(InventoryEntity target)
         {
+            target.OuterId = OuterId;
             target.AllowBackorder = AllowBackorder;
             target.AllowPreorder = AllowPreorder;
             target.BackorderAvailabilityDate = BackorderAvailabilityDate;
