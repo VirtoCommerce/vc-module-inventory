@@ -13,7 +13,7 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
     /// <summary>
     /// Extends product indexation process and provides available_in field for indexed products
     /// </summary>
-    public class ProductAvailabilityDocumentBuilder : IIndexSchemaBuilder, IIndexDocumentAggregator
+    public class ProductAvailabilityDocumentBuilder : IIndexSchemaBuilder, IIndexDocumentBuilder, IIndexDocumentAggregator
     {
         private readonly IInventoryService _inventoryService;
 
@@ -71,7 +71,7 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
 
         public void AggregateDocuments(IndexDocument aggregationDocument, IList<IndexDocument> documents)
         {
-            var anyInStock = documents.Any(doc => doc.Fields.FirstOrDefault(field => field.Name.EqualsIgnoreCase("availability")).Value as string == "InStock");
+            var anyInStock = documents.Any(doc => doc.Fields.FirstOrDefault(field => field.Name.EqualsIgnoreCase("availability"))?.Value as string == "InStock");
             aggregationDocument.AddFilterableBoolean("in_stock", anyInStock);
         }
     }
