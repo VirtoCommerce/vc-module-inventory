@@ -63,6 +63,10 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
 
                 document.AddFilterableInteger("inStock_quantity", (int)totalInStockQuantity);
                 document.AddFilterableString("availability", isInStock ? "InStock" : "OutOfStock");
+                if (isInStock)
+                {
+                    document.AddFilterableBoolean("inStock", isInStock);
+                }
 
                 result.Add(document);
             }
@@ -72,7 +76,10 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
         public void AggregateDocuments(IndexDocument aggregationDocument, IList<IndexDocument> documents)
         {
             var anyInStock = documents.Any(doc => doc.Fields.FirstOrDefault(field => field.Name.EqualsIgnoreCase("availability"))?.Value as string == "InStock");
-            aggregationDocument.AddFilterableBoolean("in_stock", anyInStock);
+            if (anyInStock)
+            {
+                aggregationDocument.AddFilterableBoolean("inStock", anyInStock);
+            }
         }
     }
 }
