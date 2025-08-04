@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.InventoryModule.Core.Services;
-using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.SearchModule.Core.Extensions;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
@@ -13,7 +12,7 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
     /// <summary>
     /// Extends product indexation process and provides available_in field for indexed products
     /// </summary>
-    public class ProductAvailabilityDocumentBuilder : IIndexSchemaBuilder, IIndexDocumentBuilder, IIndexDocumentAggregator
+    public class ProductAvailabilityDocumentBuilder : IIndexSchemaBuilder, IIndexDocumentBuilder
     {
         private readonly IInventoryService _inventoryService;
 
@@ -63,23 +62,10 @@ namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
 
                 document.AddFilterableInteger("inStock_quantity", (int)totalInStockQuantity);
                 document.AddFilterableString("availability", isInStock ? "InStock" : "OutOfStock");
-                if (isInStock)
-                {
-                    document.AddFilterableBoolean("inStock", isInStock);
-                }
 
                 result.Add(document);
             }
             return await Task.FromResult(result);
-        }
-
-        public void AggregateDocuments(IndexDocument aggregationDocument, IList<IndexDocument> documents)
-        {
-            var anyInStock = documents.Any(doc => doc.Fields.FirstOrDefault(field => field.Name.EqualsIgnoreCase("availability"))?.Value as string == "InStock");
-            if (anyInStock)
-            {
-                aggregationDocument.AddFilterableBoolean("inStock", anyInStock);
-            }
         }
     }
 }
