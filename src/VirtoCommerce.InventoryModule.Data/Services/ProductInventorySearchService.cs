@@ -73,6 +73,11 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                             Inventory = y,
                         });
 
+                if (criteria.WithInventoryOnly)
+                {
+                    query = query.Where(x => x.Inventory != null);
+                }
+
                 result.TotalCount = await query.CountAsync();
 
                 var sortInfos = criteria.SortInfos;
@@ -98,11 +103,17 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                     inventory.FulfillmentCenter = x.FulfillmentCenter.ToModel(AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance());
                     inventory.FulfillmentCenterId = x.FulfillmentCenter.Id;
                     inventory.FulfillmentCenterName = inventory.FulfillmentCenter.Name;
-                    inventory.ProductId = x.Inventory.Sku;//TODO #Q: Is this correct?
+
                     if (x.Inventory != null)
                     {
+                        inventory.ProductId = x.Inventory.Sku;
                         x.Inventory.ToModel(inventory);
                     }
+                    else
+                    {
+                        inventory.ProductId = criteria.ProductId;
+                    }
+
                     return inventory;
                 }).ToList();
             }

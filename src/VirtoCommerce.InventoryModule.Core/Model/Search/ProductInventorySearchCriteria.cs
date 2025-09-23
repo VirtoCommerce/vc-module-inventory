@@ -32,5 +32,7 @@ namespace VirtoCommerce.InventoryModule.Core.Model.Search
         }
 
         public IList<string> ProductIds { get; set; }
+
+        public bool WithInventoryOnly { get; set; }
     }
 }
