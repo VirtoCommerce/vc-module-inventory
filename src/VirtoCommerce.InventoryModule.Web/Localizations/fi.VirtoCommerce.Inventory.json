@@ -1,0 +1,125 @@
+{
+  "inventory": {
+    "blades": {
+      "inventory-detail": {
+        "subtitle": "Muokkaa varastoa",
+        "labels": {
+          "in-stock": "Varastossa",
+          "reserved": "Varattu",
+          "reorder-min-quantity": "Uudelleentilauksen vähimmäismäärä",
+          "allow-preorder": "Salli ennakkotilaus",
+          "reorder-quantity": "Ennakkotilausmäärä",
+          "preorder-availability-date": "Ennakkotilauksen saatavuuspäivä",
+          "allow-backorder": "Salli jälkitilaus",
+          "backorder-quantity": "Jälkitilausmäärä",
+          "backorder-availability-date": "Jälkitilauksen saatavuuspäivä"
+        }
+      },
+      "inventory-fulfillmentcenters-list": {
+        "labels": {
+          "no-fulfillment-centers": "Ei saatavilla olevia jakelukeskuksia",
+          "fulfillment-center-name": "Jakelukeskus",
+          "in-stock-quantity": "Varastossa oleva määrä"
+        }
+      },
+      "fulfillment-center-detail": {
+        "subtitle": "Muokkaa jakelukeskusta",
+        "labels": {
+          "name": "Nimi",
+          "description": "Kuvaus",
+          "short-description": "Lyhyt kuvaus",
+          "max-releases": "Valitun erän maksimijulkaisumäärä",
+          "pick-delay": "Pakkausviive"
+        },
+        "placeholders": {
+          "name": "Anna jakelukeskuksen nimi",
+          "description": "Anna jakelukeskuksen kuvaus"
+        },
+        "description": {
+          "name": "Jakelukeskuksen nimi",
+          "description": "Jakelukeskuksen kuvaus",
+          "short-description": "Jakelukeskuksen lyhyt kuvaus"
+        }
+      }
+    },
+    "dialogs": {
+      "inventory-delete": {
+        "title": "Vahvista poisto",
+        "message": "Oletko varma, että haluat poistaa tämän tarjouksen?"
+      },
+      "inventory-save": {
+        "title": "Tallenna muutokset",
+        "message": "Varastoa on muokattu. Haluatko tallentaa muutokset?"
+      },
+      "fulfillment-delete": {
+        "title": "Vahvista poisto",
+        "message": "Oletko varma, että haluat poistaa tämän jakelukeskuksen?"
+      }
+    },
+    "widgets": {
+      "inventoryWidget": {
+        "title": "Varasto",
+        "blade-subtitle": "Valitse jakelukeskus varastonhallintaan"
+      },
+      "fulfillmentWidget": {
+        "title": "Jakelukeskukset",
+        "address-detail": {
+          "subtitle": "Muokkaa osoitetta",
+          "no-address": "Ei osoitetta",
+          "region": "Osavaltio/Maakunta",
+          "city": "Kaupunki",
+          "address1": "Osoiterivi 1",
+          "zip-code": "Postinumero",
+          "email": "Sähköposti",
+          "phone": "Puhelin"
+        }
+      }
+    },
+    "properties": {
+      "geoPoint": {
+        "title": "Sijainti",
+        "placeholder": "Syötä leveys- ja pituusaste",
+        "description": "Käytä seuraavaa muotoa: leveys,pituus, esim. 41.40338,2.17403, ilman välilyöntiä pilkun jälkeen"
+      },
+      "outerId": {
+        "title": "Ulkoinen tunnus",
+        "placeholder": "Syötä tunnus ulkoisessa järjestelmässä",
+        "description": "Yksilöllinen tunnus jakelukeskuksen yhdistämiseksi ulkoiseen järjestelmään"
+      }
+    }
+  },
+  "permissions": {
+    "inventory:read": "Lue varastotietoja",
+    "inventory:create": "Luo varastotietoja",
+    "inventory:update": "Päivitä varastotietoja",
+    "inventory:delete": "Poista varastotietoja",
+    "inventory:access": "Pääsy varastotietoihin",
+    "inventory:fulfillment:edit": "Hallitse jakelukeskuksia",
+    "inventory:fulfillment:delete": "Poista jakelukeskuksia"
+  },
+  "settings": {
+    "Inventory": {
+      "ExportImport.PageSize": {
+        "description": "Korkeat arvot voivat johtaa hitaaseen suorituskykyyn",
+        "title": "Sivukoko vientiin/tuontiin"
+      },
+      "LogInventoryChanges": {
+        "title": "Kirjaa varastomuutokset",
+        "description": "Kirjaa tuotteen varastomuutokset alustan toimintalokiin. Tämä voi vaikuttaa tietokannan kokoon, jos tuotteen varasto muuttuu usein"
+      },
+      "Search": {
+        "EventBasedIndexation": {
+          "Enable": {
+            "title": "Ota käyttöön tapahtumapohjainen indeksointi varasto-olioille",
+            "description": "Mikä tahansa muutos varasto-olioon käynnistää taustatehtävän, joka soveltaa nämä muutokset hakemistoon"
+          }
+        }
+      }
+    }
+  },
+  "module": {
+    "VirtoCommerce.Inventory": {
+      "description": "Vie tai tuo varastotietoja"
+    }
+  }
+}
