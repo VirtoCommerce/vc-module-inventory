@@ -5,46 +5,51 @@ using Microsoft.Extensions.Primitives;
 using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.Platform.Core.Caching;
 
-namespace VirtoCommerce.InventoryModule.Data.Caching
+namespace VirtoCommerce.InventoryModule.Data.Caching;
+
+public class InventoryCacheRegion : CancellableCacheRegion<InventoryCacheRegion>
 {
-    public class InventoryCacheRegion : CancellableCacheRegion<InventoryCacheRegion>
+    public static IChangeToken CreateChangeToken(List<InventoryInfo> inventoryInfos)
     {
-
-        public static IChangeToken CreateChangeToken(List<InventoryInfo> inventoryInfos)
+        if (inventoryInfos == null)
         {
-            if (inventoryInfos == null)
-            {
-                throw new ArgumentNullException(nameof(inventoryInfos));
-            }
-            //generate the cancellation tokens for inventory.productId as well to be able evict from the cache the all inventories that are reference to the product id
-            var keys = inventoryInfos.Select(x => x.Id).Concat(inventoryInfos.Select(x => x.ProductId))
-                                     .Where(x => !string.IsNullOrEmpty(x))
-                                     .Distinct()
-                                     .ToArray();
-            return CreateChangeToken(keys);
+            throw new ArgumentNullException(nameof(inventoryInfos));
         }
 
-        public static IChangeToken CreateChangeToken(string[] inventoryIds)
+        // Generate the cancellation tokens for inventory.productId as well to be able to evict from the cache all inventories that have this product id
+        var keys = inventoryInfos
+            .Select(x => x.Id)
+            .Concat(inventoryInfos.Select(x => x.ProductId))
+            .Where(x => !string.IsNullOrEmpty(x))
+            .Distinct()
+            .ToArray();
+
+        return CreateChangeToken(keys);
+    }
+
+    public static IChangeToken CreateChangeToken(ICollection<string> ids)
+    {
+        if (ids == null)
         {
-            if (inventoryIds == null)
-            {
-                throw new ArgumentNullException(nameof(inventoryIds));
-            }
-            var changeTokens = new List<IChangeToken>() { CreateChangeToken() };
-            foreach (var inventoryId in inventoryIds)
-            {
-                changeTokens.Add(CreateChangeTokenForKey(inventoryId));
-            }
-            return new CompositeChangeToken(changeTokens);
+            throw new ArgumentNullException(nameof(ids));
         }
 
-        public static void ExpireInventory(InventoryInfo inventory)
+        var changeTokens = new List<IChangeToken> { CreateChangeToken() };
+
+        foreach (var id in ids)
         {
-            if (inventory != null)
-            {
-                ExpireTokenForKey(inventory.Id);
-                ExpireTokenForKey(inventory.ProductId);
-            }
+            changeTokens.Add(CreateChangeTokenForKey(id));
+        }
+
+        return new CompositeChangeToken(changeTokens);
+    }
+
+    public static void ExpireInventory(InventoryInfo inventory)
+    {
+        if (inventory != null)
+        {
+            ExpireTokenForKey(inventory.Id);
+            ExpireTokenForKey(inventory.ProductId);
         }
     }
 }
