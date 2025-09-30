@@ -19,7 +19,7 @@ public class InventorySearchServiceTests : InventoryTestsBase
     [InlineData(_productId1, _productId2)]
     [InlineData(_productId2, _productId1)]
     [InlineData(_productId2)]
-    [Obsolete]
+    [Obsolete("To be removed", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
     public async Task SearchAsync_ShouldReturnTheSameResultAs_GetProductsInventoryInfosAsync(params string[] productIds)
     {
         // Arrange

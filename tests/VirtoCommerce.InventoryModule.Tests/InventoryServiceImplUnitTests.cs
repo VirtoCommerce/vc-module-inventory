@@ -47,7 +47,7 @@ public class InventoryServiceImplUnitTests : InventoryTestsBase
     }
 
     [Fact]
-    [Obsolete]
+    [Obsolete("Use IInventorySearchService.SearchAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
     public async Task GetProductsInventoryInfosAsync_ShouldReturnCachedResult()
     {
         // Arrange
@@ -108,7 +108,7 @@ public class InventoryServiceImplUnitTests : InventoryTestsBase
     }
 
     [Fact]
-    [Obsolete]
+    [Obsolete("Use IInventorySearchService.SearchAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
     public async Task GetProductsInventoryInfosAsync_SaveChangesAsync_ShouldClearCache()
     {
         // Arrange

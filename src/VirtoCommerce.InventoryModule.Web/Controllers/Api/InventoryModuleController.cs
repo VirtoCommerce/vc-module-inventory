@@ -161,6 +161,19 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         }
 
         /// <summary>
+        /// Get inventories of product
+        /// </summary>
+        /// <remarks>Get inventories of product for each fulfillment center.</remarks>
+        /// <param name="productId">Product id</param>
+        [HttpGet]
+        [Route("inventory/products/{productId}")]
+        [Authorize(Permissions.Read)]
+        public Task<ActionResult<InventoryInfo[]>> GetProductInventories([FromRoute] string productId)
+        {
+            return GetProductInventories([productId]);
+        }
+
+        /// <summary>
         /// Get inventories of products
         /// </summary>
         /// <remarks>Get inventory of products for each fulfillment center.</remarks>
@@ -173,7 +186,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         {
             if (ids.IsNullOrEmpty() && fulfillmentCenterIds.IsNullOrEmpty())
             {
-                throw new ArgumentException("Products ids or fulfillmentCenters ids must be set");
+                return BadRequest($"{nameof(ids)} or {nameof(fulfillmentCenterIds)} must be set");
             }
 
             var criteria = AbstractTypeFactory<InventorySearchCriteria>.TryCreateInstance();
@@ -197,19 +210,6 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         public Task<ActionResult<InventoryInfo[]>> GetProductsInventoriesByPlentyIds([FromBody] string[] ids, [FromQuery] string[] fulfillmentCenterIds = null)
         {
             return GetProductInventories(ids, fulfillmentCenterIds);
-        }
-
-        /// <summary>
-        /// Get inventories of product
-        /// </summary>
-        /// <remarks>Get inventories of product for each fulfillment center.</remarks>
-        /// <param name="productId">Product id</param>
-        [HttpGet]
-        [Route("inventory/products/{productId}")]
-        [Authorize(Permissions.Read)]
-        public Task<ActionResult<InventoryInfo[]>> GetProductInventories([FromRoute] string productId)
-        {
-            return GetProductInventories([productId]);
         }
 
         /// <summary>

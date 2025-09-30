@@ -11,10 +11,7 @@ public class InventoryCacheRegion : CancellableCacheRegion<InventoryCacheRegion>
 {
     public static IChangeToken CreateChangeToken(List<InventoryInfo> inventoryInfos)
     {
-        if (inventoryInfos == null)
-        {
-            throw new ArgumentNullException(nameof(inventoryInfos));
-        }
+        ArgumentNullException.ThrowIfNull(inventoryInfos);
 
         // Generate the cancellation tokens for inventory.productId as well to be able to evict from the cache all inventories that have this product id
         var keys = inventoryInfos
@@ -29,10 +26,7 @@ public class InventoryCacheRegion : CancellableCacheRegion<InventoryCacheRegion>
 
     public static IChangeToken CreateChangeToken(ICollection<string> ids)
     {
-        if (ids == null)
-        {
-            throw new ArgumentNullException(nameof(ids));
-        }
+        ArgumentNullException.ThrowIfNull(ids);
 
         var changeTokens = new List<IChangeToken> { CreateChangeToken() };
 
