@@ -34,6 +34,7 @@ public class InventorySearchService(
 
     protected override IQueryable<InventoryEntity> BuildQuery(IRepository repository, InventorySearchCriteria criteria)
     {
+        // Temporarily calling the obsolete method that could potentially be overridden in derived classes.
 #pragma warning disable VC0011 // Type or member is obsolete
         return BuildQuery((IInventoryRepository)repository, criteria);
 #pragma warning restore VC0011 // Type or member is obsolete

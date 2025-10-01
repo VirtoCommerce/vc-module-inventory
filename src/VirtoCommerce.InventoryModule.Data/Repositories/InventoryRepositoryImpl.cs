@@ -22,21 +22,21 @@ public class InventoryRepositoryImpl(InventoryDbContext dbContext, IUnitOfWork u
 
     public IQueryable<FulfillmentCenterDynamicPropertyObjectValueEntity> DynamicPropertyObjectValues => DbContext.Set<FulfillmentCenterDynamicPropertyObjectValueEntity>();
 
-    public async Task<IList<InventoryEntity>> GetByIdsAsync(IList<string> ids, string responseGroup = null)
+    public virtual Task<IList<InventoryEntity>> GetByIdsAsync(IList<string> ids, string responseGroup = null)
     {
         var query = Inventories.Where(x => ids.Contains(x.Id));
 
-        return await LoadInventoriesAsync(query, responseGroup);
+        return LoadInventoriesAsync(query, responseGroup);
     }
 
-    public virtual async Task<IList<InventoryEntity>> GetProductsInventoriesAsync(IList<string> productIds, string responseGroup = null)
+    public virtual Task<IList<InventoryEntity>> GetProductsInventoriesAsync(IList<string> productIds, string responseGroup = null)
     {
         var query = Inventories.Where(x => productIds.Contains(x.Sku));
 
-        return await LoadInventoriesAsync(query, responseGroup);
+        return LoadInventoriesAsync(query, responseGroup);
     }
 
-    private static Task<List<InventoryEntity>> LoadInventoriesAsync(IQueryable<InventoryEntity> query, string responseGroup)
+    protected virtual async Task<IList<InventoryEntity>> LoadInventoriesAsync(IQueryable<InventoryEntity> query, string responseGroup)
     {
         var inventoryResponseGroup = EnumUtility.SafeParseFlags(responseGroup, InventoryResponseGroup.Full);
 
@@ -47,7 +47,7 @@ public class InventoryRepositoryImpl(InventoryDbContext dbContext, IUnitOfWork u
                 .AsSplitQuery();
         }
 
-        return query.ToListAsync();
+        return await query.ToListAsync();
     }
 
     public virtual async Task<IList<FulfillmentCenterEntity>> GetFulfillmentCentersAsync(IList<string> ids)

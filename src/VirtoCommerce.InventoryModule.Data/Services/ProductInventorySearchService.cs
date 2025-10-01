@@ -35,7 +35,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             return SearchAsync(criteria);
         }
 
-        public async Task<InventoryInfoSearchResult> SearchAsync(ProductInventorySearchCriteria criteria, bool clone = true)
+        public virtual async Task<InventoryInfoSearchResult> SearchAsync(ProductInventorySearchCriteria criteria, bool clone = true)
         {
             var result = AbstractTypeFactory<InventoryInfoSearchResult>.TryCreateInstance();
 
