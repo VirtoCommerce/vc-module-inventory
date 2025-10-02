@@ -47,7 +47,11 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                     fulfillmentCenters = fulfillmentCenters.Where(x => x.Name.Contains(criteria.SearchPhrase));
                 }
 
-                var inventories = repository.Inventories.Where(x => criteria.ProductId == x.Sku);
+                var inventories = repository.Inventories;
+                if (!criteria.ProductIds.IsNullOrEmpty())
+                {
+                    inventories = inventories.Where(x => criteria.ProductIds.Contains(x.Sku));
+                }
 
                 // SELECT FFC.*, I.* FROM FulfillmentCenter as FFC
                 // LEFT JOIN Inventory as I on FFC.Id = i.FulfillmentCenterId AND (FFC + PRODUCT conditions)
@@ -68,6 +72,11 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                             FulfillmentCenter = x.FulfillmentCenterEntity,
                             Inventory = y,
                         });
+
+                if (criteria.WithInventoryOnly)
+                {
+                    query = query.Where(x => x.Inventory != null);
+                }
 
                 result.TotalCount = await query.CountAsync();
 
@@ -94,11 +103,17 @@ namespace VirtoCommerce.InventoryModule.Data.Services
                     inventory.FulfillmentCenter = x.FulfillmentCenter.ToModel(AbstractTypeFactory<FulfillmentCenter>.TryCreateInstance());
                     inventory.FulfillmentCenterId = x.FulfillmentCenter.Id;
                     inventory.FulfillmentCenterName = inventory.FulfillmentCenter.Name;
-                    inventory.ProductId = criteria.ProductId;
+
                     if (x.Inventory != null)
                     {
+                        inventory.ProductId = x.Inventory.Sku;
                         x.Inventory.ToModel(inventory);
                     }
+                    else
+                    {
+                        inventory.ProductId = criteria.ProductId;
+                    }
+
                     return inventory;
                 }).ToList();
             }
