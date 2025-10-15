@@ -10,24 +10,11 @@ namespace VirtoCommerce.InventoryModule.Core.Model.Search
         {
             get
             {
-                if (ProductIds.IsNullOrEmpty())
-                {
-                    return null;
-                }
-
-                return ProductIds.First();
+                return ProductIds?.FirstOrDefault();
             }
             set
             {
-                if (ProductIds == null)
-                {
-                    ProductIds = new List<string>();
-                }
-
-                if (!ProductIds.Contains(value))
-                {
-                    ProductIds.Insert(0, value);
-                }
+                ProductIds = [value];
             }
         }
 
