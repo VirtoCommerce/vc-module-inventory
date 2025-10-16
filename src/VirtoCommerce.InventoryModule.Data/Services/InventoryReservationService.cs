@@ -40,12 +40,12 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
             if (request.FulfillmentCenterIds.IsNullOrEmpty())
             {
-                throw new ArgumentException(nameof(request.FulfillmentCenterIds));
+                throw new ArgumentException($"{nameof(request.FulfillmentCenterIds)} must not be empty", nameof(request));
             }
 
             if (request.Items.IsNullOrEmpty())
             {
-                throw new ArgumentException(nameof(request.Items));
+                throw new ArgumentException($"{nameof(request.Items)} must not be empty", nameof(request));
             }
 
             return ReserveInternalAsync(request);
@@ -60,7 +60,7 @@ namespace VirtoCommerce.InventoryModule.Data.Services
 
             if (request.Items.IsNullOrEmpty())
             {
-                throw new ArgumentException(nameof(request.Items));
+                throw new ArgumentException($"{nameof(request.Items)} must not be empty", nameof(request));
             }
 
             return ReleaseInternalAsync(request);

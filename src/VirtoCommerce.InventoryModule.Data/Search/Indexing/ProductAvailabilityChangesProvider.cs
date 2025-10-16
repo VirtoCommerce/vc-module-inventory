@@ -9,65 +9,55 @@ using VirtoCommerce.Platform.Core.ChangeLog;
 using VirtoCommerce.SearchModule.Core.Model;
 using VirtoCommerce.SearchModule.Core.Services;
 
-namespace VirtoCommerce.InventoryModule.Data.Search.Indexing
+namespace VirtoCommerce.InventoryModule.Data.Search.Indexing;
+
+/// <summary>
+/// Extend product indexation process. Invalidate products as changed when products availability in fulfillment centers updated.
+/// </summary>
+public class ProductAvailabilityChangesProvider(IChangeLogSearchService changeLogSearchService, IInventoryService inventoryService) : IIndexDocumentChangesProvider
 {
-    /// <summary>
-    /// Extend product indexation process. Invalidate products as changed when products availability in fulfillment centers updated.
-    /// </summary>
-    public class ProductAvailabilityChangesProvider : IIndexDocumentChangesProvider
+    public const string ChangeLogObjectType = nameof(InventoryInfo);
+
+    public async Task<long> GetTotalChangesCountAsync(DateTime? startDate, DateTime? endDate)
     {
-        public const string ChangeLogObjectType = nameof(InventoryInfo);
-
-        private readonly IChangeLogSearchService _changeLogSearchService;
-        private readonly IInventoryService _inventoryService;
-
-        public ProductAvailabilityChangesProvider(IChangeLogSearchService changeLogSearchService, IInventoryService inventoryService)
+        var criteria = new ChangeLogSearchCriteria
         {
-            _changeLogSearchService = changeLogSearchService;
-            _inventoryService = inventoryService;
-        }
+            ObjectType = ChangeLogObjectType,
+            StartDate = startDate,
+            EndDate = endDate,
+            Take = 0,
+        };
 
-        public async Task<long> GetTotalChangesCountAsync(DateTime? startDate, DateTime? endDate)
+        // Get changes count from operation log
+        var searchResult = await changeLogSearchService.SearchAsync(criteria);
+
+        return searchResult.TotalCount;
+    }
+
+    public virtual async Task<IList<IndexDocumentChange>> GetChangesAsync(DateTime? startDate, DateTime? endDate, long skip, long take)
+    {
+        var criteria = new ChangeLogSearchCriteria
         {
-            long result;
+            ObjectType = ChangeLogObjectType,
+            StartDate = startDate,
+            EndDate = endDate,
+            Skip = (int)skip,
+            Take = (int)take,
+        };
 
-            var criteria = new ChangeLogSearchCriteria
-            {
-                ObjectType = ChangeLogObjectType,
-                StartDate = startDate,
-                EndDate = endDate,
-                Take = 0
-            };
-            // Get changes count from operation log
-            result = (await _changeLogSearchService.SearchAsync(criteria)).TotalCount;
-            return result;
-        }
+        // Get changes from operation log
+        var operations = (await changeLogSearchService.SearchAsync(criteria)).Results;
 
-        public virtual async Task<IList<IndexDocumentChange>> GetChangesAsync(DateTime? startDate, DateTime? endDate, long skip, long take)
+        var inventories = await inventoryService.GetAsync(operations.Select(o => o.ObjectId).ToArray(), nameof(InventoryResponseGroup.Default));
+
+        var result = operations.Join(inventories, o => o.ObjectId, i => i.Id, (o, i) => new IndexDocumentChange
         {
-            var criteria = new ChangeLogSearchCriteria
-            {
-                ObjectType = ChangeLogObjectType,
-                StartDate = startDate,
-                EndDate = endDate,
-                Skip = (int)skip,
-                Take = (int)take
-            };
-
-            // Get changes from operation log
-            var operations = (await _changeLogSearchService.SearchAsync(criteria)).Results;
-
-            var inventories = await _inventoryService.GetByIdsAsync(operations.Select(o => o.ObjectId).ToArray(), InventoryResponseGroup.Default.ToString());
-
-            var result = operations.Join(inventories, o => o.ObjectId, i => i.Id, (o, i) => new IndexDocumentChange
-            {
-                DocumentId = i.ProductId,
-                ChangeType = IndexDocumentChangeType.Modified,
-                ChangeDate = o.ModifiedDate ?? o.CreatedDate,
-            }).ToList();
+            DocumentId = i.ProductId,
+            ChangeType = IndexDocumentChangeType.Modified,
+            ChangeDate = o.ModifiedDate ?? o.CreatedDate,
+        }).ToList();
 
 
-            return await Task.FromResult(result);
-        }
+        return await Task.FromResult(result);
     }
 }

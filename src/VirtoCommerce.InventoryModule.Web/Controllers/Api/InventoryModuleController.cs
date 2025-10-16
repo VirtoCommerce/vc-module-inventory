@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +17,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
     public class InventoryModuleController(
         IInventoryService inventoryService,
         IInventorySearchService inventorySearchService,
-        IProductInventorySearchService fulfillmentCenterInventorySearchService,
+        IProductInventorySearchService productInventorySearchService,
         IFulfillmentCenterSearchService fulfillmentCenterSearchService,
         IFulfillmentCenterService fulfillmentCenterService)
         : Controller
@@ -43,7 +42,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Authorize(Permissions.Read)]
         public async Task<ActionResult<InventoryInfoSearchResult>> SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
         {
-            var result = await inventorySearchService.SearchInventoriesAsync(searchCriteria);
+            var result = await inventorySearchService.SearchNoCloneAsync(searchCriteria);
             return Ok(result);
         }
 
@@ -67,7 +66,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Authorize(Permissions.Read)]
         public async Task<ActionResult<InventoryInfoSearchResult>> SearchProductInventories([FromBody] ProductInventorySearchCriteria searchCriteria)
         {
-            var result = await fulfillmentCenterInventorySearchService.SearchProductInventoriesAsync(searchCriteria);
+            var result = await productInventorySearchService.SearchNoCloneAsync(searchCriteria);
             return Ok(result);
         }
 
@@ -162,6 +161,19 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         }
 
         /// <summary>
+        /// Get inventories of product
+        /// </summary>
+        /// <remarks>Get inventories of product for each fulfillment center.</remarks>
+        /// <param name="productId">Product id</param>
+        [HttpGet]
+        [Route("inventory/products/{productId}")]
+        [Authorize(Permissions.Read)]
+        public Task<ActionResult<InventoryInfo[]>> GetProductInventories([FromRoute] string productId)
+        {
+            return GetProductInventories([productId]);
+        }
+
+        /// <summary>
         /// Get inventories of products
         /// </summary>
         /// <remarks>Get inventory of products for each fulfillment center.</remarks>
@@ -170,20 +182,20 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [HttpGet]
         [Route("inventory/products")]
         [Authorize(Permissions.Read)]
-        public async Task<ActionResult<InventoryInfo[]>> GetProductsInventories([FromQuery] string[] ids, [FromQuery] string[] fulfillmentCenterIds = null)
+        public async Task<ActionResult<InventoryInfo[]>> GetProductInventories([FromQuery] string[] ids, [FromQuery] string[] fulfillmentCenterIds = null)
         {
             if (ids.IsNullOrEmpty() && fulfillmentCenterIds.IsNullOrEmpty())
             {
-                throw new ArgumentException("Products ids or fulfillmentCenters ids must be set");
+                return BadRequest($"{nameof(ids)} or {nameof(fulfillmentCenterIds)} must be set");
             }
 
             var criteria = AbstractTypeFactory<InventorySearchCriteria>.TryCreateInstance();
             criteria.FulfillmentCenterIds = fulfillmentCenterIds;
             criteria.ProductIds = ids;
-            criteria.Take = int.MaxValue;
 
-            var result = await inventorySearchService.SearchInventoriesAsync(criteria);
-            return Ok(result.Results);
+            var result = await inventorySearchService.SearchAllNoCloneAsync(criteria);
+
+            return Ok(result);
         }
 
         /// <summary>
@@ -197,20 +209,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         [Authorize(Permissions.Read)]
         public Task<ActionResult<InventoryInfo[]>> GetProductsInventoriesByPlentyIds([FromBody] string[] ids, [FromQuery] string[] fulfillmentCenterIds = null)
         {
-            return GetProductsInventories(ids, fulfillmentCenterIds);
-        }
-
-        /// <summary>
-        /// Get inventories of product
-        /// </summary>
-        /// <remarks>Get inventories of product for each fulfillment center.</remarks>
-        /// <param name="productId">Product id</param>
-        [HttpGet]
-        [Route("inventory/products/{productId}")]
-        [Authorize(Permissions.Read)]
-        public Task<ActionResult<InventoryInfo[]>> GetProductInventories([FromRoute] string productId)
-        {
-            return GetProductsInventories([productId]);
+            return GetProductInventories(ids, fulfillmentCenterIds);
         }
 
         /// <summary>
@@ -291,7 +290,7 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
                 return BadRequest();
             }
 
-            var inventory = (await inventoryService.GetByIdsAsync([id])).FirstOrDefault();
+            var inventory = await inventoryService.GetByIdAsync(id);
             if (inventory == null)
             {
                 return NotFound();
