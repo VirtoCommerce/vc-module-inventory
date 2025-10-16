@@ -100,18 +100,18 @@
   "settings": {
     "Inventory": {
       "ExportImport.PageSize": {
-        "description": "Providing high values may lead to slow performance",
-        "title": "Page size being used for export / import"
+        "description": "Specify the number of items per export or import page. Higher values may slow performance",
+        "title": "Export/ import page size"
       },
       "LogInventoryChanges": {
-        "title": "Log inventory changes",
-        "description": "Log product stock changes into the platform operation log. This may affect the database size if the product stock is changed often"
+        "title": "Inventory change logging",
+        "description": "Logs product stock changes to the operation log. Frequent updates may increase database size"
       },
       "Search": {
         "EventBasedIndexation": {
           "Enable": {
-            "title": "Enable event-based indexing for inventory entities",
-            "description": "Any change to an inventory entity triggers a background task that applies these changes to the search index"
+            "title": "Event-based inventory indexing",
+            "description": "Enable/ disable automatic reindexing when inventory data changes"
           }
         }
       }
