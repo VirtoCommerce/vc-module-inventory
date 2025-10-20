@@ -1,13 +1,16 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VirtoCommerce.InventoryModule.Core.Model;
+using VirtoCommerce.Platform.Core.GenericCrud;
 
-namespace VirtoCommerce.InventoryModule.Core.Services
+namespace VirtoCommerce.InventoryModule.Core.Services;
+
+public interface IInventoryService : ICrudService<InventoryInfo>
 {
-	public interface IInventoryService
-    {
-        Task<IEnumerable<InventoryInfo>> GetProductsInventoryInfosAsync(IEnumerable<string> productIds, string responseGroup = null);
-        Task SaveChangesAsync(IEnumerable<InventoryInfo> inventoryInfos);
-        Task<IEnumerable<InventoryInfo>> GetByIdsAsync(string[] ids, string responseGroup = null);
-    }
+    [Obsolete("Use IInventorySearchService.SearchAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    Task<IEnumerable<InventoryInfo>> GetProductsInventoryInfosAsync(IEnumerable<string> productIds, string responseGroup = null);
+
+    [Obsolete("Use GetAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
+    Task<IEnumerable<InventoryInfo>> GetByIdsAsync(string[] ids, string responseGroup = null);
 }
