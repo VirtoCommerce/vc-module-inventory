@@ -1,0 +1,125 @@
+{
+  "inventory": {
+    "blades": {
+      "inventory-detail": {
+        "subtitle": "Redigera lager",
+        "labels": {
+          "in-stock": "I lager",
+          "reserved": "Reserverat",
+          "reorder-min-quantity": "Minsta beställningskvantitet",
+          "allow-preorder": "Tillåt förbeställning",
+          "reorder-quantity": "Förbeställningskvantitet",
+          "preorder-availability-date": "Tillgänglighetsdatum för förbeställning",
+          "allow-backorder": "Tillåt efterbeställning",
+          "backorder-quantity": "Efterbeställningskvantitet",
+          "backorder-availability-date": "Tillgänglighetsdatum för efterbeställning"
+        }
+      },
+      "inventory-fulfillmentcenters-list": {
+        "labels": {
+          "no-fulfillment-centers": "Inga distributionscenter tillgängliga",
+          "fulfillment-center-name": "Distributionscenter",
+          "in-stock-quantity": "Lagerkvantitet"
+        }
+      },
+      "fulfillment-center-detail": {
+        "subtitle": "Redigera distributionscenter",
+        "labels": {
+          "name": "Namn",
+          "description": "Beskrivning",
+          "short-description": "Kort beskrivning",
+          "max-releases": "Maximalt antal utgivningar i den valda batchen",
+          "pick-delay": "Förpackningsfördröjning"
+        },
+        "placeholders": {
+          "name": "Ange namn på distributionscenter",
+          "description": "Ange beskrivning av distributionscenter"
+        },
+        "description": {
+          "name": "Namn på distributionscenter",
+          "description": "Beskrivning av distributionscenter",
+          "short-description": "Kort beskrivning av distributionscenter"
+        }
+      }
+    },
+    "dialogs": {
+      "inventory-delete": {
+        "title": "Bekräfta radering",
+        "message": "Är du säker på att du vill radera detta offert?"
+      },
+      "inventory-save": {
+        "title": "Spara ändringar",
+        "message": "Lagret har ändrats. Vill du spara ändringarna?"
+      },
+      "fulfillment-delete": {
+        "title": "Bekräfta radering",
+        "message": "Är du säker på att du vill radera detta distributionscenter?"
+      }
+    },
+    "widgets": {
+      "inventoryWidget": {
+        "title": "Lager",
+        "blade-subtitle": "Välj ett distributionscenter för lagerhantering"
+      },
+      "fulfillmentWidget": {
+        "title": "Distributionscenter",
+        "address-detail": {
+          "subtitle": "Redigera adress",
+          "no-address": "Ingen adress",
+          "region": "Delstat/Provins",
+          "city": "Stad",
+          "address1": "Adressrad 1",
+          "zip-code": "Postnummer",
+          "email": "E-post",
+          "phone": "Telefon"
+        }
+      }
+    },
+    "properties": {
+      "geoPoint": {
+        "title": "Plats",
+        "placeholder": "Ange latitud och longitud",
+        "description": "Använd följande format: lat,long, t.ex. 41.40338,2.17403, utan mellanslag efter kommatecknet"
+      },
+      "outerId": {
+        "title": "Externt ID",
+        "placeholder": "Ange ID i ett externt system",
+        "description": "Unikt ID för att koppla distributionscenter till ett externt system"
+      }
+    }
+  },
+  "permissions": {
+    "inventory:read": "Läs lagerdata",
+    "inventory:create": "Skapa lagerdata",
+    "inventory:update": "Uppdatera lagerdata",
+    "inventory:delete": "Radera lagerdata",
+    "inventory:access": "Få åtkomst till lagerdata",
+    "inventory:fulfillment:edit": "Hantera distributionscenter",
+    "inventory:fulfillment:delete": "Radera distributionscenter"
+  },
+  "settings": {
+    "Inventory": {
+      "ExportImport.PageSize": {
+        "description": "Att ange höga värden kan leda till långsam prestanda",
+        "title": "Sidstorlek som används för export/import"
+      },
+      "LogInventoryChanges": {
+        "title": "Logga lagerförändringar",
+        "description": "Logga produktlagerförändringar i plattformens driftlogg. Detta kan påverka databasstorleken om produktlagret ändras ofta"
+      },
+      "Search": {
+        "EventBasedIndexation": {
+          "Enable": {
+            "title": "Aktivera händelsebaserad indexering för lagerobjekt",
+            "description": "Alla ändringar i ett lagerobjekt utlöser en bakgrundsuppgift som tillämpar dessa ändringar på sökindexet"
+          }
+        }
+      }
+    }
+  },
+  "module": {
+    "VirtoCommerce.Inventory": {
+      "description": "Exportera eller importera lagerdata"
+    }
+  }
+}
