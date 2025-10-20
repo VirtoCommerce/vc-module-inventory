@@ -1,0 +1,125 @@
+{
+  "inventory": {
+    "blades": {
+      "inventory-detail": {
+        "subtitle": "Rediger lager",
+        "labels": {
+          "in-stock": "På lager",
+          "reserved": "Reservert",
+          "reorder-min-quantity": "Minimumsbestillingsantall",
+          "allow-preorder": "Tillat forhåndsbestilling",
+          "reorder-quantity": "Forhåndsbestillingsantall",
+          "preorder-availability-date": "Tilgjengelighetsdato for forhåndsbestilling",
+          "allow-backorder": "Tillat ettersbestilling",
+          "backorder-quantity": "Ettersbestillingsantall",
+          "backorder-availability-date": "Tilgjengelighetsdato for ettersbestilling"
+        }
+      },
+      "inventory-fulfillmentcenters-list": {
+        "labels": {
+          "no-fulfillment-centers": "Ingen oppfyllelsessentre tilgjengelig",
+          "fulfillment-center-name": "Oppfyllelsessenter",
+          "in-stock-quantity": "Antall på lager"
+        }
+      },
+      "fulfillment-center-detail": {
+        "subtitle": "Rediger oppfyllelsessenter",
+        "labels": {
+          "name": "Navn",
+          "description": "Beskrivelse",
+          "short-description": "Kort beskrivelse",
+          "max-releases": "Maksimalt antall utgivelse i den valgte batchen",
+          "pick-delay": "Pakningsforsinkelse"
+        },
+        "placeholders": {
+          "name": "Angi navn på oppfyllelsessenter",
+          "description": "Angi beskrivelse av oppfyllelsessenter"
+        },
+        "description": {
+          "name": "Navn på oppfyllelsessenter",
+          "description": "Beskrivelse av oppfyllelsessenter",
+          "short-description": "Kort beskrivelse av oppfyllelsessenter"
+        }
+      }
+    },
+    "dialogs": {
+      "inventory-delete": {
+        "title": "Bekreft sletting",
+        "message": "Er du sikker på at du vil slette dette tilbudet?"
+      },
+      "inventory-save": {
+        "title": "Lagre endringer",
+        "message": "Lageret har blitt endret. Vil du lagre endringene?"
+      },
+      "fulfillment-delete": {
+        "title": "Bekreft sletting",
+        "message": "Er du sikker på at du vil slette dette oppfyllelsessenteret?"
+      }
+    },
+    "widgets": {
+      "inventoryWidget": {
+        "title": "Lager",
+        "blade-subtitle": "Velg et oppfyllelsessenter for lageradministrasjon"
+      },
+      "fulfillmentWidget": {
+        "title": "Oppfyllelsessentre",
+        "address-detail": {
+          "subtitle": "Rediger adresse",
+          "no-address": "Ingen adresse",
+          "region": "Stat/Provins",
+          "city": "By",
+          "address1": "Adresselinje 1",
+          "zip-code": "Postnummer",
+          "email": "E-post",
+          "phone": "Telefon"
+        }
+      }
+    },
+    "properties": {
+      "geoPoint": {
+        "title": "Plassering",
+        "placeholder": "Angi breddegrad og lengdegrad",
+        "description": "Bruk følgende format: breddegrad,lengdegrad, f.eks. 41.40338,2.17403, uten mellomrom etter kommaet"
+      },
+      "outerId": {
+        "title": "Eksternt ID",
+        "placeholder": "Angi ID i et eksternt system",
+        "description": "Unik ID for å koble oppfyllelsessenteret til et eksternt system"
+      }
+    }
+  },
+  "permissions": {
+    "inventory:read": "Les lagerdata",
+    "inventory:create": "Opprett lagerdata",
+    "inventory:update": "Oppdater lagerdata",
+    "inventory:delete": "Slett lagerdata",
+    "inventory:access": "Få tilgang til lagerdata",
+    "inventory:fulfillment:edit": "Administrer oppfyllelsessentre",
+    "inventory:fulfillment:delete": "Slett oppfyllelsessentre"
+  },
+  "settings": {
+    "Inventory": {
+      "ExportImport.PageSize": {
+        "description": "Å angi høye verdier kan føre til treg ytelse",
+        "title": "Sidestørrelse brukt for eksport/import"
+      },
+      "LogInventoryChanges": {
+        "title": "Logg lagerendringer",
+        "description": "Logg endringer i produktlager i plattformens operasjonslogg. Dette kan påvirke databasestørrelsen hvis produktlageret endres ofte"
+      },
+      "Search": {
+        "EventBasedIndexation": {
+          "Enable": {
+            "title": "Aktiver hendelsesbasert indeksering for lagerobjekter",
+            "description": "Enhver endring i et lagerobjekt utløser en bakgrunnsoppgave som bruker disse endringene på søkeindeksen"
+          }
+        }
+      }
+    }
+  },
+  "module": {
+    "VirtoCommerce.Inventory": {
+      "description": "Eksporter eller importer lagerdata"
+    }
+  }
+}
