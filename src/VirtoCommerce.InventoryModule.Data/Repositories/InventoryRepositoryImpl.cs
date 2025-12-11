@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
 using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.Platform.Core.Common;
@@ -68,21 +68,29 @@ public class InventoryRepositoryImpl(InventoryDbContext dbContext, IUnitOfWork u
         return result;
     }
 
+    /// <summary>
+    /// Saves inventory reservation transactions with their related inventory updates.
+    /// Uses ExecutionStrategy for compatibility with retry logic.
+    /// </summary>
     public virtual async Task SaveInventoryReservationTransactions(IList<InventoryReservationTransactionEntity> transactions, IList<InventoryEntity> inventories)
     {
-        using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-
-        foreach (var transaction in transactions)
+        var strategy = DbContext.Database.CreateExecutionStrategy();
+        await strategy.ExecuteAsync(async () =>
         {
-            Add(transaction);
-        }
+            await using var transaction = await DbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
 
-        foreach (var inventory in inventories)
-        {
-            Update(inventory);
-        }
+            foreach (var reservationTransaction in transactions)
+            {
+                Add(reservationTransaction);
+            }
 
-        await UnitOfWork.CommitAsync();
-        transactionScope.Complete();
+            foreach (var inventory in inventories)
+            {
+                Update(inventory);
+            }
+
+            await DbContext.SaveChangesAsync();
+            await transaction.CommitAsync();
+        });
     }
 }
