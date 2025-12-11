@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -68,29 +67,18 @@ public class InventoryRepositoryImpl(InventoryDbContext dbContext, IUnitOfWork u
         return result;
     }
 
-    /// <summary>
-    /// Saves inventory reservation transactions with their related inventory updates.
-    /// Uses ExecutionStrategy for compatibility with retry logic.
-    /// </summary>
     public virtual async Task SaveInventoryReservationTransactions(IList<InventoryReservationTransactionEntity> transactions, IList<InventoryEntity> inventories)
     {
-        var strategy = DbContext.Database.CreateExecutionStrategy();
-        await strategy.ExecuteAsync(async () =>
+        foreach (var reservationTransaction in transactions)
         {
-            await using var transaction = await DbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+            Add(reservationTransaction);
+        }
 
-            foreach (var reservationTransaction in transactions)
-            {
-                Add(reservationTransaction);
-            }
+        foreach (var inventory in inventories)
+        {
+            Update(inventory);
+        }
 
-            foreach (var inventory in inventories)
-            {
-                Update(inventory);
-            }
-
-            await DbContext.SaveChangesAsync();
-            await transaction.CommitAsync();
-        });
+        await DbContext.SaveChangesAsync();
     }
 }
