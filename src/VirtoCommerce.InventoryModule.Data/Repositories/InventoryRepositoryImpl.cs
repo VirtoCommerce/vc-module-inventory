@@ -69,9 +69,9 @@ public class InventoryRepositoryImpl(InventoryDbContext dbContext, IUnitOfWork u
 
     public virtual async Task SaveInventoryReservationTransactions(IList<InventoryReservationTransactionEntity> transactions, IList<InventoryEntity> inventories)
     {
-        foreach (var reservationTransaction in transactions)
+        foreach (var transaction in transactions)
         {
-            Add(reservationTransaction);
+            Add(transaction);
         }
 
         foreach (var inventory in inventories)
