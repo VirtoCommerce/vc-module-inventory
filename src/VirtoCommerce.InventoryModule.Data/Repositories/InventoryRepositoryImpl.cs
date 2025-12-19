@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
 using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.InventoryModule.Data.Model;
 using VirtoCommerce.Platform.Core.Common;
@@ -70,8 +69,6 @@ public class InventoryRepositoryImpl(InventoryDbContext dbContext, IUnitOfWork u
 
     public virtual async Task SaveInventoryReservationTransactions(IList<InventoryReservationTransactionEntity> transactions, IList<InventoryEntity> inventories)
     {
-        using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-
         foreach (var transaction in transactions)
         {
             Add(transaction);
@@ -82,7 +79,6 @@ public class InventoryRepositoryImpl(InventoryDbContext dbContext, IUnitOfWork u
             Update(inventory);
         }
 
-        await UnitOfWork.CommitAsync();
-        transactionScope.Complete();
+        await DbContext.SaveChangesAsync();
     }
 }
