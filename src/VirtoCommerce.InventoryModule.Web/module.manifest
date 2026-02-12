@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.Inventory</id>
-  <version>3.818.0</version>
+  <version>3.1000.0</version>
   <version-tag />
 
-  <platformVersion>3.917.0</platformVersion>
+  <platformVersion>3.1002.0</platformVersion>
   <dependencies>
-    <dependency id="VirtoCommerce.Catalog" version="3.904.0" />
-    <dependency id="VirtoCommerce.Core" version="3.824.0" />
-    <dependency id="VirtoCommerce.Search" version="3.821.0" />
+    <dependency id="VirtoCommerce.Catalog" version="3.1000.0" />
+    <dependency id="VirtoCommerce.Core" version="3.1000.0" />
+    <dependency id="VirtoCommerce.Search" version="3.1000.0" />
   </dependencies>
 
   <title>Inventory</title>
@@ -22,8 +22,8 @@
   <projectUrl>https://github.com/VirtoCommerce/vc-module-inventory</projectUrl>
   <iconUrl>Modules/$(VirtoCommerce.Inventory)/Content/logo.png</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
-  <copyright>Copyright © 2011–2025 Virto Commerce. All rights reserved</copyright>
-  <tags>order system</tags>
+  <copyright>Copyright © 2011–2026 Virto Commerce. All rights reserved</copyright>
+  <tags>order system</tags>Vuil
   <assemblyFile>VirtoCommerce.InventoryModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.InventoryModule.Web.Module, VirtoCommerce.InventoryModule.Web</moduleType>
   <groups>
