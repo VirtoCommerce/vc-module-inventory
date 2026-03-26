@@ -53,7 +53,8 @@
       },
       "fulfillment-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć to centrum realizacji?"
+        "message": "Czy na pewno chcesz usunąć to centrum realizacji?",
+        "fulfillment-center": "{{count}} centrum(ów) realizacji"
       }
     },
     "widgets": {

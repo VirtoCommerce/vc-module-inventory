@@ -73,7 +73,7 @@ angular.module('virtoCommerce.inventoryModule')
                 var dialog = {
                     id: "confirmDelete",
                     title: "inventory.dialogs.fulfillment-delete.title",
-                    message: "inventory.dialogs.fulfillment-delete.message",
+                    data: [{ key: 'inventory.dialogs.fulfillment-delete.fulfillment-center', count: $scope.gridApi.selection.getSelectedRows().length }],
                     callback: function (remove) {
                         if (remove) {
                             blade.isLoading = true;
@@ -86,7 +86,7 @@ angular.module('virtoCommerce.inventoryModule')
                         }
                     }
                 }
-                dialogService.showConfirmationDialog(dialog);
+                dialogService.showDeleteConfirmationDialog(dialog);
             }
 
             // simple and advanced filtering
