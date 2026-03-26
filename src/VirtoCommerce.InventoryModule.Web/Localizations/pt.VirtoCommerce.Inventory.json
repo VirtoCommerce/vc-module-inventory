@@ -53,8 +53,7 @@
       },
       "fulfillment-delete": {
         "title": "Confirmar exclusão",
-        "message": "Você tem certeza de que deseja excluir este centro de atendimento?",
-        "fulfillment-center": "{{count}} centro(s) de distribuição"
+        "message": "Você tem certeza de que deseja excluir este centro de atendimento?"
       }
     },
     "widgets": {

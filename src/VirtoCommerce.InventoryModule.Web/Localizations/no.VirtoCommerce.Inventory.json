@@ -53,8 +53,7 @@
       },
       "fulfillment-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette dette oppfyllelsessenteret?",
-        "fulfillment-center": "{{count}} oppfyllelsessenter"
+        "message": "Er du sikker på at du vil slette dette oppfyllelsessenteret?"
       }
     },
     "widgets": {

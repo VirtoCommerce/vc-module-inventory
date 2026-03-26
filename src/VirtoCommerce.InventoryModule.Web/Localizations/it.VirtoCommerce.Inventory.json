@@ -53,8 +53,7 @@
       },
       "fulfillment-delete": {
         "title": "Conferma eliminazione",
-        "message": "Sei sicuro di voler eliminare questo centro di approvvigionamento?",
-        "fulfillment-center": "{{count}} centro(i) di evasione"
+        "message": "Sei sicuro di voler eliminare questo centro di approvvigionamento?"
       }
     },
     "widgets": {

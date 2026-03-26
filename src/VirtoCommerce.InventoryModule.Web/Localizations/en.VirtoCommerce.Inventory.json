@@ -53,8 +53,7 @@
       },
       "fulfillment-delete": {
         "title": "Confirm delete",
-        "message": "Are you sure you want to delete this fulfillment center?",
-        "fulfillment-center": "{{count}} fulfillment center(s)"
+        "message": "Are you sure you want to delete this fulfillment center?"
       }
     },
     "widgets": {

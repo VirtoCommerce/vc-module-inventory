@@ -53,8 +53,7 @@
       },
       "fulfillment-delete": {
         "title": "削除を確認",
-        "message": "このフルフィルメントセンターを削除してもよろしいですか？",
-        "fulfillment-center": "{{count}} 件のフルフィルメントセンター"
+        "message": "このフルフィルメントセンターを削除してもよろしいですか？"
       }
     },
     "widgets": {

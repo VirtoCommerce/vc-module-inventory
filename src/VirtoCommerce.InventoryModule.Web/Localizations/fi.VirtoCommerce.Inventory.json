@@ -53,8 +53,7 @@
       },
       "fulfillment-delete": {
         "title": "Vahvista poisto",
-        "message": "Oletko varma, että haluat poistaa tämän jakelukeskuksen?",
-        "fulfillment-center": "{{count}} täyttökeskus(ta)"
+        "message": "Oletko varma, että haluat poistaa tämän jakelukeskuksen?"
       }
     },
     "widgets": {

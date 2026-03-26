@@ -53,8 +53,7 @@
       },
       "fulfillment-delete": {
         "title": "Confirmar eliminación",
-        "message": "¿Está seguro de que desea eliminar este centro de cumplimiento?",
-        "fulfillment-center": "{{count}} centro(s) de cumplimiento"
+        "message": "¿Está seguro de que desea eliminar este centro de cumplimiento?"
       }
     },
     "widgets": {

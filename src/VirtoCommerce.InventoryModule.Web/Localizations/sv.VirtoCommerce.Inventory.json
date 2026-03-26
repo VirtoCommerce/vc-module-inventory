@@ -53,8 +53,7 @@
       },
       "fulfillment-delete": {
         "title": "Bekräfta radering",
-        "message": "Är du säker på att du vill radera detta distributionscenter?",
-        "fulfillment-center": "{{count}} distributionscenter"
+        "message": "Är du säker på att du vill radera detta distributionscenter?"
       }
     },
     "widgets": {

@@ -53,8 +53,7 @@
       },
       "fulfillment-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer ce centre de traitement des commandes?",
-        "fulfillment-center": "{{count}} centre(s) de traitement"
+        "message": "Êtes-vous sûr de vouloir supprimer ce centre de traitement des commandes?"
       }
     },
     "widgets": {

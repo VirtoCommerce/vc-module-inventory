@@ -53,8 +53,7 @@
       },
       "fulfillment-delete": {
         "title": "确认删除",
-        "message": "您确定要删除此履行中心吗？",
-        "fulfillment-center": "{{count}} 个履行中心"
+        "message": "您确定要删除此履行中心吗？"
       }
     },
     "widgets": {
