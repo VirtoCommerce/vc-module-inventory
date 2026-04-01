@@ -74,7 +74,7 @@ angular.module('virtoCommerce.inventoryModule')
                     id: "confirmDelete",
                     title: "inventory.dialogs.fulfillment-delete.title",
                     message: "inventory.dialogs.fulfillment-delete.message",
-                    name: item.name,
+                    messageValues: { name: item.name },
                     callback: function (remove) {
                         if (remove) {
                             blade.isLoading = true;
