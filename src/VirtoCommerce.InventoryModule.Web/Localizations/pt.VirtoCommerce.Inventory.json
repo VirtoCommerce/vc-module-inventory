@@ -53,7 +53,7 @@
       },
       "fulfillment-delete": {
         "title": "Confirmar exclusão",
-        "message": "Você tem certeza de que deseja excluir este centro de atendimento?"
+        "message": "Você tem certeza de que deseja excluir o centro de atendimento '{{name}}'?"
       }
     },
     "widgets": {
