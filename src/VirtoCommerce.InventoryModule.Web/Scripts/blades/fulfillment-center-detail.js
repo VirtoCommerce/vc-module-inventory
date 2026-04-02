@@ -115,6 +115,7 @@ angular.module('virtoCommerce.inventoryModule')
                         id: "confirmDelete",
                         title: "inventory.dialogs.fulfillment-delete.title",
                         message: "inventory.dialogs.fulfillment-delete.message",
+                        messageValues: { name: blade.currentEntity.name },
                         callback: function (remove) {
                             if (remove) {
                                 blade.isLoading = true;
@@ -130,7 +131,7 @@ angular.module('virtoCommerce.inventoryModule')
                             }
                         }
                     };
-                    dialogService.showConfirmationDialog(dialog);
+                    dialogService.showDeleteConfirmationDialog(dialog);
                 }
 
                 blade.onClose = function (closeCallback) {
