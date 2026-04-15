@@ -53,7 +53,7 @@
       },
       "fulfillment-delete": {
         "title": "Löschen bestätigen",
-        "message": "Sind Sie sicher, dass Sie dieses Erfüllungszentrum löschen möchten?"
+        "message": "Sind Sie sicher, dass Sie das Erfüllungszentrum '{{name}}' löschen möchten?"
       }
     },
     "widgets": {

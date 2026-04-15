@@ -53,7 +53,7 @@
       },
       "fulfillment-delete": {
         "title": "Bekräfta radering",
-        "message": "Är du säker på att du vill radera detta distributionscenter?"
+        "message": "Är du säker på att du vill radera distributionscentret '{{name}}'?"
       }
     },
     "widgets": {

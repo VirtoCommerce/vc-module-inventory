@@ -53,7 +53,7 @@
       },
       "fulfillment-delete": {
         "title": "Vahvista poisto",
-        "message": "Oletko varma, että haluat poistaa tämän jakelukeskuksen?"
+        "message": "Oletko varma, että haluat poistaa jakelukeskuksen '{{name}}'?"
       }
     },
     "widgets": {
