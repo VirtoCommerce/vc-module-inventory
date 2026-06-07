@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Inventory">
+  <title>Inventory</title>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="92%" y2="100%">
+      <stop offset="0%" stop-color="#3FD8B4"/>
+      <stop offset="100%" stop-color="#0E9E80"/>
+    </linearGradient>
+    <filter id="lift" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3.5" flood-color="#064F40" flood-opacity="0.30"/>
+    </filter>
+  </defs>
+
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+
+  <g transform="translate(64,64)" filter="url(#lift)">
+    <!-- Bottom-left crate -->
+    <rect x="-43" y="2" width="41" height="40" rx="5" fill="#5FC8F5"/>
+    <line x1="-22.5" y1="16" x2="-22.5" y2="42" stroke="#2F8FD0" stroke-width="3.5"/>
+    <line x1="-43" y1="16" x2="-2" y2="16" stroke="#2F8FD0" stroke-width="3.5"/>
+
+    <!-- Bottom-right crate -->
+    <rect x="2" y="2" width="41" height="40" rx="5" fill="#FFC24D"/>
+    <line x1="22.5" y1="16" x2="22.5" y2="42" stroke="#D98A1E" stroke-width="3.5"/>
+    <line x1="2" y1="16" x2="43" y2="16" stroke="#D98A1E" stroke-width="3.5"/>
+
+    <!-- Top crate -->
+    <rect x="-20" y="-42" width="41" height="40" rx="5" fill="#ffffff"/>
+    <line x1="0.5" y1="-28" x2="0.5" y2="-2" stroke="#CBD8E6" stroke-width="3.5"/>
+    <line x1="-20" y1="-28" x2="21" y2="-28" stroke="#CBD8E6" stroke-width="3.5"/>
+  </g>
+</svg>
