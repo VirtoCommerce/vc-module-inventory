@@ -1,4 +1,5 @@
-using System;
+using System;
+
 using System.Threading;
 using System.IO;
 using System.Text;
@@ -43,9 +44,9 @@ public sealed class InventoryExportImport(
 
         await using var streamWriter = new StreamWriter(outStream, Encoding.UTF8);
         await using var writer = new JsonTextWriter(streamWriter);
-        await writer.WriteStartObjectAsync();
+        await writer.WriteStartObjectAsync(cancellationToken);
 
-        await writer.WritePropertyNameAsync("FulfillmentCenters");
+        await writer.WritePropertyNameAsync("FulfillmentCenters", cancellationToken);
         await writer.SerializeArrayWithPagingAsync(jsonSerializer, BatchSize, async (skip, take) =>
         {
             var searchCriteria = AbstractTypeFactory<FulfillmentCenterSearchCriteria>.TryCreateInstance();
@@ -62,7 +63,7 @@ public sealed class InventoryExportImport(
         progressInfo.Description = "The Inventories are loading";
         progressCallback(progressInfo);
 
-        await writer.WritePropertyNameAsync("Inventories");
+        await writer.WritePropertyNameAsync("Inventories", cancellationToken);
         await writer.SerializeArrayWithPagingAsync(jsonSerializer, BatchSize, async (skip, take) =>
         {
             var searchCriteria = AbstractTypeFactory<InventorySearchCriteria>.TryCreateInstance();
@@ -76,8 +77,8 @@ public sealed class InventoryExportImport(
             progressCallback(progressInfo);
         }, cancellationToken);
 
-        await writer.WriteEndObjectAsync();
-        await writer.FlushAsync();
+        await writer.WriteEndObjectAsync(cancellationToken);
+        await writer.FlushAsync(cancellationToken);
     }
 
     public async Task DoImportAsync(Stream inputStream, Action<ExportImportProgressInfo> progressCallback, CancellationToken cancellationToken)
@@ -88,7 +89,7 @@ public sealed class InventoryExportImport(
 
         using var streamReader = new StreamReader(inputStream);
         await using var reader = new JsonTextReader(streamReader);
-        while (await reader.ReadAsync())
+        while (await reader.ReadAsync(cancellationToken))
         {
             if (reader.TokenType == JsonToken.PropertyName && reader.Value != null)
             {
