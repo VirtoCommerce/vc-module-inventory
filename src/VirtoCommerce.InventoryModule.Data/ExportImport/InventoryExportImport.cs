@@ -1,4 +1,5 @@
-using System;
+using System;
+using System.Threading;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ public sealed class InventoryExportImport(
         }
     }
 
-    public async Task DoExportAsync(Stream outStream, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
+    public async Task DoExportAsync(Stream outStream, Action<ExportImportProgressInfo> progressCallback, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -79,7 +80,7 @@ public sealed class InventoryExportImport(
         await writer.FlushAsync();
     }
 
-    public async Task DoImportAsync(Stream inputStream, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
+    public async Task DoImportAsync(Stream inputStream, Action<ExportImportProgressInfo> progressCallback, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
