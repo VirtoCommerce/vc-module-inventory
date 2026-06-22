@@ -26,7 +26,7 @@ public class ProductAvailabilityDocumentBuilder(IInventorySearchService inventor
         return Task.CompletedTask;
     }
 
-    public async Task<IList<IndexDocument>> GetDocumentsAsync(IList<string> documentIds)
+    public virtual async Task<IList<IndexDocument>> GetDocumentsAsync(IList<string> documentIds)
     {
         var now = DateTime.UtcNow;
         var result = new List<IndexDocument>();
