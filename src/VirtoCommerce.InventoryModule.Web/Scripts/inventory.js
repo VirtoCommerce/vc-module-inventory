@@ -55,6 +55,12 @@ angular.module(moduleName, [])
                 }, 'fulfillmentCenterDetail');
 
                 widgetService.registerWidget({
+                    isVisible: function (blade) { return blade.currentEntityId && authService.checkPermission('inventory:read'); },
+                    controller: 'virtoCommerce.inventoryModule.fulfillmentCenterProductsWidgetController',
+                    template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/widgets/fulfillmentCenterProductsWidget.tpl.html'
+                }, 'fulfillmentCenterDetail');
+
+                widgetService.registerWidget({
                     controller: 'platformWebApp.dynamicPropertyWidgetController',
                     template: '$(Platform)/Scripts/app/dynamicProperties/widgets/dynamicPropertyWidget.tpl.html',
                     isVisible: function (blade) { return blade.currentEntityId && authService.checkPermission('platform:dynamic_properties:read'); }
