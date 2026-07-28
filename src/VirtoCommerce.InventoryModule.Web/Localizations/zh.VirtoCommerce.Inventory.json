@@ -22,6 +22,14 @@
           "in-stock-quantity": "库存数量"
         }
       },
+      "fulfillment-center-products-list": {
+        "labels": {
+          "product-name": "商品",
+          "product-code": "SKU",
+          "in-stock-quantity": "库存数量",
+          "reserved-quantity": "已预留数量"
+        }
+      },
       "fulfillment-center-detail": {
         "subtitle": "编辑履行中心",
         "labels": {
@@ -60,6 +68,10 @@
       "inventoryWidget": {
         "title": "库存",
         "blade-subtitle": "选择一个履行中心进行库存管理"
+      },
+      "fulfillmentCenterProductsWidget": {
+        "title": "商品",
+        "blade-subtitle": "此履行中心的库存商品"
       },
       "fulfillmentWidget": {
         "title": "履行中心",

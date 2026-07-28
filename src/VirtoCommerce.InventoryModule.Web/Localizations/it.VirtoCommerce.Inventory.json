@@ -22,6 +22,14 @@
           "in-stock-quantity": "Quantità disponibile"
         }
       },
+      "fulfillment-center-products-list": {
+        "labels": {
+          "product-name": "Prodotto",
+          "product-code": "SKU",
+          "in-stock-quantity": "Quantità disponibile",
+          "reserved-quantity": "Quantità riservata"
+        }
+      },
       "fulfillment-center-detail": {
         "subtitle": "Modifica centro di approvvigionamento",
         "labels": {
@@ -60,6 +68,10 @@
       "inventoryWidget": {
         "title": "Inventario",
         "blade-subtitle": "Seleziona un centro di approvvigionamento per la gestione dell'inventario"
+      },
+      "fulfillmentCenterProductsWidget": {
+        "title": "Prodotti",
+        "blade-subtitle": "Prodotti disponibili in questo centro di approvvigionamento"
       },
       "fulfillmentWidget": {
         "title": "Centri di evasione",

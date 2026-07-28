@@ -22,6 +22,14 @@
           "in-stock-quantity": "在庫数量"
         }
       },
+      "fulfillment-center-products-list": {
+        "labels": {
+          "product-name": "商品",
+          "product-code": "SKU",
+          "in-stock-quantity": "在庫数量",
+          "reserved-quantity": "予約済み数量"
+        }
+      },
       "fulfillment-center-detail": {
         "subtitle": "フルフィルメントセンターの編集",
         "labels": {
@@ -60,6 +68,10 @@
       "inventoryWidget": {
         "title": "在庫",
         "blade-subtitle": "在庫管理のためにフルフィルメントセンターを選択してください"
+      },
+      "fulfillmentCenterProductsWidget": {
+        "title": "商品",
+        "blade-subtitle": "このフルフィルメントセンターの在庫商品"
       },
       "fulfillmentWidget": {
         "title": "フルフィルメントセンター",

@@ -22,6 +22,14 @@
           "in-stock-quantity": "Cantidad en stock"
         }
       },
+      "fulfillment-center-products-list": {
+        "labels": {
+          "product-name": "Producto",
+          "product-code": "SKU",
+          "in-stock-quantity": "Cantidad en stock",
+          "reserved-quantity": "Cantidad reservada"
+        }
+      },
       "fulfillment-center-detail": {
         "subtitle": "Editando centro de cumplimiento",
         "labels": {
@@ -60,6 +68,10 @@
       "inventoryWidget": {
         "title": "Inventario",
         "blade-subtitle": "Seleccione un centro de cumplimiento para la gestión del inventario"
+      },
+      "fulfillmentCenterProductsWidget": {
+        "title": "Productos",
+        "blade-subtitle": "Productos en stock en este centro de cumplimiento"
       },
       "fulfillmentWidget": {
         "title": "Centros de cumplimiento",
