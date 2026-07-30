@@ -158,14 +158,13 @@ angular.module('virtoCommerce.inventoryModule')
 
                         if (!newInventories.length) {
                             bladeNavigationService.closeBlade(selectBlade);
+                            showAddedProducts();
                             return;
                         }
 
                         inventories.upsert(newInventories, function () {
                             bladeNavigationService.closeBlade(selectBlade);
-                            // the added products have no stock yet, so they are hidden by the default filter
-                            filter.inStockOnly = false;
-                            filter.criteriaChanged();
+                            showAddedProducts();
                         }, function (error) {
                             selectBlade.isLoading = false;
                             bladeNavigationService.setError('Error ' + error.status, selectBlade);
@@ -174,6 +173,13 @@ angular.module('virtoCommerce.inventoryModule')
                         selectBlade.isLoading = false;
                         bladeNavigationService.setError('Error ' + error.status, selectBlade);
                     });
+                }
+
+                // The added products have no stock yet and the products that already existed may have none either,
+                // so the default filter would hide them all and the add action would look like it did nothing.
+                function showAddedProducts() {
+                    filter.inStockOnly = false;
+                    filter.criteriaChanged();
                 }
 
                 blade.toolbarCommands = [
