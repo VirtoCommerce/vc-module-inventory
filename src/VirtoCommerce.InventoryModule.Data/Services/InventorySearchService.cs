@@ -55,9 +55,9 @@ public class InventorySearchService(
             query = query.Where(x => criteria.FulfillmentCenterIds.Contains(x.FulfillmentCenterId));
         }
 
-        if (criteria.WithNonZeroQuantityOnly)
+        if (criteria.WithPositiveQuantityOnly)
         {
-            query = query.Where(x => x.InStockQuantity != 0);
+            query = query.Where(x => x.InStockQuantity > 0);
         }
 
         return query;

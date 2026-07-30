@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using VirtoCommerce.CatalogModule.Core.Events;
 using VirtoCommerce.InventoryModule.Core;
 using VirtoCommerce.InventoryModule.Core.Events;
 using VirtoCommerce.InventoryModule.Core.Model;
@@ -78,6 +79,7 @@ namespace VirtoCommerce.InventoryModule.Web
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
             serviceCollection.AddTransient<IndexInventoryChangedEventHandler>();
             serviceCollection.AddTransient<FulfillmentCenterChangedEventHandler>();
+            serviceCollection.AddTransient<ProductChangedEventHandler>();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)
@@ -129,6 +131,7 @@ namespace VirtoCommerce.InventoryModule.Web
             appBuilder.RegisterEventHandler<InventoryChangedEvent, LogChangesChangedEventHandler>();
             appBuilder.RegisterEventHandler<InventoryChangedEvent, IndexInventoryChangedEventHandler>();
             appBuilder.RegisterEventHandler<FulfillmentCenterChangedEvent, FulfillmentCenterChangedEventHandler>();
+            appBuilder.RegisterEventHandler<ProductChangedEvent, ProductChangedEventHandler>();
         }
 
         public void Uninstall()

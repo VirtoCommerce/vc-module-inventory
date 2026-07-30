@@ -50,7 +50,7 @@ public class InventorySearchServiceTests : InventoryTestsBase
     }
 
     [Fact]
-    public async Task SearchAsync_WithNonZeroQuantityOnly_ShouldReturnInventoriesWithStockOnly()
+    public async Task SearchAsync_WithPositiveQuantityOnly_ShouldReturnInventoriesInStockOnly()
     {
         // Arrange
         var fulfillmentCenterId = NewId();
@@ -66,14 +66,14 @@ public class InventorySearchServiceTests : InventoryTestsBase
         var criteria = new InventorySearchCriteria
         {
             FulfillmentCenterIds = [fulfillmentCenterId],
-            WithNonZeroQuantityOnly = true,
+            WithPositiveQuantityOnly = true,
         };
 
         // Act
         var result = await searchService.SearchAsync(criteria);
 
         // Assert
-        Assert.Equal(2, result.TotalCount);
-        Assert.Equal(new List<string> { _productId1, _productId3 }, result.Results.Select(x => x.ProductId).OrderBy(x => x).ToList());
+        Assert.Equal(1, result.TotalCount);
+        Assert.Equal(new List<string> { _productId1 }, result.Results.Select(x => x.ProductId).ToList());
     }
 }

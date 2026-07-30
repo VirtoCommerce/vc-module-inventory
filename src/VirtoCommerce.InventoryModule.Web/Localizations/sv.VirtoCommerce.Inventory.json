@@ -23,11 +23,15 @@
         }
       },
       "fulfillment-center-products-list": {
+        "select-products-title": "Välj produkter",
         "labels": {
+          "picture": "Bild",
           "product-name": "Produkt",
           "product-code": "SKU",
           "in-stock-quantity": "Lagerkvantitet",
-          "reserved-quantity": "Reserverad kvantitet"
+          "reserved-quantity": "Reserverad kvantitet",
+          "in-stock-only": "Endast i lager",
+          "no-product": "Det finns ingen produkt med detta ID"
         }
       },
       "fulfillment-center-detail": {

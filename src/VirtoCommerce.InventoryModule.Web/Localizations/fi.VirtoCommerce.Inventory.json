@@ -23,11 +23,15 @@
         }
       },
       "fulfillment-center-products-list": {
+        "select-products-title": "Valitse tuotteet",
         "labels": {
+          "picture": "Kuva",
           "product-name": "Tuote",
           "product-code": "SKU",
           "in-stock-quantity": "Varastossa oleva määrä",
-          "reserved-quantity": "Varattu määrä"
+          "reserved-quantity": "Varattu määrä",
+          "in-stock-only": "Vain varastossa",
+          "no-product": "Tällä tunnuksella ei ole tuotetta"
         }
       },
       "fulfillment-center-detail": {

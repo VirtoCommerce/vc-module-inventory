@@ -3,6 +3,7 @@ angular.module('virtoCommerce.inventoryModule')
     return $resource('api/inventory/products/:id', { id: '@Id' }, {
         // query: { },
         update: { method: 'PUT' },
-        search: { method: 'POST', url: 'api/inventory/search' }
+        upsert: { method: 'PUT', url: 'api/inventory/plenty' },
+        searchProducts: { method: 'POST', url: 'api/inventory/products/search' }
     });
 }]);

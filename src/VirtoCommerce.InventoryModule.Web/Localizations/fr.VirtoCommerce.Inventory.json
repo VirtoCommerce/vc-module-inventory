@@ -23,11 +23,15 @@
         }
       },
       "fulfillment-center-products-list": {
+        "select-products-title": "Sélectionner des produits",
         "labels": {
+          "picture": "Image",
           "product-name": "Produit",
           "product-code": "SKU",
           "in-stock-quantity": "Quantité en stock",
-          "reserved-quantity": "Quantité réservée"
+          "reserved-quantity": "Quantité réservée",
+          "in-stock-only": "En stock uniquement",
+          "no-product": "Aucun produit avec cet ID"
         }
       },
       "fulfillment-center-detail": {

@@ -11,8 +11,8 @@ namespace VirtoCommerce.InventoryModule.Core.Model.Search
         public IList<string> ProductIds { get; set; }
 
         /// <summary>
-        /// Return only inventories with non-zero in stock quantity.
+        /// Return only inventories with positive in stock quantity.
         /// </summary>
-        public bool WithNonZeroQuantityOnly { get; set; }
+        public bool WithPositiveQuantityOnly { get; set; }
     }
 }

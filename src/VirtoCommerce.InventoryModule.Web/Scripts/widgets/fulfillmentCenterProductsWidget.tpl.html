@@ -1,6 +1,6 @@
 <div class="gridster-cnt" ng-click="openBlade()">
     <div class="cnt-inner">
-        <div class="list-count" ng-if="productsCount">{{productsCount | number:0}}</div>
+        <div class="list-count" ng-if="productsCount !== undefined">{{productsCount | number:0}}</div>
         <div class="list-t">{{ 'inventory.widgets.fulfillmentCenterProductsWidget.title' | translate }}</div>
     </div>
 </div>

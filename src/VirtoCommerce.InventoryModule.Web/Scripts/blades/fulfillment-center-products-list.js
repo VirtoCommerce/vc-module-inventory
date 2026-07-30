@@ -2,63 +2,177 @@ angular.module('virtoCommerce.inventoryModule')
     .controller('virtoCommerce.inventoryModule.fulfillmentCenterProductsListController',
         [
             '$scope',
+            '$translate',
             'platformWebApp.bladeUtils',
             'platformWebApp.uiGridHelper',
             'platformWebApp.bladeNavigationService',
+            'platformWebApp.authService',
             'uiGridConstants',
             'virtoCommerce.inventoryModule.inventories',
-            'virtoCommerce.catalogModule.items',
-            function ($scope, bladeUtils, uiGridHelper, bladeNavigationService, uiGridConstants, inventories, items) {
+            function ($scope, $translate, bladeUtils, uiGridHelper, bladeNavigationService, authService, uiGridConstants, inventories) {
                 $scope.uiGridConstants = uiGridConstants;
+                $scope.noProductName = $translate.instant('inventory.blades.fulfillment-center-products-list.labels.no-product');
+
                 var blade = $scope.blade;
                 blade.headIcon = 'fas fa-boxes';
+                blade.updatePermission = 'inventory:update';
+
+                var filter = $scope.filter = { inStockOnly: true };
+
+                filter.criteriaChanged = function () {
+                    if ($scope.pageSettings.currentPage > 1) {
+                        $scope.pageSettings.currentPage = 1;
+                    } else {
+                        blade.refresh();
+                    }
+                };
 
                 blade.refresh = function () {
                     blade.isLoading = true;
 
-                    inventories.search({
-                        fulfillmentCenterIds: [blade.currentEntityId],
-                        withNonZeroQuantityOnly: true,
-                        sort: uiGridHelper.getSortExpression($scope),
-                        skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
-                        take: $scope.pageSettings.itemsPerPageCount
-                    }, function (data) {
+                    inventories.searchProducts(getSearchCriteria(), function (data) {
                         $scope.pageSettings.totalItems = data.totalCount;
-                        fillProductInfo(data.results);
+                        blade.currentEntities = _.each(data.results, fillMissingProduct);
+                        blade.isLoading = false;
+
+                        if (blade.parentWidgetRefresh) {
+                            blade.parentWidgetRefresh();
+                        }
                     }, function (error) {
                         blade.isLoading = false;
                         bladeNavigationService.setError('Error ' + error.status, blade);
                     });
                 };
 
-                // Inventory records store the product ID only, so name and code are resolved from the catalog.
-                // Records whose product no longer exists in the catalog are skipped, therefore a page may
-                // contain fewer rows than the page size and the total count may include such orphans.
-                function fillProductInfo(inventoryList) {
-                    var productIds = _.uniq(_.pluck(inventoryList, 'productId'));
+                function getSearchCriteria() {
+                    return {
+                        fulfillmentCenterIds: [blade.currentEntityId],
+                        withPositiveQuantityOnly: filter.inStockOnly,
+                        // the grid sends no sort expression until the user clicks a column header
+                        sort: uiGridHelper.getSortExpression($scope) || 'inStockQuantity:desc',
+                        skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
+                        take: $scope.pageSettings.itemsPerPageCount
+                    };
+                }
 
-                    if (!_.any(productIds)) {
-                        blade.currentEntities = [];
-                        blade.isLoading = false;
-                        return;
-                    }
+                // Inventory records store the product ID only, the product itself is resolved by the API.
+                // It is missing when the product has been deleted from the catalog.
+                function fillMissingProduct(productInventory) {
+                    productInventory.product = productInventory.product || { name: $scope.noProductName };
+                }
 
-                    items.plenty({ respGroup: 'ItemInfo' }, productIds, function (products) {
-                        var productsById = _.indexBy(products, 'id');
+                $scope.selectNode = function (productInventory) {
+                    $scope.selectedNodeId = productInventory.productId;
 
-                        blade.currentEntities = _.filter(inventoryList, function (inventory) {
-                            var product = productsById[inventory.productId];
-                            if (product) {
-                                inventory.productName = product.name;
-                                inventory.productCode = product.code;
+                    var newBlade = {
+                        id: 'fulfillmentCenterInventoryDetail',
+                        itemId: productInventory.productId,
+                        data: productInventory.inventory,
+                        getEntity: function () {
+                            return getInventory(productInventory);
+                        },
+                        title: productInventory.product.name,
+                        subtitle: 'inventory.blades.inventory-detail.subtitle',
+                        controller: 'virtoCommerce.inventoryModule.inventoryDetailController',
+                        template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/blades/inventory-detail.tpl.html'
+                    };
+                    bladeNavigationService.showBlade(newBlade, blade);
+                };
+
+                function getInventory(productInventory) {
+                    blade.refresh();
+
+                    return inventories.searchProducts({
+                        fulfillmentCenterIds: [blade.currentEntityId],
+                        productIds: [productInventory.productId],
+                        take: 1
+                    }).$promise.then(function (data) {
+                        var actual = _.first(data.results);
+                        return actual ? actual.inventory : productInventory.inventory;
+                    });
+                }
+
+                function openAddProductsBlade() {
+                    $scope.selectedNodeId = null;
+                    var selectedProducts = [];
+
+                    var newBlade = {
+                        id: 'CatalogItemsSelect',
+                        title: 'inventory.blades.fulfillment-center-products-list.select-products-title',
+                        controller: 'virtoCommerce.catalogModule.catalogItemSelectController',
+                        template: 'Modules/$(VirtoCommerce.Catalog)/Scripts/blades/common/catalog-items-select.tpl.html',
+                        breadcrumbs: [],
+                        toolbarCommands: [
+                            {
+                                name: "platform.commands.add", icon: 'fas fa-plus',
+                                executeMethod: function (selectBlade) {
+                                    addProducts(selectedProducts, selectBlade);
+                                },
+                                canExecuteMethod: function () {
+                                    return selectedProducts.length > 0;
+                                }
                             }
-                            return product;
-                        });
+                        ]
+                    };
 
-                        blade.isLoading = false;
+                    newBlade.options = {
+                        checkItemFn: function (listItem, isSelected) {
+                            if (listItem.type === 'category') {
+                                newBlade.error = 'Categories are not supported';
+                                listItem.selected = undefined;
+                            } else {
+                                if (isSelected) {
+                                    if (_.all(selectedProducts, function (x) { return x.id !== listItem.id; })) {
+                                        selectedProducts.push(listItem);
+                                    }
+                                } else {
+                                    selectedProducts = _.reject(selectedProducts, function (x) { return x.id === listItem.id; });
+                                }
+                                newBlade.error = undefined;
+                            }
+                        }
+                    };
+
+                    bladeNavigationService.showBlade(newBlade, blade);
+                }
+
+                function addProducts(products, selectBlade) {
+                    selectBlade.isLoading = true;
+                    var productIds = _.pluck(products, 'id');
+
+                    inventories.searchProducts({
+                        fulfillmentCenterIds: [blade.currentEntityId],
+                        productIds: productIds,
+                        take: productIds.length
+                    }, function (data) {
+                        var newInventories = _.chain(productIds)
+                            .difference(_.pluck(data.results, 'productId'))
+                            .map(function (productId) {
+                                return {
+                                    productId: productId,
+                                    fulfillmentCenterId: blade.currentEntityId,
+                                    inStockQuantity: 0
+                                };
+                            })
+                            .value();
+
+                        if (!newInventories.length) {
+                            bladeNavigationService.closeBlade(selectBlade);
+                            return;
+                        }
+
+                        inventories.upsert(newInventories, function () {
+                            bladeNavigationService.closeBlade(selectBlade);
+                            // the added products have no stock yet, so they are hidden by the default filter
+                            filter.inStockOnly = false;
+                            filter.criteriaChanged();
+                        }, function (error) {
+                            selectBlade.isLoading = false;
+                            bladeNavigationService.setError('Error ' + error.status, selectBlade);
+                        });
                     }, function (error) {
-                        blade.isLoading = false;
-                        bladeNavigationService.setError('Error ' + error.status, blade);
+                        selectBlade.isLoading = false;
+                        bladeNavigationService.setError('Error ' + error.status, selectBlade);
                     });
                 }
 
@@ -69,6 +183,15 @@ angular.module('virtoCommerce.inventoryModule')
                         canExecuteMethod: function () {
                             return true;
                         }
+                    },
+                    {
+                        name: "platform.commands.add", icon: 'fas fa-plus',
+                        executeMethod: openAddProductsBlade,
+                        canExecuteMethod: function () {
+                            // products are selected from the catalog
+                            return authService.checkPermission('catalog:read');
+                        },
+                        permission: blade.updatePermission
                     }
                 ];
 

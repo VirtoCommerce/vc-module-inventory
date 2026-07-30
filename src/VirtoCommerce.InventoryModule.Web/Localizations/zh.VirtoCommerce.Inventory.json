@@ -23,11 +23,15 @@
         }
       },
       "fulfillment-center-products-list": {
+        "select-products-title": "选择商品",
         "labels": {
+          "picture": "图片",
           "product-name": "商品",
           "product-code": "SKU",
           "in-stock-quantity": "库存数量",
-          "reserved-quantity": "已预留数量"
+          "reserved-quantity": "已预留数量",
+          "in-stock-only": "仅有库存",
+          "no-product": "没有此ID的产品项"
         }
       },
       "fulfillment-center-detail": {

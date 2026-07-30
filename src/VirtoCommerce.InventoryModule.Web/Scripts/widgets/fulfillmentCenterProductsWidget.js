@@ -8,9 +8,9 @@ angular.module('virtoCommerce.inventoryModule')
                 var blade = $scope.widget.blade;
 
                 function refresh() {
-                    inventories.search({
+                    inventories.searchProducts({
                         fulfillmentCenterIds: [blade.currentEntityId],
-                        withNonZeroQuantityOnly: true,
+                        withPositiveQuantityOnly: true,
                         take: 0
                     }, function (data) {
                         $scope.productsCount = data.totalCount;
@@ -23,6 +23,7 @@ angular.module('virtoCommerce.inventoryModule')
                         currentEntityId: blade.currentEntityId,
                         title: blade.title,
                         subtitle: 'inventory.widgets.fulfillmentCenterProductsWidget.blade-subtitle',
+                        parentWidgetRefresh: refresh,
                         controller: 'virtoCommerce.inventoryModule.fulfillmentCenterProductsListController',
                         template: 'Modules/$(VirtoCommerce.Inventory)/Scripts/blades/fulfillment-center-products-list.tpl.html'
                     };

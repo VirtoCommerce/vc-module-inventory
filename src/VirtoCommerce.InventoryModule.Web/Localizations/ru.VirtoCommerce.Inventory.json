@@ -23,11 +23,15 @@
         }
       },
       "fulfillment-center-products-list": {
+        "select-products-title": "Выберите товары",
         "labels": {
+          "picture": "Изображение",
           "product-name": "Товар",
           "product-code": "SKU",
           "in-stock-quantity": "Количество в наличии",
-          "reserved-quantity": "Зарезервированное количество"
+          "reserved-quantity": "Зарезервированное количество",
+          "in-stock-only": "Только в наличии",
+          "no-product": "Товар с таким ID не существует"
         }
       },
       "fulfillment-center-detail": {

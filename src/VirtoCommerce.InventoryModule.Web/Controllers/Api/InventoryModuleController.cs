@@ -1,9 +1,14 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using VirtoCommerce.AssetsModule.Core.Assets;
+using VirtoCommerce.CatalogModule.Core.Model;
+using VirtoCommerce.CatalogModule.Core.Services;
 using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Core.Model.Search;
 using VirtoCommerce.InventoryModule.Core.Services;
@@ -19,7 +24,9 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         IInventorySearchService inventorySearchService,
         IProductInventorySearchService productInventorySearchService,
         IFulfillmentCenterSearchService fulfillmentCenterSearchService,
-        IFulfillmentCenterService fulfillmentCenterService)
+        IFulfillmentCenterService fulfillmentCenterService,
+        IItemService itemService,
+        IBlobUrlResolver blobUrlResolver)
         : Controller
     {
         /// <summary>
@@ -43,6 +50,27 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         public async Task<ActionResult<InventoryInfoSearchResult>> SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
         {
             var result = await inventorySearchService.SearchNoCloneAsync(searchCriteria);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Search inventories by given criteria and return them along with the product information
+        /// </summary>
+        /// <remarks>
+        /// Products are resolved from the catalog on the server, so the caller does not need catalog permissions.
+        /// Inventories of the products missing in the catalog are returned with the empty product.
+        /// </remarks>
+        [HttpPost]
+        [Route("inventory/products/search")]
+        [Authorize(Permissions.Read)]
+        public async Task<ActionResult<ProductInventoryInfoSearchResult>> SearchProductInventoryInfos([FromBody] InventorySearchCriteria searchCriteria)
+        {
+            var searchResult = await inventorySearchService.SearchNoCloneAsync(searchCriteria);
+
+            var result = AbstractTypeFactory<ProductInventoryInfoSearchResult>.TryCreateInstance();
+            result.TotalCount = searchResult.TotalCount;
+            result.Results = await GetProductInventoryInfos(searchResult.Results);
+
             return Ok(result);
         }
 
@@ -306,6 +334,34 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
             await inventoryService.SaveChangesAsync([inventory]);
 
             return NoContent();
+        }
+
+        private async Task<IList<ProductInventoryInfo>> GetProductInventoryInfos(IList<InventoryInfo> inventories)
+        {
+            if (inventories.Count == 0)
+            {
+                return [];
+            }
+
+            var productIds = inventories.Select(x => x.ProductId).Distinct().ToList();
+            var responseGroup = (ItemResponseGroup.ItemInfo | ItemResponseGroup.ItemAssets).ToString();
+            var products = (await itemService.GetNoCloneAsync(productIds, responseGroup)).ToDictionary(x => x.Id);
+
+            return inventories.Select(inventory =>
+            {
+                var result = AbstractTypeFactory<ProductInventoryInfo>.TryCreateInstance();
+                result.ProductId = inventory.ProductId;
+                result.Inventory = inventory;
+                result.Product = products.GetValueSafe(inventory.ProductId);
+
+                foreach (var image in result.Product?.Images ?? [])
+                {
+                    image.RelativeUrl = image.Url;
+                    image.Url = blobUrlResolver.GetAbsoluteUrl(image.Url);
+                }
+
+                return result;
+            }).ToList();
         }
     }
 }
