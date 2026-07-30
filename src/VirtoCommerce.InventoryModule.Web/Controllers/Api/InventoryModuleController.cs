@@ -345,7 +345,8 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
 
             var productIds = inventories.Select(x => x.ProductId).Distinct().ToList();
             var responseGroup = (ItemResponseGroup.ItemInfo | ItemResponseGroup.ItemAssets).ToString();
-            var products = (await itemService.GetNoCloneAsync(productIds, responseGroup)).ToDictionary(x => x.Id);
+            // The products are cloned because the image URLs below are resolved in place and must not affect the cache
+            var products = (await itemService.GetAsync(productIds, responseGroup)).ToDictionary(x => x.Id);
 
             return inventories.Select(inventory =>
             {
