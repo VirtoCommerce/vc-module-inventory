@@ -1,4 +1,4 @@
-using System;
+using System;
 using System.Threading;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +14,7 @@ using VirtoCommerce.InventoryModule.Core.Model;
 using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.InventoryModule.Data.ExportImport;
 using VirtoCommerce.InventoryModule.Data.Handlers;
+using VirtoCommerce.InventoryModule.Data.Jobs;
 using VirtoCommerce.InventoryModule.Data.MySql;
 using VirtoCommerce.InventoryModule.Data.PostgreSql;
 using VirtoCommerce.InventoryModule.Data.Repositories;
@@ -24,6 +25,7 @@ using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.ExportImport;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
@@ -78,6 +80,11 @@ namespace VirtoCommerce.InventoryModule.Web
             serviceCollection.AddTransient<LogChangesChangedEventHandler>();
             serviceCollection.AddTransient<IndexInventoryChangedEventHandler>();
             serviceCollection.AddTransient<FulfillmentCenterChangedEventHandler>();
+
+            // Not triggerable by name: this job writes audit-log rows, and an OperationLog whose Id matches an existing
+            // row takes ChangeLogService.SaveChangesAsync's Patch branch, so a caller-supplied payload must never reach it.
+            serviceCollection.AddBackgroundJob<LogEntityChangesJobHandler, LogEntityChangesJobPayload>(triggerable: false);
+            serviceCollection.AddBackgroundJob<RecalculateFulfillmentCenterDistanceJobHandler, RecalculateFulfillmentCenterDistanceJobPayload>();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)
