@@ -5,9 +5,12 @@ angular.module('virtoCommerce.inventoryModule')
 
     blade.refresh = function() {
         blade.isLoading = true;
-        blade.parentBlade.refresh().then(function(results) {
-            var data = _.findWhere(results, { fulfillmentCenterId: blade.data.fulfillmentCenterId });
+        // blade.getEntity is set by the parent blades that keep a single inventory per product
+        var promise = blade.getEntity ? blade.getEntity() : blade.parentBlade.refresh().then(function(results) {
+            return _.findWhere(results, { fulfillmentCenterId: blade.data.fulfillmentCenterId });
+        });
 
+        promise.then(function(data) {
             initializeBlade(angular.copy(data));
         });
     };

@@ -22,6 +22,18 @@
           "in-stock-quantity": "Quantité en stock"
         }
       },
+      "fulfillment-center-products-list": {
+        "select-products-title": "Sélectionner des produits",
+        "labels": {
+          "picture": "Image",
+          "product-name": "Produit",
+          "product-code": "SKU",
+          "in-stock-quantity": "Quantité en stock",
+          "reserved-quantity": "Quantité réservée",
+          "in-stock-only": "En stock uniquement",
+          "no-product": "Aucun produit avec cet ID"
+        }
+      },
       "fulfillment-center-detail": {
         "subtitle": "Édition du centre de traitement des commandes",
         "labels": {
@@ -60,6 +72,10 @@
       "inventoryWidget": {
         "title": "Inventaire",
         "blade-subtitle": "Sélectionnez un centre de traitement des commandes pour la gestion de l'inventaire"
+      },
+      "fulfillmentCenterProductsWidget": {
+        "title": "Produits",
+        "blade-subtitle": "Produits en stock dans ce centre de traitement des commandes"
       },
       "fulfillmentWidget": {
         "title": "Centres de traitement",
