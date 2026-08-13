@@ -1,0 +1,87 @@
+<div class="blade-static">
+  <div class="form-group">
+    <label class="form-control __checkbox">
+      <input type="checkbox" ng-model="filter.inStockOnly" ng-change="filter.criteriaChanged()">
+      <span class="check"></span>
+      <span class="name">{{ 'inventory.blades.fulfillment-center-products-list.labels.in-stock-only' | translate }}</span>
+    </label>
+  </div>
+</div>
+
+<div class="blade-static __bottom" ng-if="pageSettings.itemsPerPageCount < pageSettings.totalItems"
+     ng-include="'pagerTemplate.html'"></div>
+
+<div class="blade-content __xlarge-wide">
+  <div class="blade-inner">
+    <div class="inner-block" ng-init="setGridOptions({
+            useExternalSorting: true,
+            rowHeight: 60,
+            rowTemplate: 'list.row.html',
+            columnDefs: [{
+                name: 'product.imgSrc',
+                displayName: 'inventory.blades.fulfillment-center-products-list.labels.picture',
+                enableSorting: false,
+                enableColumnResizing: false,
+                width: 60,
+                cellTemplate: 'icon.cell.html'
+            }, {
+                name: 'product.name',
+                displayName: 'inventory.blades.fulfillment-center-products-list.labels.product-name',
+                enableSorting: false,
+                cellTooltip: true,
+                width: '***'
+            }, {
+                name: 'product.code',
+                displayName: 'inventory.blades.fulfillment-center-products-list.labels.product-code',
+                enableSorting: false,
+                width: 160
+            }, {
+                name: 'inStockQuantity',
+                displayName: 'inventory.blades.fulfillment-center-products-list.labels.in-stock-quantity',
+                width: 130,
+                sort: { direction: uiGridConstants.DESC, priority: 0 },
+                sortDirectionCycle: [uiGridConstants.DESC, uiGridConstants.ASC],
+                cellTemplate: 'inStockQuantity.cell.html'
+            }, {
+                name: 'reservedQuantity',
+                displayName: 'inventory.blades.fulfillment-center-products-list.labels.reserved-quantity',
+                width: 130,
+                sortDirectionCycle: [uiGridConstants.DESC, uiGridConstants.ASC],
+                cellTemplate: 'reservedQuantity.cell.html'
+            }]
+        })">
+      <div class="table-wrapper" ng-if="blade.currentEntities.length">
+        <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-resize-columns ui-grid-move-columns
+             ui-grid-pinning ui-grid-height></div>
+      </div>
+      <div class="note" ng-if="!blade.currentEntities.length && !blade.isLoading">{{ 'platform.list.no-data' | translate }}</div>
+    </div>
+  </div>
+</div>
+
+<script type="text/ng-template" id="list.row.html">
+  <div ng-click="grid.appScope.selectNode(row.entity)"
+       ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid"
+       ui-grid-one-bind-id-grid="rowRenderIndex + '-' + col.uid + '-cell'"
+       class="ui-grid-cell"
+       ng-class="{'ui-grid-row-header-cell': col.isRowHeader, '__selected': row.entity.productId === grid.appScope.selectedNodeId, 'table-descr': row.entity.product.name === grid.appScope.noProductName}"
+       role="{{col.isRowHeader ? 'rowheader' : 'gridcell' }}"
+       ui-grid-cell></div>
+</script>
+
+<script type="text/ng-template" id="icon.cell.html">
+  <div class="ui-grid-cell-contents">
+    <div class="product-img">
+      <div class="image" style="background-image: url('{{COL_FIELD}}')" ng-if="COL_FIELD"></div>
+      <em class="table-ico fas fa-image" ng-if="!COL_FIELD"></em>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="inStockQuantity.cell.html">
+  <div class="ui-grid-cell-contents">{{row.entity.inventory.inStockQuantity | number:0}}</div>
+</script>
+
+<script type="text/ng-template" id="reservedQuantity.cell.html">
+  <div class="ui-grid-cell-contents">{{row.entity.inventory.reservedQuantity | number:0}}</div>
+</script>
