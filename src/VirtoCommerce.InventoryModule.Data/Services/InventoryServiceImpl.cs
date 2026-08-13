@@ -26,6 +26,7 @@ public class InventoryServiceImpl(
         IInventoryService
 {
     private readonly IPlatformMemoryCache _platformMemoryCache = platformMemoryCache;
+    private readonly IEventPublisher _eventPublisher = eventPublisher;
 
     [Obsolete("Use GetAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
     public virtual async Task<IEnumerable<InventoryInfo>> GetByIdsAsync(string[] ids, string responseGroup = null)
@@ -75,6 +76,38 @@ public class InventoryServiceImpl(
             .SelectMany(x => x.Inventories)
             .Select(x => x.CloneTyped())
             .ToList();
+    }
+
+    public override async Task DeleteAsync(IList<string> ids, bool softDelete = false)
+    {
+        var models = await GetAsync(ids);
+
+        using var repository = repositoryFactory();
+
+        // Raise domain events before deletion
+        var changedEntries = models.Select(x => new GenericChangedEntry<InventoryInfo>(x, EntryState.Deleted)).ToList();
+        await _eventPublisher.Publish(EventFactory<InventoryChangingEvent>(changedEntries));
+
+        if (softDelete)
+        {
+            await SoftDelete(repository, ids);
+            await repository.UnitOfWork.CommitAsync();
+        }
+        else
+        {
+            var entities = await LoadEntities(repository, ids);
+            foreach (var entity in entities)
+            {
+                repository.Remove(entity);
+            }
+            await repository.UnitOfWork.CommitAsync();
+            await AfterDeleteAsync(models, changedEntries);
+        }
+
+        ClearCache(models);
+
+        // Raise domain events after deletion
+        await _eventPublisher.Publish(EventFactory<InventoryChangedEvent>(changedEntries));
     }
 
     protected override Task<IList<InventoryEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
