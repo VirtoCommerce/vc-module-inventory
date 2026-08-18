@@ -1,5 +1,4 @@
-using System;
-using System.Threading;
+using System;using System.Threading;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using VirtoCommerce.CatalogModule.Core.Events;
 using VirtoCommerce.InventoryModule.Core;
 using VirtoCommerce.InventoryModule.Core.Events;
 using VirtoCommerce.InventoryModule.Core.Model;
@@ -81,10 +81,9 @@ namespace VirtoCommerce.InventoryModule.Web
             serviceCollection.AddTransient<IndexInventoryChangedEventHandler>();
             serviceCollection.AddTransient<FulfillmentCenterChangedEventHandler>();
 
-            // Not triggerable by name: this job writes audit-log rows, and an OperationLog whose Id matches an existing
-            // row takes ChangeLogService.SaveChangesAsync's Patch branch, so a caller-supplied payload must never reach it.
             serviceCollection.AddBackgroundJob<LogEntityChangesJobHandler, LogEntityChangesJobPayload>(triggerable: false);
             serviceCollection.AddBackgroundJob<RecalculateFulfillmentCenterDistanceJobHandler, RecalculateFulfillmentCenterDistanceJobPayload>();
+            serviceCollection.AddTransient<ProductChangedEventHandler>();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)
@@ -136,6 +135,7 @@ namespace VirtoCommerce.InventoryModule.Web
             appBuilder.RegisterEventHandler<InventoryChangedEvent, LogChangesChangedEventHandler>();
             appBuilder.RegisterEventHandler<InventoryChangedEvent, IndexInventoryChangedEventHandler>();
             appBuilder.RegisterEventHandler<FulfillmentCenterChangedEvent, FulfillmentCenterChangedEventHandler>();
+            appBuilder.RegisterEventHandler<ProductChangedEvent, ProductChangedEventHandler>();
         }
 
         public void Uninstall()

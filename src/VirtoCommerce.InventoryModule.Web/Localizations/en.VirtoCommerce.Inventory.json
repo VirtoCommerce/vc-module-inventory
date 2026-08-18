@@ -22,6 +22,18 @@
           "in-stock-quantity": "In stock quantity"
         }
       },
+      "fulfillment-center-products-list": {
+        "select-products-title": "Select products",
+        "labels": {
+          "picture": "Image",
+          "product-name": "Product",
+          "product-code": "SKU",
+          "in-stock-quantity": "In stock quantity",
+          "reserved-quantity": "Reserved quantity",
+          "in-stock-only": "In stock only",
+          "no-product": "There is no product item with this ID"
+        }
+      },
       "fulfillment-center-detail": {
         "subtitle": "Editing fulfillment center",
         "labels": {
@@ -60,6 +72,10 @@
       "inventoryWidget": {
         "title": "Inventory",
         "blade-subtitle": "Select a fulfillment center for inventory management"
+      },
+      "fulfillmentCenterProductsWidget": {
+        "title": "Products",
+        "blade-subtitle": "Products in stock in this fulfillment center"
       },
       "fulfillmentWidget": {
         "title": "Fulfillment centers",

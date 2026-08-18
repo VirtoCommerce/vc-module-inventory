@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.InventoryModule.Core.Model;
@@ -46,5 +47,33 @@ public class InventorySearchServiceTests : InventoryTestsBase
 
         // Returned collections should be different instances with equal but not the same objects
         AssertEqualButNotSame(result1, result2);
+    }
+
+    [Fact]
+    public async Task SearchAsync_WithPositiveQuantityOnly_ShouldReturnInventoriesInStockOnly()
+    {
+        // Arrange
+        var fulfillmentCenterId = NewId();
+        var crudService = GetInventoryService();
+        var searchService = GetInventorySearchService();
+
+        await crudService.SaveChangesAsync([
+            new InventoryInfo { Id = NewId(), FulfillmentCenterId = fulfillmentCenterId, ProductId = _productId1, InStockQuantity = 5 },
+            new InventoryInfo { Id = NewId(), FulfillmentCenterId = fulfillmentCenterId, ProductId = _productId2, InStockQuantity = 0 },
+            new InventoryInfo { Id = NewId(), FulfillmentCenterId = fulfillmentCenterId, ProductId = _productId3, InStockQuantity = -3 },
+        ]);
+
+        var criteria = new InventorySearchCriteria
+        {
+            FulfillmentCenterIds = [fulfillmentCenterId],
+            WithPositiveQuantityOnly = true,
+        };
+
+        // Act
+        var result = await searchService.SearchAsync(criteria);
+
+        // Assert
+        Assert.Equal(1, result.TotalCount);
+        Assert.Equal(new List<string> { _productId1 }, result.Results.Select(x => x.ProductId).ToList());
     }
 }
