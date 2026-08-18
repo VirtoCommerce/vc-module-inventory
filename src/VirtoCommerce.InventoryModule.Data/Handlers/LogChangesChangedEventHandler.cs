@@ -1,11 +1,13 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Hangfire;
 using VirtoCommerce.InventoryModule.Core;
 using VirtoCommerce.InventoryModule.Core.Events;
+using VirtoCommerce.InventoryModule.Data.Jobs;
 using VirtoCommerce.Platform.Core.ChangeLog;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.InventoryModule.Data.Handlers
@@ -35,8 +37,16 @@ namespace VirtoCommerce.InventoryModule.Data.Handlers
             if (logInventoryChangesEnabled)
             {
                 var logOperations = @event.ChangedEntries.Select(x => AbstractTypeFactory<OperationLog>.TryCreateInstance().FromChangedEntry(x)).ToArray();
-                //Background task is used here for performance reasons
-                BackgroundJob.Enqueue(() => LogEntityChangesInBackground(logOperations));
+
+                var payload = AbstractTypeFactory<LogEntityChangesJobPayload>.TryCreateInstance();
+                payload.OperationLogs = logOperations;
+
+                // Background task is used here for performance reasons.
+                // The static facade, not an injected IBackgroundJob: RegisterEventHandler resolves this handler once from
+                // the root provider and holds it for the process lifetime, so it must not capture a Scoped dependency.
+                // Enqueued even for an empty batch, on purpose: SaveChangesAsync ends in Reset(), and the else branch
+                // below shows that resetting the last-modified date on every inventory change is the intended behavior.
+                await BackgroundJob.Enqueue<LogEntityChangesJobHandler>(payload);
             }
             else
             {
@@ -45,7 +55,15 @@ namespace VirtoCommerce.InventoryModule.Data.Handlers
             }
         }
 
+        /// <summary>
+        /// Kept for background jobs enqueued by an earlier version, which reference this method by name.
+        /// New work goes through <see cref="LogEntityChangesJobHandler"/>; remove this once no such job
+        /// can still be pending.
+        /// </summary>
+        // Signature is byte-identical on purpose: Hangfire persists a queued job as type name + method name +
+        // parameter types + serialized args, so changing any of them would strand already-queued entries as Failed.
         // (!) Do not make this method async, it causes improper user recorded into the log! It happens because the user stored in the current thread. If the thread switched, the user info will lost.
+        [Obsolete("Enqueued indirectly by legacy Hangfire jobs only; new work uses LogEntityChangesJobHandler.", DiagnosticId = "VC0015", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
         public void LogEntityChangesInBackground(OperationLog[] operationLogs)
         {
             _changeLogService.SaveChangesAsync(operationLogs).GetAwaiter().GetResult();
