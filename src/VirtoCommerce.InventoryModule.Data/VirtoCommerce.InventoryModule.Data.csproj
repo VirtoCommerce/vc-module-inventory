@@ -15,8 +15,7 @@
   </PropertyGroup>
   <ItemGroup>
     
-    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.1039.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.1039.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.1052.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.InventoryModule.Core\VirtoCommerce.InventoryModule.Core.csproj" />

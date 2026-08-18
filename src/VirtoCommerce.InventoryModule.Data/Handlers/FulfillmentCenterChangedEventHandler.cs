@@ -1,11 +1,13 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Hangfire;
 using VirtoCommerce.InventoryModule.Core.Events;
 using VirtoCommerce.InventoryModule.Core.Services;
 using VirtoCommerce.InventoryModule.Data.Caching;
+using VirtoCommerce.InventoryModule.Data.Jobs;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Core.Jobs;
 
 namespace VirtoCommerce.InventoryModule.Data.Handlers
 {
@@ -18,7 +20,7 @@ namespace VirtoCommerce.InventoryModule.Data.Handlers
             _fulfillmentCenterGeoService = fulfillmentCenterGeoService;
         }
 
-        public Task Handle(FulfillmentCenterChangedEvent message)
+        public async Task Handle(FulfillmentCenterChangedEvent message)
         {
             var invalidate = message.ChangedEntries.Any(entry =>
                 (entry.EntryState == EntryState.Modified && entry.NewEntry?.GeoLocation != entry.OldEntry?.GeoLocation) ||
@@ -27,13 +29,25 @@ namespace VirtoCommerce.InventoryModule.Data.Handlers
 
             if (invalidate)
             {
-                BackgroundJob.Enqueue(() => RecalculateFFDistance());
-            }
+                var payload = AbstractTypeFactory<RecalculateFulfillmentCenterDistanceJobPayload>.TryCreateInstance();
 
-            return Task.CompletedTask;
+                // The static facade, not an injected IBackgroundJob: RegisterEventHandler resolves this handler once from
+                // the root provider and holds it for the process lifetime, so it must not capture a Scoped dependency.
+                await BackgroundJob.Enqueue<RecalculateFulfillmentCenterDistanceJobHandler>(payload);
+            }
         }
 
-        [DisableConcurrentExecution(10)]
+        /// <summary>
+        /// Kept for background jobs enqueued by an earlier version, which reference this method by name.
+        /// New work goes through <see cref="RecalculateFulfillmentCenterDistanceJobHandler"/>; remove this once no
+        /// such job can still be pending.
+        /// </summary>
+        // Signature is byte-identical on purpose: Hangfire persists a queued job as type name + method name +
+        // parameter types + serialized args, so changing any of them would strand already-queued jobs as Failed.
+        // The [DisableConcurrentExecution(10)] that guarded it is gone with the Hangfire reference and has no
+        // equivalent in the engine-agnostic API. Overlapping runs only duplicate work: the body expires a cache
+        // region and re-reads it, so a second run recomputes the same values rather than corrupting them.
+        [Obsolete("Enqueued indirectly by legacy Hangfire jobs only; new work uses RecalculateFulfillmentCenterDistanceJobHandler.", DiagnosticId = "VC0015", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
         public virtual async Task RecalculateFFDistance()
         {
             FulfillmentCenterGeoCacheRegion.ExpireRegion();
