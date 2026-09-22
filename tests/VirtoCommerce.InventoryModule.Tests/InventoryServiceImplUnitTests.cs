@@ -47,44 +47,6 @@ public class InventoryServiceImplUnitTests : InventoryTestsBase
     }
 
     [Fact]
-    [Obsolete("Use IInventorySearchService.SearchAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-    public async Task GetProductsInventoryInfosAsync_ShouldReturnCachedResult()
-    {
-        // Arrange
-        var productId1 = NewId();
-        var productId2 = NewId();
-        var service = GetInventoryService();
-
-        // Act
-        await service.SaveChangesAsync([
-            new InventoryInfo { Id = NewId(), FulfillmentCenterId = NewId(), ProductId = productId1 },
-            new InventoryInfo { Id = NewId(), FulfillmentCenterId = NewId(), ProductId = productId2 },
-        ]);
-
-        var result1 = await service.GetProductsInventoryInfosAsync([productId1, productId2]);
-        var repositoryCallsCount1 = GetProductsInventoriesCallsCount;
-
-        // Different order of IDs
-        var result2 = await service.GetProductsInventoryInfosAsync([productId2, productId1]);
-        var repositoryCallsCount2 = GetProductsInventoriesCallsCount;
-
-        // One ID from previous calls
-        var result3 = await service.GetProductsInventoryInfosAsync([productId2]);
-        var repositoryCallsCount3 = GetProductsInventoriesCallsCount;
-
-        // Assert
-
-        // Subsequent calls should not access repository
-        Assert.NotEqual(0, repositoryCallsCount1);
-        Assert.Equal(repositoryCallsCount1, repositoryCallsCount2);
-        Assert.Equal(repositoryCallsCount1, repositoryCallsCount3);
-
-        // Returned collections should be different instances with equal but not same objects
-        AssertEqualButNotSame(result1, result2);
-        AssertEqualButNotSame(result2.Take(1), result3);
-    }
-
-    [Fact]
     public async Task GetByIdsAsync_SaveChangesAsync_ShouldClearCache()
     {
         // Arrange
@@ -105,30 +67,5 @@ public class InventoryServiceImplUnitTests : InventoryTestsBase
         Assert.Empty(beforeSave);
         Assert.NotEmpty(afterSave);
         Assert.Single(afterSave);
-    }
-
-    [Fact]
-    [Obsolete("Use IInventorySearchService.SearchAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-    public async Task GetProductsInventoryInfosAsync_SaveChangesAsync_ShouldClearCache()
-    {
-        // Arrange
-        var productId = NewId();
-        var service = GetInventoryService();
-
-        // Act
-        var beforeSave = (await service.GetProductsInventoryInfosAsync([productId])).ToList();
-
-        await service.SaveChangesAsync([
-            new InventoryInfo { Id = NewId(), FulfillmentCenterId = NewId(), ProductId = productId },
-            new InventoryInfo { Id = NewId(), FulfillmentCenterId = NewId(), ProductId = productId },
-            new InventoryInfo { Id = NewId(), FulfillmentCenterId = NewId(), ProductId = NewId() },
-        ]);
-
-        var afterSave = (await service.GetProductsInventoryInfosAsync([productId])).ToList();
-
-        // Assert
-        Assert.Empty(beforeSave);
-        Assert.NotEmpty(afterSave);
-        Assert.Equal(2, afterSave.Count);
     }
 }
