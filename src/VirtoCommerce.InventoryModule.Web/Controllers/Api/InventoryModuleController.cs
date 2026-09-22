@@ -33,18 +33,6 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
         /// Search inventories by given criteria
         /// </summary>
         [HttpPost]
-        [Route("inventories/search")]
-        [Authorize(Permissions.Read)]
-        [Obsolete("Use 'inventory/search'", DiagnosticId = "VC0010", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-        public Task<ActionResult<InventoryInfoSearchResult>> SearchInventoriesObsolete([FromBody] InventorySearchCriteria searchCriteria)
-        {
-            return SearchInventories(searchCriteria);
-        }
-
-        /// <summary>
-        /// Search inventories by given criteria
-        /// </summary>
-        [HttpPost]
         [Route("inventory/search")]
         [Authorize(Permissions.Read)]
         public async Task<ActionResult<InventoryInfoSearchResult>> SearchInventories([FromBody] InventorySearchCriteria searchCriteria)
@@ -72,18 +60,6 @@ namespace VirtoCommerce.InventoryModule.Web.Controllers.Api
             result.Results = await GetProductInventoryInfos(searchResult.Results);
 
             return Ok(result);
-        }
-
-        /// <summary>
-        /// Search inventories by given criteria
-        /// </summary>
-        [HttpPost]
-        [Route("inventory/product/inventories/search")]
-        [Authorize(Permissions.Read)]
-        [Obsolete("Use 'inventory/product/search'", DiagnosticId = "VC0010", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-        public Task<ActionResult<InventoryInfoSearchResult>> SearchProductInventoriesObsolete([FromBody] ProductInventorySearchCriteria searchCriteria)
-        {
-            return SearchProductInventories(searchCriteria);
         }
 
         /// <summary>

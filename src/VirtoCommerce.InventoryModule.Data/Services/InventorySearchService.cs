@@ -26,24 +26,9 @@ public class InventorySearchService(
         (repositoryFactory, platformMemoryCache, crudService, crudOptions),
         IInventorySearchService
 {
-    [Obsolete("Use SearchAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-    public virtual Task<InventoryInfoSearchResult> SearchInventoriesAsync(InventorySearchCriteria criteria)
-    {
-        return SearchAsync(criteria);
-    }
-
     protected override IQueryable<InventoryEntity> BuildQuery(IRepository repository, InventorySearchCriteria criteria)
     {
-        // Temporarily calling the obsolete method that could potentially be overridden in derived classes.
-#pragma warning disable VC0011 // Type or member is obsolete
-        return BuildQuery((IInventoryRepository)repository, criteria);
-#pragma warning restore VC0011 // Type or member is obsolete
-    }
-
-    [Obsolete("Use BuildQuery(IRepository repository, InventorySearchCriteria criteria)", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-    protected virtual IQueryable<InventoryEntity> BuildQuery(IInventoryRepository repository, InventorySearchCriteria criteria)
-    {
-        var query = repository.Inventories;
+        var query = ((IInventoryRepository)repository).Inventories;
 
         if (!criteria.ProductIds.IsNullOrEmpty())
         {

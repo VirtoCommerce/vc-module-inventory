@@ -29,12 +29,6 @@ namespace VirtoCommerce.InventoryModule.Data.Services
             _sortingAliases["FulfillmentCenterName"] = "FulfillmentCenter.Name";
         }
 
-        [Obsolete("Use SearchAsync()", DiagnosticId = "VC0011", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
-        public virtual Task<InventoryInfoSearchResult> SearchProductInventoriesAsync(ProductInventorySearchCriteria criteria)
-        {
-            return SearchAsync(criteria);
-        }
-
         public virtual async Task<InventoryInfoSearchResult> SearchAsync(ProductInventorySearchCriteria criteria, bool clone = true)
         {
             var result = AbstractTypeFactory<InventoryInfoSearchResult>.TryCreateInstance();
