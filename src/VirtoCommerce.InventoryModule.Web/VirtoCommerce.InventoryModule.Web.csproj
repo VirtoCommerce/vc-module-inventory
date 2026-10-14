@@ -19,6 +19,13 @@
     <EmbeddedResource Remove="node_modules\**" />
     <None Remove="dist\**" />
     <None Remove="node_modules\**" />
+    <!-- Admin Shell plugin: Vue sources in vue/, built into plugins/admin-shell/ -->
+    <Compile Remove="vue\**" />
+    <Content Remove="vue\**" />
+    <EmbeddedResource Remove="vue\**" />
+    <None Remove="vue\**" />
+    <Content Remove="plugins\**" />
+    <None Remove="plugins\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="VirtoCommerce.AssetsModule.Core" Version="3.1010.0" />
@@ -30,4 +37,10 @@
     <ProjectReference Include="..\VirtoCommerce.InventoryModule.Data.SqlServer\VirtoCommerce.InventoryModule.Data.SqlServer.csproj" />
     <ProjectReference Include="..\VirtoCommerce.InventoryModule.Data\VirtoCommerce.InventoryModule.Data.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <AdminShellPlugin Include="plugins\**" />
+  </ItemGroup>
+  <Target Name="CopyAdminShellPluginOnPublish" AfterTargets="Publish">
+    <Copy SourceFiles="@(AdminShellPlugin)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
+  </Target>
 </Project>
