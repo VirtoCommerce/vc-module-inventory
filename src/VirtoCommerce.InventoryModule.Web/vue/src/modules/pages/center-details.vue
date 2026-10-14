@@ -160,7 +160,10 @@ const regions = ref<Named[]>([]);
 const productsCount = ref<number | string>("…");
 const isNew = computed(() => !param.value);
 const title = computed(() => (isNew.value ? t("INVENTORY.CENTERS.NEW") : (item.value.name ?? "")));
-const address = computed(() => (item.value.address ??= {}) as InventoryAddress);
+const address = computed(() => {
+  item.value.address ??= {};
+  return item.value.address as InventoryAddress;
+});
 const geoValid = computed(() => !item.value.geoLocation || /^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/.test(item.value.geoLocation));
 
 const form = useBladeForm({
