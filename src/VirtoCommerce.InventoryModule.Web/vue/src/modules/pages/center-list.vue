@@ -1,6 +1,6 @@
 <template>
   <VcBlade
-    :title="$t('INVENTORY.CENTERS.TITLE')"
+    :title="$t('INVENTORY.MENU.TITLE')"
     :toolbar-items="bladeToolbar"
     :loading="loading"
     width="50%"
