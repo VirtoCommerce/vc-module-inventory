@@ -12,7 +12,7 @@
       "ADD_SELECTED": "Add selected"
     },
     "CENTERS": {
-      "TITLE": "Fulfillment centers",
+      "TITLE": "Inventory",
       "NEW": "New fulfillment center",
       "EMPTY": "No fulfillment centers",
       "COLUMNS": { "NAME": "Name", "CITY": "City", "COUNTRY": "Country", "OUTER_ID": "Outer ID", "MODIFIED": "Last modified" },
