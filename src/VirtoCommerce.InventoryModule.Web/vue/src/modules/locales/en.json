@@ -80,6 +80,19 @@
       "HINT": "Applied to the store; save the store to keep the changes"
     },
     "WIDGETS": { "INVENTORY": "Inventory", "FULFILLMENT_CENTERS": "Fulfillment centers" },
+    "DASHBOARD": {
+      "VIEW_ALL": "View all",
+      "LOW_STOCK": {
+        "TITLE": "Low stock",
+        "NAME": "Name",
+        "SKU": "SKU",
+        "LOCATION": "Fulfillment center",
+        "STOCK": "Current stock",
+        "OUT": "Out of stock",
+        "LEFT": "{count} left",
+        "EMPTY": "No inventory records"
+      }
+    },
     "ALERTS": {
       "CLOSE_CONFIRMATION": "You have unsaved changes. Close anyway?",
       "DELETE_CENTERS": "Delete {count} fulfillment center(s)?",
