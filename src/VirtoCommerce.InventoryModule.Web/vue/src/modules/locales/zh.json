@@ -1,0 +1,130 @@
+{
+  "INVENTORY": {
+    "MENU": {
+      "TITLE": "库存"
+    },
+    "TOOLBAR": {
+      "REFRESH": "刷新",
+      "ADD": "添加",
+      "DELETE": "删除",
+      "SAVE": "保存",
+      "CREATE": "创建",
+      "RESET": "重置",
+      "APPLY": "应用",
+      "ADD_SELECTED": "添加所选项"
+    },
+    "CENTERS": {
+      "NEW": "新建履行中心",
+      "EMPTY": "无履行中心",
+      "COLUMNS": {
+        "NAME": "名称",
+        "CITY": "城市",
+        "COUNTRY": "国家/地区",
+        "OUTER_ID": "外部 ID",
+        "MODIFIED": "上次修改时间"
+      },
+      "FIELDS": {
+        "NAME": "名称",
+        "NAME_HINT": "履行中心的名称",
+        "GEO": "地理位置",
+        "GEO_HINT": "纬度和经度，例如 40.7128, -74.0060",
+        "GEO_INVALID": "请输入以逗号分隔的纬度和经度",
+        "OUTER_ID": "外部 ID",
+        "OUTER_ID_HINT": "外部系统中的 ID",
+        "SHORT_DESCRIPTION": "简短描述",
+        "DESCRIPTION": "描述"
+      },
+      "ADDRESS": {
+        "TITLE": "地址",
+        "COUNTRY": "国家/地区",
+        "REGION": "地区/州",
+        "CITY": "城市",
+        "LINE1": "地址行 1",
+        "LINE2": "地址行 2",
+        "POSTAL_CODE": "邮政编码",
+        "EMAIL": "电子邮件",
+        "PHONE": "电话"
+      },
+      "WIDGETS": {
+        "PRODUCTS": "商品"
+      }
+    },
+    "PRODUCTS": {
+      "TITLE": "{name}：商品",
+      "EMPTY": "无商品",
+      "IN_STOCK_ONLY": "仅有库存",
+      "NO_PRODUCT": "未找到商品",
+      "COLUMNS": {
+        "IMAGE": "图片",
+        "NAME": "商品",
+        "CODE": "SKU",
+        "IN_STOCK": "有库存",
+        "RESERVED": "已预留"
+      }
+    },
+    "STOCK": {
+      "TITLE": "{name}：库存",
+      "EMPTY": "无履行中心",
+      "COLUMNS": {
+        "CENTER": "履行中心",
+        "IN_STOCK": "有库存",
+        "RESERVED": "已预留",
+        "AVAILABLE": "可用"
+      }
+    },
+    "DETAILS": {
+      "IN_STOCK": "有库存",
+      "RESERVED": "已预留",
+      "REORDER_MIN": "再订购最小数量",
+      "ALLOW_PREORDER": "允许预购",
+      "PREORDER_QTY": "预购数量",
+      "PREORDER_DATE": "预购可用日期",
+      "ALLOW_BACKORDER": "允许缺货订购",
+      "BACKORDER_QTY": "缺货订购数量",
+      "BACKORDER_DATE": "缺货订购可用日期",
+      "STOCK": "库存",
+      "PREORDER": "预购",
+      "BACKORDER": "缺货订购"
+    },
+    "PICKER": {
+      "TITLE": "选择商品",
+      "SEARCH": "搜索商品",
+      "COLUMNS": {
+        "IMAGE": "图片",
+        "NAME": "名称",
+        "CODE": "SKU"
+      }
+    },
+    "STORE": {
+      "TITLE": "{name}：履行中心",
+      "MAIN": "主履行中心",
+      "ADDITIONAL": "其他履行中心",
+      "RETURNS": "主退货履行中心",
+      "ADDITIONAL_RETURNS": "其他退货履行中心",
+      "PLACEHOLDER": "选择履行中心",
+      "HINT": "应用于商店；保存商店以保留更改"
+    },
+    "WIDGETS": {
+      "INVENTORY": "库存",
+      "FULFILLMENT_CENTERS": "履行中心"
+    },
+    "DASHBOARD": {
+      "VIEW_ALL": "查看全部",
+      "LOW_STOCK": {
+        "TITLE": "库存不足",
+        "NAME": "名称",
+        "SKU": "SKU",
+        "LOCATION": "履行中心",
+        "STOCK": "当前库存",
+        "OUT": "缺货",
+        "LEFT": "剩余 {count}",
+        "EMPTY": "无库存记录"
+      }
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "有未保存的更改。仍要关闭吗？",
+      "DELETE_CENTERS": "删除所选的 {count} 个履行中心？",
+      "DELETE_CENTER": "删除履行中心“{name}”？"
+    }
+  }
+}

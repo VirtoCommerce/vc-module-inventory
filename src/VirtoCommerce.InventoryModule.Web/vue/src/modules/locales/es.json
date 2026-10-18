@@ -1,0 +1,130 @@
+{
+  "INVENTORY": {
+    "MENU": {
+      "TITLE": "Inventario"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Actualizar",
+      "ADD": "Añadir",
+      "DELETE": "Eliminar",
+      "SAVE": "Guardar",
+      "CREATE": "Crear",
+      "RESET": "Restablecer",
+      "APPLY": "Aplicar",
+      "ADD_SELECTED": "Añadir seleccionados"
+    },
+    "CENTERS": {
+      "NEW": "Nuevo centro de cumplimiento",
+      "EMPTY": "No hay centros de cumplimiento",
+      "COLUMNS": {
+        "NAME": "Nombre",
+        "CITY": "Ciudad",
+        "COUNTRY": "País",
+        "OUTER_ID": "ID externo",
+        "MODIFIED": "Última modificación"
+      },
+      "FIELDS": {
+        "NAME": "Nombre",
+        "NAME_HINT": "El nombre del centro de cumplimiento",
+        "GEO": "Geolocalización",
+        "GEO_HINT": "Latitud y longitud, p. ej., 40.7128, -74.0060",
+        "GEO_INVALID": "Introduzca la latitud y la longitud separadas por una coma",
+        "OUTER_ID": "ID externo",
+        "OUTER_ID_HINT": "El ID en un sistema externo",
+        "SHORT_DESCRIPTION": "Descripción corta",
+        "DESCRIPTION": "Descripción"
+      },
+      "ADDRESS": {
+        "TITLE": "Dirección",
+        "COUNTRY": "País",
+        "REGION": "Región/estado",
+        "CITY": "Ciudad",
+        "LINE1": "Línea de dirección 1",
+        "LINE2": "Línea de dirección 2",
+        "POSTAL_CODE": "Código postal",
+        "EMAIL": "Correo electrónico",
+        "PHONE": "Teléfono"
+      },
+      "WIDGETS": {
+        "PRODUCTS": "Productos"
+      }
+    },
+    "PRODUCTS": {
+      "TITLE": "{name}: productos",
+      "EMPTY": "No hay productos",
+      "IN_STOCK_ONLY": "Solo en stock",
+      "NO_PRODUCT": "Producto no encontrado",
+      "COLUMNS": {
+        "IMAGE": "Imagen",
+        "NAME": "Producto",
+        "CODE": "SKU",
+        "IN_STOCK": "En stock",
+        "RESERVED": "Reservado"
+      }
+    },
+    "STOCK": {
+      "TITLE": "{name}: inventario",
+      "EMPTY": "No hay centros de cumplimiento",
+      "COLUMNS": {
+        "CENTER": "Centro de cumplimiento",
+        "IN_STOCK": "En stock",
+        "RESERVED": "Reservado",
+        "AVAILABLE": "Disponible"
+      }
+    },
+    "DETAILS": {
+      "IN_STOCK": "En stock",
+      "RESERVED": "Reservado",
+      "REORDER_MIN": "Cantidad mínima de reorden",
+      "ALLOW_PREORDER": "Permitir preorden",
+      "PREORDER_QTY": "Cantidad de preorden",
+      "PREORDER_DATE": "Fecha de disponibilidad de preorden",
+      "ALLOW_BACKORDER": "Permitir pedido pendiente",
+      "BACKORDER_QTY": "Cantidad de pedido pendiente",
+      "BACKORDER_DATE": "Fecha de disponibilidad de pedido pendiente",
+      "STOCK": "Stock",
+      "PREORDER": "Preorden",
+      "BACKORDER": "Pedido pendiente"
+    },
+    "PICKER": {
+      "TITLE": "Seleccionar productos",
+      "SEARCH": "Buscar productos",
+      "COLUMNS": {
+        "IMAGE": "Imagen",
+        "NAME": "Nombre",
+        "CODE": "SKU"
+      }
+    },
+    "STORE": {
+      "TITLE": "{name}: centros de cumplimiento",
+      "MAIN": "Centro de cumplimiento principal",
+      "ADDITIONAL": "Centros de cumplimiento adicionales",
+      "RETURNS": "Centro de cumplimiento principal para devoluciones",
+      "ADDITIONAL_RETURNS": "Centros de cumplimiento adicionales para devoluciones",
+      "PLACEHOLDER": "Seleccionar centro de cumplimiento",
+      "HINT": "Se aplica a la tienda; guarde la tienda para conservar los cambios"
+    },
+    "WIDGETS": {
+      "INVENTORY": "Inventario",
+      "FULFILLMENT_CENTERS": "Centros de cumplimiento"
+    },
+    "DASHBOARD": {
+      "VIEW_ALL": "Ver todo",
+      "LOW_STOCK": {
+        "TITLE": "Stock bajo",
+        "NAME": "Nombre",
+        "SKU": "SKU",
+        "LOCATION": "Centro de cumplimiento",
+        "STOCK": "Stock actual",
+        "OUT": "Agotado",
+        "LEFT": "Quedan {count}",
+        "EMPTY": "No hay registros de inventario"
+      }
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Hay cambios sin guardar. ¿Cerrar de todos modos?",
+      "DELETE_CENTERS": "¿Eliminar los centros de cumplimiento seleccionados ({count})?",
+      "DELETE_CENTER": "¿Eliminar el centro de cumplimiento «{name}»?"
+    }
+  }
+}

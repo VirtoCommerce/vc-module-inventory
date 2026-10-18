@@ -1,0 +1,130 @@
+{
+  "INVENTORY": {
+    "MENU": {
+      "TITLE": "Stan magazynowy"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Odśwież",
+      "ADD": "Dodaj",
+      "DELETE": "Usuń",
+      "SAVE": "Zapisz",
+      "CREATE": "Utwórz",
+      "RESET": "Resetuj",
+      "APPLY": "Zastosuj",
+      "ADD_SELECTED": "Dodaj wybrane"
+    },
+    "CENTERS": {
+      "NEW": "Nowe centrum realizacji",
+      "EMPTY": "Brak centrów realizacji",
+      "COLUMNS": {
+        "NAME": "Nazwa",
+        "CITY": "Miasto",
+        "COUNTRY": "Kraj",
+        "OUTER_ID": "Zewnętrzny ID",
+        "MODIFIED": "Ostatnia modyfikacja"
+      },
+      "FIELDS": {
+        "NAME": "Nazwa",
+        "NAME_HINT": "Nazwa centrum realizacji",
+        "GEO": "Geolokalizacja",
+        "GEO_HINT": "Szerokość i długość geograficzna, np. 40.7128, -74.0060",
+        "GEO_INVALID": "Wprowadź szerokość i długość geograficzną oddzielone przecinkiem",
+        "OUTER_ID": "Zewnętrzny ID",
+        "OUTER_ID_HINT": "ID w systemie zewnętrznym",
+        "SHORT_DESCRIPTION": "Krótki opis",
+        "DESCRIPTION": "Opis"
+      },
+      "ADDRESS": {
+        "TITLE": "Adres",
+        "COUNTRY": "Kraj",
+        "REGION": "Region/stan",
+        "CITY": "Miasto",
+        "LINE1": "Wiersz adresu 1",
+        "LINE2": "Wiersz adresu 2",
+        "POSTAL_CODE": "Kod pocztowy",
+        "EMAIL": "Email",
+        "PHONE": "Telefon"
+      },
+      "WIDGETS": {
+        "PRODUCTS": "Produkty"
+      }
+    },
+    "PRODUCTS": {
+      "TITLE": "{name}: produkty",
+      "EMPTY": "Brak produktów",
+      "IN_STOCK_ONLY": "Tylko dostępne",
+      "NO_PRODUCT": "Nie znaleziono produktu",
+      "COLUMNS": {
+        "IMAGE": "Zdjęcie",
+        "NAME": "Produkt",
+        "CODE": "SKU",
+        "IN_STOCK": "Dostępne",
+        "RESERVED": "Zarezerwowane"
+      }
+    },
+    "STOCK": {
+      "TITLE": "{name}: stan magazynowy",
+      "EMPTY": "Brak centrów realizacji",
+      "COLUMNS": {
+        "CENTER": "Centrum realizacji",
+        "IN_STOCK": "Dostępne",
+        "RESERVED": "Zarezerwowane",
+        "AVAILABLE": "Do dyspozycji"
+      }
+    },
+    "DETAILS": {
+      "IN_STOCK": "Dostępne",
+      "RESERVED": "Zarezerwowane",
+      "REORDER_MIN": "Minimalna ilość do ponownego zamówienia",
+      "ALLOW_PREORDER": "Zezwól na przedsprzedaż",
+      "PREORDER_QTY": "Ilość do przedsprzedaży",
+      "PREORDER_DATE": "Data dostępności przedsprzedaży",
+      "ALLOW_BACKORDER": "Zezwól na zamówienie oczekujące",
+      "BACKORDER_QTY": "Ilość zamówienia oczekującego",
+      "BACKORDER_DATE": "Data dostępności zamówienia oczekującego",
+      "STOCK": "Zapas",
+      "PREORDER": "Przedsprzedaż",
+      "BACKORDER": "Zamówienie oczekujące"
+    },
+    "PICKER": {
+      "TITLE": "Wybierz produkty",
+      "SEARCH": "Szukaj produktów",
+      "COLUMNS": {
+        "IMAGE": "Zdjęcie",
+        "NAME": "Nazwa",
+        "CODE": "SKU"
+      }
+    },
+    "STORE": {
+      "TITLE": "{name}: centra realizacji",
+      "MAIN": "Główne centrum realizacji",
+      "ADDITIONAL": "Dodatkowe centra realizacji",
+      "RETURNS": "Główne centrum realizacji zwrotów",
+      "ADDITIONAL_RETURNS": "Dodatkowe centra realizacji zwrotów",
+      "PLACEHOLDER": "Wybierz centrum realizacji",
+      "HINT": "Dotyczy sklepu; zapisz sklep, aby zachować zmiany"
+    },
+    "WIDGETS": {
+      "INVENTORY": "Stan magazynowy",
+      "FULFILLMENT_CENTERS": "Centra realizacji"
+    },
+    "DASHBOARD": {
+      "VIEW_ALL": "Pokaż wszystko",
+      "LOW_STOCK": {
+        "TITLE": "Niski stan",
+        "NAME": "Nazwa",
+        "SKU": "SKU",
+        "LOCATION": "Centrum realizacji",
+        "STOCK": "Bieżący stan",
+        "OUT": "Brak w magazynie",
+        "LEFT": "Pozostało: {count}",
+        "EMPTY": "Brak rekordów stanu magazynowego"
+      }
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Istnieją niezapisane zmiany. Zamknąć mimo to?",
+      "DELETE_CENTERS": "Usunąć wybrane centra realizacji ({count})?",
+      "DELETE_CENTER": "Usunąć centrum realizacji „{name}”?"
+    }
+  }
+}

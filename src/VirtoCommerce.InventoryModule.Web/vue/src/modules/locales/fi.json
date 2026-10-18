@@ -1,0 +1,130 @@
+{
+  "INVENTORY": {
+    "MENU": {
+      "TITLE": "Varasto"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Päivitä",
+      "ADD": "Lisää",
+      "DELETE": "Poista",
+      "SAVE": "Tallenna",
+      "CREATE": "Luo",
+      "RESET": "Nollaa",
+      "APPLY": "Käytä",
+      "ADD_SELECTED": "Lisää valitut"
+    },
+    "CENTERS": {
+      "NEW": "Uusi jakelukeskus",
+      "EMPTY": "Ei jakelukeskuksia",
+      "COLUMNS": {
+        "NAME": "Nimi",
+        "CITY": "Kaupunki",
+        "COUNTRY": "Maa",
+        "OUTER_ID": "Ulkoinen tunnus",
+        "MODIFIED": "Viimeksi muokattu"
+      },
+      "FIELDS": {
+        "NAME": "Nimi",
+        "NAME_HINT": "Jakelukeskuksen nimi",
+        "GEO": "Sijainti",
+        "GEO_HINT": "Leveys- ja pituusaste, esim. 40.7128, -74.0060",
+        "GEO_INVALID": "Syötä leveys- ja pituusaste pilkulla erotettuina",
+        "OUTER_ID": "Ulkoinen tunnus",
+        "OUTER_ID_HINT": "Tunnus ulkoisessa järjestelmässä",
+        "SHORT_DESCRIPTION": "Lyhyt kuvaus",
+        "DESCRIPTION": "Kuvaus"
+      },
+      "ADDRESS": {
+        "TITLE": "Osoite",
+        "COUNTRY": "Maa",
+        "REGION": "Alue/osavaltio",
+        "CITY": "Kaupunki",
+        "LINE1": "Osoiterivi 1",
+        "LINE2": "Osoiterivi 2",
+        "POSTAL_CODE": "Postinumero",
+        "EMAIL": "Sähköposti",
+        "PHONE": "Puhelin"
+      },
+      "WIDGETS": {
+        "PRODUCTS": "Tuotteet"
+      }
+    },
+    "PRODUCTS": {
+      "TITLE": "{name}: tuotteet",
+      "EMPTY": "Ei tuotteita",
+      "IN_STOCK_ONLY": "Vain varastossa",
+      "NO_PRODUCT": "Tuotetta ei löytynyt",
+      "COLUMNS": {
+        "IMAGE": "Kuva",
+        "NAME": "Tuote",
+        "CODE": "SKU",
+        "IN_STOCK": "Varastossa",
+        "RESERVED": "Varattu"
+      }
+    },
+    "STOCK": {
+      "TITLE": "{name}: varasto",
+      "EMPTY": "Ei jakelukeskuksia",
+      "COLUMNS": {
+        "CENTER": "Jakelukeskus",
+        "IN_STOCK": "Varastossa",
+        "RESERVED": "Varattu",
+        "AVAILABLE": "Saatavilla"
+      }
+    },
+    "DETAILS": {
+      "IN_STOCK": "Varastossa",
+      "RESERVED": "Varattu",
+      "REORDER_MIN": "Uudelleentilauksen vähimmäismäärä",
+      "ALLOW_PREORDER": "Salli ennakkotilaus",
+      "PREORDER_QTY": "Ennakkotilausmäärä",
+      "PREORDER_DATE": "Ennakkotilauksen saatavuuspäivä",
+      "ALLOW_BACKORDER": "Salli jälkitilaus",
+      "BACKORDER_QTY": "Jälkitilausmäärä",
+      "BACKORDER_DATE": "Jälkitilauksen saatavuuspäivä",
+      "STOCK": "Varastosaldo",
+      "PREORDER": "Ennakkotilaus",
+      "BACKORDER": "Jälkitilaus"
+    },
+    "PICKER": {
+      "TITLE": "Valitse tuotteet",
+      "SEARCH": "Hae tuotteita",
+      "COLUMNS": {
+        "IMAGE": "Kuva",
+        "NAME": "Nimi",
+        "CODE": "SKU"
+      }
+    },
+    "STORE": {
+      "TITLE": "{name}: jakelukeskukset",
+      "MAIN": "Pääjakelukeskus",
+      "ADDITIONAL": "Muut jakelukeskukset",
+      "RETURNS": "Palautusten pääjakelukeskus",
+      "ADDITIONAL_RETURNS": "Palautusten muut jakelukeskukset",
+      "PLACEHOLDER": "Valitse jakelukeskus",
+      "HINT": "Koskee kauppaa; tallenna kauppa, jotta muutokset säilyvät"
+    },
+    "WIDGETS": {
+      "INVENTORY": "Varasto",
+      "FULFILLMENT_CENTERS": "Jakelukeskukset"
+    },
+    "DASHBOARD": {
+      "VIEW_ALL": "Näytä kaikki",
+      "LOW_STOCK": {
+        "TITLE": "Vähissä",
+        "NAME": "Nimi",
+        "SKU": "SKU",
+        "LOCATION": "Jakelukeskus",
+        "STOCK": "Nykyinen saldo",
+        "OUT": "Loppu varastosta",
+        "LEFT": "{count} jäljellä",
+        "EMPTY": "Ei varastotietueita"
+      }
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Tallentamattomia muutoksia on olemassa. Suljetaanko silti?",
+      "DELETE_CENTERS": "Poistetaanko valitut jakelukeskukset ({count})?",
+      "DELETE_CENTER": "Poistetaanko jakelukeskus ”{name}”?"
+    }
+  }
+}
