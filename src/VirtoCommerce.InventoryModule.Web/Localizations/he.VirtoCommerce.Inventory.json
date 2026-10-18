@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "inventory:read": "קריאת נתוני מלאי",
+    "inventory:create": "יצירת נתוני מלאי",
+    "inventory:update": "עדכון נתוני מלאי",
+    "inventory:delete": "מחיקת נתוני מלאי",
+    "inventory:access": "גישה לנתוני מלאי",
+    "inventory:fulfillment:edit": "ניהול מרכזי הפצה",
+    "inventory:fulfillment:delete": "מחיקת מרכזי הפצה"
+  },
+  "settings": {
+    "Inventory": {
+      "ExportImport.PageSize": {
+        "description": "יש לציין את מספר הפריטים בכל דף ייצוא או ייבוא. ערכים גבוהים יותר עלולים להאט את הביצועים",
+        "title": "גודל דף ייצוא/ייבוא"
+      },
+      "LogInventoryChanges": {
+        "title": "רישום שינויי מלאי",
+        "description": "רושם שינויים בכמות המלאי של מוצרים ביומן הפעולות. עדכונים תכופים עלולים להגדיל את מסד הנתונים"
+      },
+      "Search": {
+        "EventBasedIndexation": {
+          "Enable": {
+            "title": "אינדוקס מלאי מבוסס אירועים",
+            "description": "הפעלה/השבתה של אינדוקס מחדש אוטומטי כאשר נתוני המלאי משתנים"
+          }
+        }
+      }
+    }
+  }
+}
