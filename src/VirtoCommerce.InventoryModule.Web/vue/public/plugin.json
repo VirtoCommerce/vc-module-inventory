@@ -1,0 +1,17 @@
+{
+  "remote": { "name": "inventory_admin", "exposed": "./Module" },
+  "contributions": {
+    "menu": [
+      {
+        "id": "inventory",
+        "sectionId": "catalog",
+        "title": "Inventory",
+        "icon": "lucide-boxes",
+        "route": "/inventory",
+        "permission": "inventory:access",
+        "priority": 30,
+        "replaces": "legacy.inventory"
+      }
+    ]
+  }
+}

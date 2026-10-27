@@ -1,0 +1,130 @@
+{
+  "INVENTORY": {
+    "MENU": {
+      "TITLE": "Bestand"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Aktualisieren",
+      "ADD": "Hinzufügen",
+      "DELETE": "Löschen",
+      "SAVE": "Speichern",
+      "CREATE": "Erstellen",
+      "RESET": "Zurücksetzen",
+      "APPLY": "Anwenden",
+      "ADD_SELECTED": "Ausgewählte hinzufügen"
+    },
+    "CENTERS": {
+      "NEW": "Neues Erfüllungszentrum",
+      "EMPTY": "Keine Erfüllungszentren",
+      "COLUMNS": {
+        "NAME": "Name",
+        "CITY": "Stadt",
+        "COUNTRY": "Land",
+        "OUTER_ID": "Äußere ID",
+        "MODIFIED": "Zuletzt geändert"
+      },
+      "FIELDS": {
+        "NAME": "Name",
+        "NAME_HINT": "Der Name des Erfüllungszentrums",
+        "GEO": "Geostandort",
+        "GEO_HINT": "Breiten- und Längengrad, z. B. 40.7128, -74.0060",
+        "GEO_INVALID": "Geben Sie Breiten- und Längengrad durch ein Komma getrennt ein",
+        "OUTER_ID": "Äußere ID",
+        "OUTER_ID_HINT": "Die ID in einem externen System",
+        "SHORT_DESCRIPTION": "Kurze Beschreibung",
+        "DESCRIPTION": "Beschreibung"
+      },
+      "ADDRESS": {
+        "TITLE": "Adresse",
+        "COUNTRY": "Land",
+        "REGION": "Region/Bundesland",
+        "CITY": "Stadt",
+        "LINE1": "Adresszeile 1",
+        "LINE2": "Adresszeile 2",
+        "POSTAL_CODE": "Postleitzahl",
+        "EMAIL": "E-Mail",
+        "PHONE": "Telefon"
+      },
+      "WIDGETS": {
+        "PRODUCTS": "Produkte"
+      }
+    },
+    "PRODUCTS": {
+      "TITLE": "{name}: Produkte",
+      "EMPTY": "Keine Produkte",
+      "IN_STOCK_ONLY": "Nur auf Lager",
+      "NO_PRODUCT": "Produkt nicht gefunden",
+      "COLUMNS": {
+        "IMAGE": "Bild",
+        "NAME": "Produkt",
+        "CODE": "SKU",
+        "IN_STOCK": "Auf Lager",
+        "RESERVED": "Reserviert"
+      }
+    },
+    "STOCK": {
+      "TITLE": "{name}: Bestand",
+      "EMPTY": "Keine Erfüllungszentren",
+      "COLUMNS": {
+        "CENTER": "Erfüllungszentrum",
+        "IN_STOCK": "Auf Lager",
+        "RESERVED": "Reserviert",
+        "AVAILABLE": "Verfügbar"
+      }
+    },
+    "DETAILS": {
+      "IN_STOCK": "Auf Lager",
+      "RESERVED": "Reserviert",
+      "REORDER_MIN": "Mindestmenge für Nachbestellung",
+      "ALLOW_PREORDER": "Vorbestellung erlauben",
+      "PREORDER_QTY": "Vorbestellmenge",
+      "PREORDER_DATE": "Verfügbarkeitsdatum für Vorbestellungen",
+      "ALLOW_BACKORDER": "Rückbestellung erlauben",
+      "BACKORDER_QTY": "Rückbestellmenge",
+      "BACKORDER_DATE": "Verfügbarkeitsdatum für Rückbestellungen",
+      "STOCK": "Lagerbestand",
+      "PREORDER": "Vorbestellung",
+      "BACKORDER": "Rückbestellung"
+    },
+    "PICKER": {
+      "TITLE": "Produkte auswählen",
+      "SEARCH": "Produkte suchen",
+      "COLUMNS": {
+        "IMAGE": "Bild",
+        "NAME": "Name",
+        "CODE": "SKU"
+      }
+    },
+    "STORE": {
+      "TITLE": "{name}: Erfüllungszentren",
+      "MAIN": "Haupt-Erfüllungszentrum",
+      "ADDITIONAL": "Weitere Erfüllungszentren",
+      "RETURNS": "Haupt-Erfüllungszentrum für Retouren",
+      "ADDITIONAL_RETURNS": "Weitere Erfüllungszentren für Retouren",
+      "PLACEHOLDER": "Erfüllungszentrum auswählen",
+      "HINT": "Wird auf den Shop angewendet; speichern Sie den Shop, um die Änderungen zu übernehmen"
+    },
+    "WIDGETS": {
+      "INVENTORY": "Bestand",
+      "FULFILLMENT_CENTERS": "Erfüllungszentren"
+    },
+    "DASHBOARD": {
+      "VIEW_ALL": "Alle anzeigen",
+      "LOW_STOCK": {
+        "TITLE": "Niedriger Bestand",
+        "NAME": "Name",
+        "SKU": "SKU",
+        "LOCATION": "Erfüllungszentrum",
+        "STOCK": "Aktueller Bestand",
+        "OUT": "Nicht auf Lager",
+        "LEFT": "Noch {count}",
+        "EMPTY": "Keine Bestandseinträge"
+      }
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Es gibt nicht gespeicherte Änderungen. Trotzdem schließen?",
+      "DELETE_CENTERS": "Ausgewählte Erfüllungszentren ({count}) löschen?",
+      "DELETE_CENTER": "Erfüllungszentrum „{name}“ löschen?"
+    }
+  }
+}

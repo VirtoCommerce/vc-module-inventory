@@ -1,0 +1,130 @@
+{
+  "INVENTORY": {
+    "MENU": {
+      "TITLE": "Lager"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Uppdatera",
+      "ADD": "Lägg till",
+      "DELETE": "Radera",
+      "SAVE": "Spara",
+      "CREATE": "Skapa",
+      "RESET": "Återställ",
+      "APPLY": "Tillämpa",
+      "ADD_SELECTED": "Lägg till valda"
+    },
+    "CENTERS": {
+      "NEW": "Nytt distributionscenter",
+      "EMPTY": "Inga distributionscenter",
+      "COLUMNS": {
+        "NAME": "Namn",
+        "CITY": "Stad",
+        "COUNTRY": "Land",
+        "OUTER_ID": "Externt ID",
+        "MODIFIED": "Senast ändrad"
+      },
+      "FIELDS": {
+        "NAME": "Namn",
+        "NAME_HINT": "Distributionscentrets namn",
+        "GEO": "Geografisk plats",
+        "GEO_HINT": "Latitud och longitud, t.ex. 40.7128, -74.0060",
+        "GEO_INVALID": "Ange latitud och longitud åtskilda med kommatecken",
+        "OUTER_ID": "Externt ID",
+        "OUTER_ID_HINT": "ID:t i ett externt system",
+        "SHORT_DESCRIPTION": "Kort beskrivning",
+        "DESCRIPTION": "Beskrivning"
+      },
+      "ADDRESS": {
+        "TITLE": "Adress",
+        "COUNTRY": "Land",
+        "REGION": "Region/delstat",
+        "CITY": "Stad",
+        "LINE1": "Adressrad 1",
+        "LINE2": "Adressrad 2",
+        "POSTAL_CODE": "Postnummer",
+        "EMAIL": "E-post",
+        "PHONE": "Telefon"
+      },
+      "WIDGETS": {
+        "PRODUCTS": "Produkter"
+      }
+    },
+    "PRODUCTS": {
+      "TITLE": "{name}: produkter",
+      "EMPTY": "Inga produkter",
+      "IN_STOCK_ONLY": "Endast i lager",
+      "NO_PRODUCT": "Produkten hittades inte",
+      "COLUMNS": {
+        "IMAGE": "Bild",
+        "NAME": "Produkt",
+        "CODE": "SKU",
+        "IN_STOCK": "I lager",
+        "RESERVED": "Reserverat"
+      }
+    },
+    "STOCK": {
+      "TITLE": "{name}: lager",
+      "EMPTY": "Inga distributionscenter",
+      "COLUMNS": {
+        "CENTER": "Distributionscenter",
+        "IN_STOCK": "I lager",
+        "RESERVED": "Reserverat",
+        "AVAILABLE": "Tillgängligt"
+      }
+    },
+    "DETAILS": {
+      "IN_STOCK": "I lager",
+      "RESERVED": "Reserverat",
+      "REORDER_MIN": "Minsta beställningskvantitet",
+      "ALLOW_PREORDER": "Tillåt förbeställning",
+      "PREORDER_QTY": "Förbeställningskvantitet",
+      "PREORDER_DATE": "Tillgänglighetsdatum för förbeställning",
+      "ALLOW_BACKORDER": "Tillåt efterbeställning",
+      "BACKORDER_QTY": "Efterbeställningskvantitet",
+      "BACKORDER_DATE": "Tillgänglighetsdatum för efterbeställning",
+      "STOCK": "Lagersaldo",
+      "PREORDER": "Förbeställning",
+      "BACKORDER": "Efterbeställning"
+    },
+    "PICKER": {
+      "TITLE": "Välj produkter",
+      "SEARCH": "Sök produkter",
+      "COLUMNS": {
+        "IMAGE": "Bild",
+        "NAME": "Namn",
+        "CODE": "SKU"
+      }
+    },
+    "STORE": {
+      "TITLE": "{name}: distributionscenter",
+      "MAIN": "Huvuddistributionscenter",
+      "ADDITIONAL": "Ytterligare distributionscenter",
+      "RETURNS": "Huvuddistributionscenter för returer",
+      "ADDITIONAL_RETURNS": "Ytterligare distributionscenter för returer",
+      "PLACEHOLDER": "Välj distributionscenter",
+      "HINT": "Tillämpas på butiken; spara butiken för att behålla ändringarna"
+    },
+    "WIDGETS": {
+      "INVENTORY": "Lager",
+      "FULFILLMENT_CENTERS": "Distributionscenter"
+    },
+    "DASHBOARD": {
+      "VIEW_ALL": "Visa alla",
+      "LOW_STOCK": {
+        "TITLE": "Lågt lagersaldo",
+        "NAME": "Namn",
+        "SKU": "SKU",
+        "LOCATION": "Distributionscenter",
+        "STOCK": "Aktuellt lagersaldo",
+        "OUT": "Slut i lager",
+        "LEFT": "{count} kvar",
+        "EMPTY": "Inga lagerposter"
+      }
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Det finns osparade ändringar. Stäng ändå?",
+      "DELETE_CENTERS": "Radera de valda distributionscentren ({count})?",
+      "DELETE_CENTER": "Radera distributionscentret ”{name}”?"
+    }
+  }
+}

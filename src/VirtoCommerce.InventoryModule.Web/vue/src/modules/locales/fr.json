@@ -1,0 +1,130 @@
+{
+  "INVENTORY": {
+    "MENU": {
+      "TITLE": "Inventaire"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Actualiser",
+      "ADD": "Ajouter",
+      "DELETE": "Supprimer",
+      "SAVE": "Enregistrer",
+      "CREATE": "Créer",
+      "RESET": "Réinitialiser",
+      "APPLY": "Appliquer",
+      "ADD_SELECTED": "Ajouter la sélection"
+    },
+    "CENTERS": {
+      "NEW": "Nouveau centre de traitement des commandes",
+      "EMPTY": "Aucun centre de traitement des commandes",
+      "COLUMNS": {
+        "NAME": "Nom",
+        "CITY": "Ville",
+        "COUNTRY": "Pays",
+        "OUTER_ID": "ID externe",
+        "MODIFIED": "Dernière modification"
+      },
+      "FIELDS": {
+        "NAME": "Nom",
+        "NAME_HINT": "Le nom du centre de traitement des commandes",
+        "GEO": "Géolocalisation",
+        "GEO_HINT": "Latitude et longitude, par ex. 40.7128, -74.0060",
+        "GEO_INVALID": "Saisissez la latitude et la longitude séparées par une virgule",
+        "OUTER_ID": "ID externe",
+        "OUTER_ID_HINT": "L'ID dans un système externe",
+        "SHORT_DESCRIPTION": "Courte description",
+        "DESCRIPTION": "Description"
+      },
+      "ADDRESS": {
+        "TITLE": "Adresse",
+        "COUNTRY": "Pays",
+        "REGION": "Région/état",
+        "CITY": "Ville",
+        "LINE1": "Ligne d'adresse 1",
+        "LINE2": "Ligne d'adresse 2",
+        "POSTAL_CODE": "Code postal",
+        "EMAIL": "Email",
+        "PHONE": "Téléphone"
+      },
+      "WIDGETS": {
+        "PRODUCTS": "Produits"
+      }
+    },
+    "PRODUCTS": {
+      "TITLE": "{name} : produits",
+      "EMPTY": "Aucun produit",
+      "IN_STOCK_ONLY": "En stock uniquement",
+      "NO_PRODUCT": "Produit introuvable",
+      "COLUMNS": {
+        "IMAGE": "Image",
+        "NAME": "Produit",
+        "CODE": "SKU",
+        "IN_STOCK": "En stock",
+        "RESERVED": "Réservé"
+      }
+    },
+    "STOCK": {
+      "TITLE": "{name} : inventaire",
+      "EMPTY": "Aucun centre de traitement des commandes",
+      "COLUMNS": {
+        "CENTER": "Centre de traitement des commandes",
+        "IN_STOCK": "En stock",
+        "RESERVED": "Réservé",
+        "AVAILABLE": "Disponible"
+      }
+    },
+    "DETAILS": {
+      "IN_STOCK": "En stock",
+      "RESERVED": "Réservé",
+      "REORDER_MIN": "Quantité minimale de réapprovisionnement",
+      "ALLOW_PREORDER": "Autoriser la précommande",
+      "PREORDER_QTY": "Quantité de précommande",
+      "PREORDER_DATE": "Date de disponibilité de la précommande",
+      "ALLOW_BACKORDER": "Autoriser la commande en attente",
+      "BACKORDER_QTY": "Quantité de commande en attente",
+      "BACKORDER_DATE": "Date de disponibilité de la commande en attente",
+      "STOCK": "Stock",
+      "PREORDER": "Précommande",
+      "BACKORDER": "Commande en attente"
+    },
+    "PICKER": {
+      "TITLE": "Sélectionner des produits",
+      "SEARCH": "Rechercher des produits",
+      "COLUMNS": {
+        "IMAGE": "Image",
+        "NAME": "Nom",
+        "CODE": "SKU"
+      }
+    },
+    "STORE": {
+      "TITLE": "{name} : centres de traitement des commandes",
+      "MAIN": "Centre de traitement principal",
+      "ADDITIONAL": "Centres de traitement supplémentaires",
+      "RETURNS": "Centre de traitement principal des retours",
+      "ADDITIONAL_RETURNS": "Centres de traitement supplémentaires des retours",
+      "PLACEHOLDER": "Sélectionner un centre de traitement des commandes",
+      "HINT": "S'applique au magasin ; enregistrez le magasin pour conserver les modifications"
+    },
+    "WIDGETS": {
+      "INVENTORY": "Inventaire",
+      "FULFILLMENT_CENTERS": "Centres de traitement"
+    },
+    "DASHBOARD": {
+      "VIEW_ALL": "Tout afficher",
+      "LOW_STOCK": {
+        "TITLE": "Stock faible",
+        "NAME": "Nom",
+        "SKU": "SKU",
+        "LOCATION": "Centre de traitement des commandes",
+        "STOCK": "Stock actuel",
+        "OUT": "En rupture de stock",
+        "LEFT": "Reste : {count}",
+        "EMPTY": "Aucun enregistrement d'inventaire"
+      }
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Des modifications ne sont pas enregistrées. Fermer quand même ?",
+      "DELETE_CENTERS": "Supprimer les centres de traitement sélectionnés ({count}) ?",
+      "DELETE_CENTER": "Supprimer le centre de traitement « {name} » ?"
+    }
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "INVENTORY": {
+    "MENU": {
+      "TITLE": "Inventario"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Aggiorna",
+      "ADD": "Aggiungi",
+      "DELETE": "Elimina",
+      "SAVE": "Salva",
+      "CREATE": "Crea",
+      "RESET": "Reimposta",
+      "APPLY": "Applica",
+      "ADD_SELECTED": "Aggiungi selezionati"
+    },
+    "CENTERS": {
+      "NEW": "Nuovo centro di approvvigionamento",
+      "EMPTY": "Nessun centro di approvvigionamento",
+      "COLUMNS": {
+        "NAME": "Nome",
+        "CITY": "Città",
+        "COUNTRY": "Paese",
+        "OUTER_ID": "ID esterno",
+        "MODIFIED": "Ultima modifica"
+      },
+      "FIELDS": {
+        "NAME": "Nome",
+        "NAME_HINT": "Il nome del centro di approvvigionamento",
+        "GEO": "Geolocalizzazione",
+        "GEO_HINT": "Latitudine e longitudine, ad es. 40.7128, -74.0060",
+        "GEO_INVALID": "Inserire latitudine e longitudine separate da una virgola",
+        "OUTER_ID": "ID esterno",
+        "OUTER_ID_HINT": "L'ID in un sistema esterno",
+        "SHORT_DESCRIPTION": "Descrizione breve",
+        "DESCRIPTION": "Descrizione"
+      },
+      "ADDRESS": {
+        "TITLE": "Indirizzo",
+        "COUNTRY": "Paese",
+        "REGION": "Regione/stato",
+        "CITY": "Città",
+        "LINE1": "Riga indirizzo 1",
+        "LINE2": "Riga indirizzo 2",
+        "POSTAL_CODE": "Codice postale",
+        "EMAIL": "Email",
+        "PHONE": "Telefono"
+      },
+      "WIDGETS": {
+        "PRODUCTS": "Prodotti"
+      }
+    },
+    "PRODUCTS": {
+      "TITLE": "{name}: prodotti",
+      "EMPTY": "Nessun prodotto",
+      "IN_STOCK_ONLY": "Solo disponibili",
+      "NO_PRODUCT": "Prodotto non trovato",
+      "COLUMNS": {
+        "IMAGE": "Immagine",
+        "NAME": "Prodotto",
+        "CODE": "SKU",
+        "IN_STOCK": "Disponibile",
+        "RESERVED": "Riservato"
+      }
+    },
+    "STOCK": {
+      "TITLE": "{name}: inventario",
+      "EMPTY": "Nessun centro di approvvigionamento",
+      "COLUMNS": {
+        "CENTER": "Centro di approvvigionamento",
+        "IN_STOCK": "Disponibile",
+        "RESERVED": "Riservato",
+        "AVAILABLE": "Utilizzabile"
+      }
+    },
+    "DETAILS": {
+      "IN_STOCK": "Disponibile",
+      "RESERVED": "Riservato",
+      "REORDER_MIN": "Quantità minima di riordino",
+      "ALLOW_PREORDER": "Consenti preordine",
+      "PREORDER_QTY": "Quantità di preordine",
+      "PREORDER_DATE": "Data di disponibilità del preordine",
+      "ALLOW_BACKORDER": "Consenti ordine arretrato",
+      "BACKORDER_QTY": "Quantità di ordine arretrato",
+      "BACKORDER_DATE": "Data di disponibilità dell'ordine arretrato",
+      "STOCK": "Scorte",
+      "PREORDER": "Preordine",
+      "BACKORDER": "Ordine arretrato"
+    },
+    "PICKER": {
+      "TITLE": "Seleziona prodotti",
+      "SEARCH": "Cerca prodotti",
+      "COLUMNS": {
+        "IMAGE": "Immagine",
+        "NAME": "Nome",
+        "CODE": "SKU"
+      }
+    },
+    "STORE": {
+      "TITLE": "{name}: centri di approvvigionamento",
+      "MAIN": "Centro di approvvigionamento principale",
+      "ADDITIONAL": "Centri di approvvigionamento aggiuntivi",
+      "RETURNS": "Centro di approvvigionamento principale per i resi",
+      "ADDITIONAL_RETURNS": "Centri di approvvigionamento aggiuntivi per i resi",
+      "PLACEHOLDER": "Seleziona centro di approvvigionamento",
+      "HINT": "Applicato al negozio; salvare il negozio per mantenere le modifiche"
+    },
+    "WIDGETS": {
+      "INVENTORY": "Inventario",
+      "FULFILLMENT_CENTERS": "Centri di approvvigionamento"
+    },
+    "DASHBOARD": {
+      "VIEW_ALL": "Visualizza tutto",
+      "LOW_STOCK": {
+        "TITLE": "Scorte basse",
+        "NAME": "Nome",
+        "SKU": "SKU",
+        "LOCATION": "Centro di approvvigionamento",
+        "STOCK": "Scorte attuali",
+        "OUT": "Esaurito",
+        "LEFT": "Ne restano {count}",
+        "EMPTY": "Nessun record di inventario"
+      }
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Ci sono modifiche non salvate. Chiudere comunque?",
+      "DELETE_CENTERS": "Eliminare i centri di approvvigionamento selezionati ({count})?",
+      "DELETE_CENTER": "Eliminare il centro di approvvigionamento \"{name}\"?"
+    }
+  }
+}
