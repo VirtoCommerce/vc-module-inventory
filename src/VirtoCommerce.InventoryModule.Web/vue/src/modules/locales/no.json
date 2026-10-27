@@ -1,0 +1,130 @@
+{
+  "INVENTORY": {
+    "MENU": {
+      "TITLE": "Lager"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Oppdater",
+      "ADD": "Legg til",
+      "DELETE": "Slett",
+      "SAVE": "Lagre",
+      "CREATE": "Opprett",
+      "RESET": "Tilbakestill",
+      "APPLY": "Bruk",
+      "ADD_SELECTED": "Legg til valgte"
+    },
+    "CENTERS": {
+      "NEW": "Nytt oppfyllelsessenter",
+      "EMPTY": "Ingen oppfyllelsessentre",
+      "COLUMNS": {
+        "NAME": "Navn",
+        "CITY": "By",
+        "COUNTRY": "Land",
+        "OUTER_ID": "Eksternt ID",
+        "MODIFIED": "Sist endret"
+      },
+      "FIELDS": {
+        "NAME": "Navn",
+        "NAME_HINT": "Navnet på oppfyllelsessenteret",
+        "GEO": "Geografisk plassering",
+        "GEO_HINT": "Breddegrad og lengdegrad, f.eks. 40.7128, -74.0060",
+        "GEO_INVALID": "Skriv inn breddegrad og lengdegrad atskilt med komma",
+        "OUTER_ID": "Eksternt ID",
+        "OUTER_ID_HINT": "ID-en i et eksternt system",
+        "SHORT_DESCRIPTION": "Kort beskrivelse",
+        "DESCRIPTION": "Beskrivelse"
+      },
+      "ADDRESS": {
+        "TITLE": "Adresse",
+        "COUNTRY": "Land",
+        "REGION": "Region/delstat",
+        "CITY": "By",
+        "LINE1": "Adresselinje 1",
+        "LINE2": "Adresselinje 2",
+        "POSTAL_CODE": "Postnummer",
+        "EMAIL": "E-post",
+        "PHONE": "Telefon"
+      },
+      "WIDGETS": {
+        "PRODUCTS": "Produkter"
+      }
+    },
+    "PRODUCTS": {
+      "TITLE": "{name}: produkter",
+      "EMPTY": "Ingen produkter",
+      "IN_STOCK_ONLY": "Kun på lager",
+      "NO_PRODUCT": "Produktet ble ikke funnet",
+      "COLUMNS": {
+        "IMAGE": "Bilde",
+        "NAME": "Produkt",
+        "CODE": "SKU",
+        "IN_STOCK": "På lager",
+        "RESERVED": "Reservert"
+      }
+    },
+    "STOCK": {
+      "TITLE": "{name}: lager",
+      "EMPTY": "Ingen oppfyllelsessentre",
+      "COLUMNS": {
+        "CENTER": "Oppfyllelsessenter",
+        "IN_STOCK": "På lager",
+        "RESERVED": "Reservert",
+        "AVAILABLE": "Tilgjengelig"
+      }
+    },
+    "DETAILS": {
+      "IN_STOCK": "På lager",
+      "RESERVED": "Reservert",
+      "REORDER_MIN": "Minimumsantall for ny bestilling",
+      "ALLOW_PREORDER": "Tillat forhåndsbestilling",
+      "PREORDER_QTY": "Forhåndsbestillingsantall",
+      "PREORDER_DATE": "Tilgjengelighetsdato for forhåndsbestilling",
+      "ALLOW_BACKORDER": "Tillat restordre",
+      "BACKORDER_QTY": "Restordreantall",
+      "BACKORDER_DATE": "Tilgjengelighetsdato for restordre",
+      "STOCK": "Lagerbeholdning",
+      "PREORDER": "Forhåndsbestilling",
+      "BACKORDER": "Restordre"
+    },
+    "PICKER": {
+      "TITLE": "Velg produkter",
+      "SEARCH": "Søk etter produkter",
+      "COLUMNS": {
+        "IMAGE": "Bilde",
+        "NAME": "Navn",
+        "CODE": "SKU"
+      }
+    },
+    "STORE": {
+      "TITLE": "{name}: oppfyllelsessentre",
+      "MAIN": "Hovedoppfyllelsessenter",
+      "ADDITIONAL": "Andre oppfyllelsessentre",
+      "RETURNS": "Hovedoppfyllelsessenter for returer",
+      "ADDITIONAL_RETURNS": "Andre oppfyllelsessentre for returer",
+      "PLACEHOLDER": "Velg oppfyllelsessenter",
+      "HINT": "Gjelder butikken; lagre butikken for å beholde endringene"
+    },
+    "WIDGETS": {
+      "INVENTORY": "Lager",
+      "FULFILLMENT_CENTERS": "Oppfyllelsessentre"
+    },
+    "DASHBOARD": {
+      "VIEW_ALL": "Vis alle",
+      "LOW_STOCK": {
+        "TITLE": "Lav beholdning",
+        "NAME": "Navn",
+        "SKU": "SKU",
+        "LOCATION": "Oppfyllelsessenter",
+        "STOCK": "Nåværende beholdning",
+        "OUT": "Utsolgt",
+        "LEFT": "{count} igjen",
+        "EMPTY": "Ingen lagerposter"
+      }
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Du har ulagrede endringer. Vil du lukke likevel?",
+      "DELETE_CENTERS": "Vil du slette de valgte oppfyllelsessentrene ({count})?",
+      "DELETE_CENTER": "Vil du slette oppfyllelsessenteret «{name}»?"
+    }
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "INVENTORY": {
+    "MENU": {
+      "TITLE": "מלאי"
+    },
+    "TOOLBAR": {
+      "REFRESH": "רענון",
+      "ADD": "הוספה",
+      "DELETE": "מחיקה",
+      "SAVE": "שמירה",
+      "CREATE": "יצירה",
+      "RESET": "איפוס",
+      "APPLY": "החלה",
+      "ADD_SELECTED": "הוספת הנבחרים"
+    },
+    "CENTERS": {
+      "NEW": "מרכז הפצה חדש",
+      "EMPTY": "אין מרכזי הפצה",
+      "COLUMNS": {
+        "NAME": "שם",
+        "CITY": "עיר",
+        "COUNTRY": "מדינה",
+        "OUTER_ID": "מזהה חיצוני",
+        "MODIFIED": "שינוי אחרון"
+      },
+      "FIELDS": {
+        "NAME": "שם",
+        "NAME_HINT": "שם מרכז ההפצה",
+        "GEO": "מיקום גאוגרפי",
+        "GEO_HINT": "קו רוחב וקו אורך, לדוגמה 40.7128, -74.0060",
+        "GEO_INVALID": "יש להזין קו רוחב וקו אורך מופרדים בפסיק",
+        "OUTER_ID": "מזהה חיצוני",
+        "OUTER_ID_HINT": "המזהה במערכת חיצונית",
+        "SHORT_DESCRIPTION": "תיאור קצר",
+        "DESCRIPTION": "תיאור"
+      },
+      "ADDRESS": {
+        "TITLE": "כתובת",
+        "COUNTRY": "מדינה",
+        "REGION": "אזור/מחוז",
+        "CITY": "עיר",
+        "LINE1": "שורת כתובת 1",
+        "LINE2": "שורת כתובת 2",
+        "POSTAL_CODE": "מיקוד",
+        "EMAIL": "דוא״ל",
+        "PHONE": "טלפון"
+      },
+      "WIDGETS": {
+        "PRODUCTS": "מוצרים"
+      }
+    },
+    "PRODUCTS": {
+      "TITLE": "{name}: מוצרים",
+      "EMPTY": "אין מוצרים",
+      "IN_STOCK_ONLY": "במלאי בלבד",
+      "NO_PRODUCT": "המוצר לא נמצא",
+      "COLUMNS": {
+        "IMAGE": "תמונה",
+        "NAME": "מוצר",
+        "CODE": "SKU",
+        "IN_STOCK": "במלאי",
+        "RESERVED": "שמור"
+      }
+    },
+    "STOCK": {
+      "TITLE": "{name}: מלאי",
+      "EMPTY": "אין מרכזי הפצה",
+      "COLUMNS": {
+        "CENTER": "מרכז הפצה",
+        "IN_STOCK": "במלאי",
+        "RESERVED": "שמור",
+        "AVAILABLE": "זמין"
+      }
+    },
+    "DETAILS": {
+      "IN_STOCK": "במלאי",
+      "RESERVED": "שמור",
+      "REORDER_MIN": "כמות מינימלית להזמנה חוזרת",
+      "ALLOW_PREORDER": "אפשור הזמנה מוקדמת",
+      "PREORDER_QTY": "כמות להזמנה מוקדמת",
+      "PREORDER_DATE": "תאריך זמינות להזמנה מוקדמת",
+      "ALLOW_BACKORDER": "אפשור הזמנה בהמתנה למלאי",
+      "BACKORDER_QTY": "כמות להזמנה בהמתנה למלאי",
+      "BACKORDER_DATE": "תאריך זמינות להזמנה בהמתנה למלאי",
+      "STOCK": "כמות במלאי",
+      "PREORDER": "הזמנה מוקדמת",
+      "BACKORDER": "הזמנה בהמתנה למלאי"
+    },
+    "PICKER": {
+      "TITLE": "בחירת מוצרים",
+      "SEARCH": "חיפוש מוצרים",
+      "COLUMNS": {
+        "IMAGE": "תמונה",
+        "NAME": "שם",
+        "CODE": "SKU"
+      }
+    },
+    "STORE": {
+      "TITLE": "{name}: מרכזי הפצה",
+      "MAIN": "מרכז הפצה ראשי",
+      "ADDITIONAL": "מרכזי הפצה נוספים",
+      "RETURNS": "מרכז הפצה ראשי להחזרות",
+      "ADDITIONAL_RETURNS": "מרכזי הפצה נוספים להחזרות",
+      "PLACEHOLDER": "יש לבחור מרכז הפצה",
+      "HINT": "חל על החנות; יש לשמור את החנות כדי לשמור את השינויים"
+    },
+    "WIDGETS": {
+      "INVENTORY": "מלאי",
+      "FULFILLMENT_CENTERS": "מרכזי הפצה"
+    },
+    "DASHBOARD": {
+      "VIEW_ALL": "הצגת הכול",
+      "LOW_STOCK": {
+        "TITLE": "מלאי נמוך",
+        "NAME": "שם",
+        "SKU": "SKU",
+        "LOCATION": "מרכז הפצה",
+        "STOCK": "כמות נוכחית במלאי",
+        "OUT": "אזל מהמלאי",
+        "LEFT": "נותרו: {count}",
+        "EMPTY": "אין רשומות מלאי"
+      }
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "יש שינויים שלא נשמרו. לסגור בכל זאת?",
+      "DELETE_CENTERS": "האם למחוק את מרכזי ההפצה שנבחרו ({count})?",
+      "DELETE_CENTER": "האם למחוק את מרכז ההפצה \"{name}\"?"
+    }
+  }
+}

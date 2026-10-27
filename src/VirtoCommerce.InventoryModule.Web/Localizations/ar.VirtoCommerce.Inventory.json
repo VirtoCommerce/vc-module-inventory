@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "inventory:read": "قراءة بيانات المخزون",
+    "inventory:create": "إنشاء بيانات المخزون",
+    "inventory:update": "تحديث بيانات المخزون",
+    "inventory:delete": "حذف بيانات المخزون",
+    "inventory:access": "الوصول إلى بيانات المخزون",
+    "inventory:fulfillment:edit": "إدارة مراكز التوزيع",
+    "inventory:fulfillment:delete": "حذف مراكز التوزيع"
+  },
+  "settings": {
+    "Inventory": {
+      "ExportImport.PageSize": {
+        "description": "حدد عدد العناصر في كل صفحة تصدير أو استيراد. قد تؤدي القيم الأعلى إلى إبطاء الأداء",
+        "title": "حجم صفحة التصدير/الاستيراد"
+      },
+      "LogInventoryChanges": {
+        "title": "تسجيل تغييرات المخزون",
+        "description": "يسجّل تغييرات مخزون المنتجات في سجل العمليات. قد تؤدي التحديثات المتكررة إلى زيادة حجم قاعدة البيانات"
+      },
+      "Search": {
+        "EventBasedIndexation": {
+          "Enable": {
+            "title": "فهرسة المخزون المستندة إلى الأحداث",
+            "description": "تفعيل/تعطيل إعادة الفهرسة التلقائية عند تغيّر بيانات المخزون"
+          }
+        }
+      }
+    }
+  }
+}

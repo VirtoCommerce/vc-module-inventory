@@ -1,0 +1,102 @@
+{
+  "INVENTORY": {
+    "MENU": { "TITLE": "Inventory" },
+    "TOOLBAR": {
+      "REFRESH": "Refresh",
+      "ADD": "Add",
+      "DELETE": "Delete",
+      "SAVE": "Save",
+      "CREATE": "Create",
+      "RESET": "Reset",
+      "APPLY": "Apply",
+      "ADD_SELECTED": "Add selected"
+    },
+    "CENTERS": {
+      "NEW": "New fulfillment center",
+      "EMPTY": "No fulfillment centers",
+      "COLUMNS": { "NAME": "Name", "CITY": "City", "COUNTRY": "Country", "OUTER_ID": "Outer ID", "MODIFIED": "Last modified" },
+      "FIELDS": {
+        "NAME": "Name",
+        "NAME_HINT": "The name of the fulfillment center",
+        "GEO": "Geo location",
+        "GEO_HINT": "Latitude and longitude, e.g. 40.7128, -74.0060",
+        "GEO_INVALID": "Enter latitude and longitude separated by a comma",
+        "OUTER_ID": "Outer ID",
+        "OUTER_ID_HINT": "The ID in an external system",
+        "SHORT_DESCRIPTION": "Short description",
+        "DESCRIPTION": "Description"
+      },
+      "ADDRESS": {
+        "TITLE": "Address",
+        "COUNTRY": "Country",
+        "REGION": "Region/state",
+        "CITY": "City",
+        "LINE1": "Address line 1",
+        "LINE2": "Address line 2",
+        "POSTAL_CODE": "Zip/postal code",
+        "EMAIL": "Email",
+        "PHONE": "Phone"
+      },
+      "WIDGETS": { "PRODUCTS": "Products" }
+    },
+    "PRODUCTS": {
+      "TITLE": "{name}: products",
+      "EMPTY": "No products",
+      "IN_STOCK_ONLY": "In stock only",
+      "NO_PRODUCT": "Product not found",
+      "COLUMNS": { "IMAGE": "Img", "NAME": "Product", "CODE": "SKU", "IN_STOCK": "In stock", "RESERVED": "Reserved" }
+    },
+    "STOCK": {
+      "TITLE": "{name}: inventory",
+      "EMPTY": "No fulfillment centers",
+      "COLUMNS": { "CENTER": "Fulfillment center", "IN_STOCK": "In stock", "RESERVED": "Reserved", "AVAILABLE": "Available" }
+    },
+    "DETAILS": {
+      "IN_STOCK": "In stock",
+      "RESERVED": "Reserved",
+      "REORDER_MIN": "Reorder min. quantity",
+      "ALLOW_PREORDER": "Allow preorder",
+      "PREORDER_QTY": "Preorder quantity",
+      "PREORDER_DATE": "Preorder availability date",
+      "ALLOW_BACKORDER": "Allow backorder",
+      "BACKORDER_QTY": "Backorder quantity",
+      "BACKORDER_DATE": "Backorder availability date",
+      "STOCK": "Stock",
+      "PREORDER": "Preorder",
+      "BACKORDER": "Backorder"
+    },
+    "PICKER": {
+      "TITLE": "Select products",
+      "SEARCH": "Search products",
+      "COLUMNS": { "IMAGE": "Img", "NAME": "Name", "CODE": "SKU" }
+    },
+    "STORE": {
+      "TITLE": "{name}: fulfillment centers",
+      "MAIN": "Main fulfillment center",
+      "ADDITIONAL": "Additional fulfillment centers",
+      "RETURNS": "Main returns fulfillment center",
+      "ADDITIONAL_RETURNS": "Additional returns fulfillment centers",
+      "PLACEHOLDER": "Select fulfillment center",
+      "HINT": "Applied to the store; save the store to keep the changes"
+    },
+    "WIDGETS": { "INVENTORY": "Inventory", "FULFILLMENT_CENTERS": "Fulfillment centers" },
+    "DASHBOARD": {
+      "VIEW_ALL": "View all",
+      "LOW_STOCK": {
+        "TITLE": "Low stock",
+        "NAME": "Name",
+        "SKU": "SKU",
+        "LOCATION": "Fulfillment center",
+        "STOCK": "Current stock",
+        "OUT": "Out of stock",
+        "LEFT": "{count} left",
+        "EMPTY": "No inventory records"
+      }
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "You have unsaved changes. Close anyway?",
+      "DELETE_CENTERS": "Delete {count} fulfillment center(s)?",
+      "DELETE_CENTER": "Delete the fulfillment center \"{name}\"?"
+    }
+  }
+}

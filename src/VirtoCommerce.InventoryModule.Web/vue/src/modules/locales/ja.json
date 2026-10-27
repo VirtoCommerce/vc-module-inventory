@@ -1,0 +1,130 @@
+{
+  "INVENTORY": {
+    "MENU": {
+      "TITLE": "在庫"
+    },
+    "TOOLBAR": {
+      "REFRESH": "更新",
+      "ADD": "追加",
+      "DELETE": "削除",
+      "SAVE": "保存",
+      "CREATE": "作成",
+      "RESET": "リセット",
+      "APPLY": "適用",
+      "ADD_SELECTED": "選択項目を追加"
+    },
+    "CENTERS": {
+      "NEW": "新規フルフィルメントセンター",
+      "EMPTY": "フルフィルメントセンターがありません",
+      "COLUMNS": {
+        "NAME": "名前",
+        "CITY": "市区町村",
+        "COUNTRY": "国",
+        "OUTER_ID": "外部 ID",
+        "MODIFIED": "最終更新日時"
+      },
+      "FIELDS": {
+        "NAME": "名前",
+        "NAME_HINT": "フルフィルメントセンターの名前",
+        "GEO": "位置情報",
+        "GEO_HINT": "緯度と経度 (例: 40.7128, -74.0060)",
+        "GEO_INVALID": "緯度と経度をカンマで区切って入力してください",
+        "OUTER_ID": "外部 ID",
+        "OUTER_ID_HINT": "外部システムでの ID",
+        "SHORT_DESCRIPTION": "短い説明",
+        "DESCRIPTION": "説明"
+      },
+      "ADDRESS": {
+        "TITLE": "住所",
+        "COUNTRY": "国",
+        "REGION": "地域/州",
+        "CITY": "市区町村",
+        "LINE1": "住所 1 行目",
+        "LINE2": "住所 2 行目",
+        "POSTAL_CODE": "郵便番号",
+        "EMAIL": "メール",
+        "PHONE": "電話"
+      },
+      "WIDGETS": {
+        "PRODUCTS": "商品"
+      }
+    },
+    "PRODUCTS": {
+      "TITLE": "{name}: 商品",
+      "EMPTY": "商品がありません",
+      "IN_STOCK_ONLY": "在庫ありのみ",
+      "NO_PRODUCT": "商品が見つかりません",
+      "COLUMNS": {
+        "IMAGE": "画像",
+        "NAME": "商品",
+        "CODE": "SKU",
+        "IN_STOCK": "在庫あり",
+        "RESERVED": "予約済み"
+      }
+    },
+    "STOCK": {
+      "TITLE": "{name}: 在庫",
+      "EMPTY": "フルフィルメントセンターがありません",
+      "COLUMNS": {
+        "CENTER": "フルフィルメントセンター",
+        "IN_STOCK": "在庫あり",
+        "RESERVED": "予約済み",
+        "AVAILABLE": "利用可能"
+      }
+    },
+    "DETAILS": {
+      "IN_STOCK": "在庫あり",
+      "RESERVED": "予約済み",
+      "REORDER_MIN": "再注文の最小数量",
+      "ALLOW_PREORDER": "予約販売を許可",
+      "PREORDER_QTY": "予約販売数量",
+      "PREORDER_DATE": "予約販売の可用日",
+      "ALLOW_BACKORDER": "バックオーダーを許可",
+      "BACKORDER_QTY": "バックオーダー数量",
+      "BACKORDER_DATE": "バックオーダーの可用日",
+      "STOCK": "在庫",
+      "PREORDER": "予約販売",
+      "BACKORDER": "バックオーダー"
+    },
+    "PICKER": {
+      "TITLE": "商品を選択",
+      "SEARCH": "商品を検索",
+      "COLUMNS": {
+        "IMAGE": "画像",
+        "NAME": "名前",
+        "CODE": "SKU"
+      }
+    },
+    "STORE": {
+      "TITLE": "{name}: フルフィルメントセンター",
+      "MAIN": "メインのフルフィルメントセンター",
+      "ADDITIONAL": "追加のフルフィルメントセンター",
+      "RETURNS": "返品用のメインのフルフィルメントセンター",
+      "ADDITIONAL_RETURNS": "返品用の追加のフルフィルメントセンター",
+      "PLACEHOLDER": "フルフィルメントセンターを選択",
+      "HINT": "ストアに適用されます。変更を保持するにはストアを保存してください"
+    },
+    "WIDGETS": {
+      "INVENTORY": "在庫",
+      "FULFILLMENT_CENTERS": "フルフィルメントセンター"
+    },
+    "DASHBOARD": {
+      "VIEW_ALL": "すべて表示",
+      "LOW_STOCK": {
+        "TITLE": "在庫僅少",
+        "NAME": "名前",
+        "SKU": "SKU",
+        "LOCATION": "フルフィルメントセンター",
+        "STOCK": "現在の在庫",
+        "OUT": "在庫切れ",
+        "LEFT": "残り {count}",
+        "EMPTY": "在庫レコードがありません"
+      }
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "保存されていない変更があります。閉じてもよろしいですか？",
+      "DELETE_CENTERS": "選択した {count} 件のフルフィルメントセンターを削除しますか？",
+      "DELETE_CENTER": "フルフィルメントセンター「{name}」を削除しますか？"
+    }
+  }
+}

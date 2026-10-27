@@ -1,0 +1,130 @@
+{
+  "INVENTORY": {
+    "MENU": {
+      "TITLE": "Inventário"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Atualizar",
+      "ADD": "Adicionar",
+      "DELETE": "Excluir",
+      "SAVE": "Salvar",
+      "CREATE": "Criar",
+      "RESET": "Redefinir",
+      "APPLY": "Aplicar",
+      "ADD_SELECTED": "Adicionar selecionados"
+    },
+    "CENTERS": {
+      "NEW": "Novo centro de atendimento",
+      "EMPTY": "Nenhum centro de atendimento",
+      "COLUMNS": {
+        "NAME": "Nome",
+        "CITY": "Cidade",
+        "COUNTRY": "País",
+        "OUTER_ID": "ID externo",
+        "MODIFIED": "Última modificação"
+      },
+      "FIELDS": {
+        "NAME": "Nome",
+        "NAME_HINT": "O nome do centro de atendimento",
+        "GEO": "Geolocalização",
+        "GEO_HINT": "Latitude e longitude, por ex. 40.7128, -74.0060",
+        "GEO_INVALID": "Insira a latitude e a longitude separadas por vírgula",
+        "OUTER_ID": "ID externo",
+        "OUTER_ID_HINT": "O ID em um sistema externo",
+        "SHORT_DESCRIPTION": "Descrição curta",
+        "DESCRIPTION": "Descrição"
+      },
+      "ADDRESS": {
+        "TITLE": "Endereço",
+        "COUNTRY": "País",
+        "REGION": "Região/estado",
+        "CITY": "Cidade",
+        "LINE1": "Linha de endereço 1",
+        "LINE2": "Linha de endereço 2",
+        "POSTAL_CODE": "Código postal",
+        "EMAIL": "Email",
+        "PHONE": "Telefone"
+      },
+      "WIDGETS": {
+        "PRODUCTS": "Produtos"
+      }
+    },
+    "PRODUCTS": {
+      "TITLE": "{name}: produtos",
+      "EMPTY": "Nenhum produto",
+      "IN_STOCK_ONLY": "Apenas em estoque",
+      "NO_PRODUCT": "Produto não encontrado",
+      "COLUMNS": {
+        "IMAGE": "Imagem",
+        "NAME": "Produto",
+        "CODE": "SKU",
+        "IN_STOCK": "Em estoque",
+        "RESERVED": "Reservado"
+      }
+    },
+    "STOCK": {
+      "TITLE": "{name}: inventário",
+      "EMPTY": "Nenhum centro de atendimento",
+      "COLUMNS": {
+        "CENTER": "Centro de atendimento",
+        "IN_STOCK": "Em estoque",
+        "RESERVED": "Reservado",
+        "AVAILABLE": "Disponível"
+      }
+    },
+    "DETAILS": {
+      "IN_STOCK": "Em estoque",
+      "RESERVED": "Reservado",
+      "REORDER_MIN": "Quantidade mínima para reabastecimento",
+      "ALLOW_PREORDER": "Permitir pré-venda",
+      "PREORDER_QTY": "Quantidade de pré-venda",
+      "PREORDER_DATE": "Data de disponibilidade da pré-venda",
+      "ALLOW_BACKORDER": "Permitir pedido em atraso",
+      "BACKORDER_QTY": "Quantidade do pedido em atraso",
+      "BACKORDER_DATE": "Data de disponibilidade do pedido em atraso",
+      "STOCK": "Estoque",
+      "PREORDER": "Pré-venda",
+      "BACKORDER": "Pedido em atraso"
+    },
+    "PICKER": {
+      "TITLE": "Selecionar produtos",
+      "SEARCH": "Pesquisar produtos",
+      "COLUMNS": {
+        "IMAGE": "Imagem",
+        "NAME": "Nome",
+        "CODE": "SKU"
+      }
+    },
+    "STORE": {
+      "TITLE": "{name}: centros de atendimento",
+      "MAIN": "Centro de atendimento principal",
+      "ADDITIONAL": "Centros de atendimento adicionais",
+      "RETURNS": "Centro de atendimento principal para devoluções",
+      "ADDITIONAL_RETURNS": "Centros de atendimento adicionais para devoluções",
+      "PLACEHOLDER": "Selecionar centro de atendimento",
+      "HINT": "Aplicado à loja; salve a loja para manter as alterações"
+    },
+    "WIDGETS": {
+      "INVENTORY": "Inventário",
+      "FULFILLMENT_CENTERS": "Centros de atendimento"
+    },
+    "DASHBOARD": {
+      "VIEW_ALL": "Ver tudo",
+      "LOW_STOCK": {
+        "TITLE": "Estoque baixo",
+        "NAME": "Nome",
+        "SKU": "SKU",
+        "LOCATION": "Centro de atendimento",
+        "STOCK": "Estoque atual",
+        "OUT": "Sem estoque",
+        "LEFT": "Restam {count}",
+        "EMPTY": "Nenhum registro de inventário"
+      }
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Há alterações não salvas. Fechar mesmo assim?",
+      "DELETE_CENTERS": "Excluir os centros de atendimento selecionados ({count})?",
+      "DELETE_CENTER": "Excluir o centro de atendimento \"{name}\"?"
+    }
+  }
+}
