@@ -52,6 +52,7 @@
     "PRODUCTS": {
       "TITLE": "{name}: produkter",
       "EMPTY": "Inga produkter",
+      "ADDED_HIDDEN": "{count} produkt(er) har lagts till. De finns inte i lager, så stäng av \"Endast i lager\" för att se dem.",
       "IN_STOCK_ONLY": "Endast i lager",
       "NO_PRODUCT": "Produkten hittades inte",
       "COLUMNS": {

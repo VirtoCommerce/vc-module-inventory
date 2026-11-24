@@ -52,6 +52,7 @@
     "PRODUCTS": {
       "TITLE": "{name}：商品",
       "EMPTY": "无商品",
+      "ADDED_HIDDEN": "已添加 {count} 个商品。它们没有库存，请关闭“仅有库存”以查看。",
       "IN_STOCK_ONLY": "仅有库存",
       "NO_PRODUCT": "未找到商品",
       "COLUMNS": {
