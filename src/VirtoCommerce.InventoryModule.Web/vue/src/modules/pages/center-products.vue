@@ -5,24 +5,23 @@
     :loading="loading"
     width="50%"
   >
-    <div class="inventory-filter">
-      <VcSwitch
-        v-model="inStockOnly"
-        :label="$t('INVENTORY.PRODUCTS.IN_STOCK_ONLY')"
-      />
-    </div>
     <VcDataTable
       v-model:sort-field="sortField"
       v-model:sort-order="sortOrder"
       :items="items"
       :total-count="totalCount"
       :pagination="pagination"
+      search-bar
+      :searchable="false"
       state-key="INVENTORY_CENTER_PRODUCTS"
+      :global-filters="globalFilters"
+      :search-views="searchViews"
       :active-item-id="activeItemId"
       :show-all-columns="!activeItemId"
       :empty-state="{ icon: 'lucide-package', title: $t('INVENTORY.PRODUCTS.EMPTY') }"
       @row-click="(e: { data: Row }) => openInventory(e.data)"
       @pagination-click="pagination.goToPage"
+      @filter="onFilter"
     >
       <VcColumn
         id="image"
@@ -65,9 +64,20 @@
 </template>
 
 <script setup lang="ts">
-import { useAsync, useBlade, useDataTablePagination, useDataTableSort, usePermissions, type IBladeToolbar } from "@vc-shell/framework";
-import { VcBlade, VcColumn, VcDataTable, VcSwitch } from "@vc-shell/framework/ui";
-import { ref, watch } from "vue";
+import {
+  notification,
+  useAsync,
+  useBlade,
+  useDataTablePagination,
+  useDataTableSort,
+  useFunctions,
+  usePermissions,
+  type GlobalFilterConfig,
+  type IBladeToolbar,
+  type SearchBarView,
+} from "@vc-shell/framework";
+import { VcBlade, VcColumn, VcDataTable } from "@vc-shell/framework/ui";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useInventoryClient, type ProductEntry } from "../api";
 import type { ProductInventoryInfo } from "../../api_client/virtocommerce.inventory";
@@ -81,12 +91,14 @@ const PAGE_SIZE = 20;
 const { t } = useI18n({ useScope: "global" });
 const { param, options, openBlade, exposeToChildren } = useBlade<{ name?: string }>();
 const { hasAccess } = usePermissions();
+const { debounce } = useFunctions();
 const client = useInventoryClient();
 
 const items = ref<Row[]>([]);
 const totalCount = ref(0);
 const activeItemId = ref<string>();
-const inStockOnly = ref(true);
+// set by the search bar: its default "In stock" view turns it on, as the legacy list did (and the widget's count)
+const inStockOnly = ref(false);
 const { sortField, sortOrder, sortExpression } = useDataTableSort({ stateKey: "INVENTORY_CENTER_PRODUCTS", initialField: "inStockQuantity", initialDirection: "DESC" });
 const pagination = useDataTablePagination({ stateKey: "INVENTORY_CENTER_PRODUCTS", pageSize: PAGE_SIZE, totalCount });
 
@@ -102,9 +114,22 @@ const { loading, action: load } = useAsync(async () => {
   totalCount.value = r.totalCount ?? 0;
 });
 
-load();
-watch(inStockOnly, () => (pagination.skip ? pagination.setPage(1) : load()));
-watch([sortExpression, () => pagination.skip], () => load());
+// the API can only narrow to products in stock (withPositiveQuantityOnly), so the filter is an "In stock only" toggle
+// VcDataTable types global-filters as GlobalFilterConfig[], which lacks the search bar's toggle field
+const globalFilters = computed(
+  () => [{ id: "inStockOnly", label: t("INVENTORY.PRODUCTS.IN_STOCK_ONLY"), filter: { toggle: true } }] as unknown as GlobalFilterConfig[],
+);
+const searchViews = computed<SearchBarView[]>(() => [
+  { id: "inStock", name: t("INVENTORY.PRODUCTS.COLUMNS.IN_STOCK"), values: { inStockOnly: true }, default: true },
+]);
+
+function onFilter(event: { filters: Record<string, unknown> }) {
+  inStockOnly.value = !!event.filters.inStockOnly;
+}
+
+// the search bar applies the default view when it mounts: the debounce makes that and the first load one request
+watch(inStockOnly, () => pagination.setPage(1));
+watch([inStockOnly, sortExpression, () => pagination.skip], debounce(load, 300), { immediate: true });
 
 function openInventory(row: Row) {
   activeItemId.value = row.productId;
@@ -131,9 +156,11 @@ async function addProducts(products: ProductEntry[]) {
   if (added.length) {
     await c.upsertProductInventories(added.map((productId) => ({ productId, fulfillmentCenterId: param.value, inStockQuantity: 0 })));
   }
-  // the added products have no stock: show them (turning the filter off reloads through its watcher)
-  if (inStockOnly.value) inStockOnly.value = false;
-  else await load();
+  await load();
+  // the added products have no stock, so "In stock only" hides them
+  if (added.length && inStockOnly.value) {
+    notification(t("INVENTORY.PRODUCTS.ADDED_HIDDEN", { count: added.length }));
+  }
 }
 
 const bladeToolbar = ref<IBladeToolbar[]>([
@@ -151,9 +178,3 @@ const bladeToolbar = ref<IBladeToolbar[]>([
 
 exposeToChildren({ reload: () => load(), addProducts });
 </script>
-
-<style lang="scss">
-.inventory-filter {
-  padding: 12px 20px 4px;
-}
-</style>
