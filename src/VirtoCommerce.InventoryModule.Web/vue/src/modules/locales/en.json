@@ -42,6 +42,7 @@
     "PRODUCTS": {
       "TITLE": "{name}: products",
       "EMPTY": "No products",
+      "ADDED_HIDDEN": "{count} product(s) added. They are not in stock, so turn off \"In stock only\" to see them.",
       "IN_STOCK_ONLY": "In stock only",
       "NO_PRODUCT": "Product not found",
       "COLUMNS": { "IMAGE": "Img", "NAME": "Product", "CODE": "SKU", "IN_STOCK": "In stock", "RESERVED": "Reserved" }

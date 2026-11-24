@@ -52,6 +52,7 @@
     "PRODUCTS": {
       "TITLE": "{name}: 商品",
       "EMPTY": "商品がありません",
+      "ADDED_HIDDEN": "{count} 件の商品を追加しました。在庫がないため、表示するには「在庫ありのみ」をオフにしてください。",
       "IN_STOCK_ONLY": "在庫ありのみ",
       "NO_PRODUCT": "商品が見つかりません",
       "COLUMNS": {

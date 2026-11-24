@@ -52,6 +52,7 @@
     "PRODUCTS": {
       "TITLE": "{name}: produkty",
       "EMPTY": "Brak produktów",
+      "ADDED_HIDDEN": "Dodano produkty: {count}. Nie są dostępne, więc wyłącz „Tylko dostępne”, aby je zobaczyć.",
       "IN_STOCK_ONLY": "Tylko dostępne",
       "NO_PRODUCT": "Nie znaleziono produktu",
       "COLUMNS": {

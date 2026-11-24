@@ -52,6 +52,7 @@
     "PRODUCTS": {
       "TITLE": "{name}: tuotteet",
       "EMPTY": "Ei tuotteita",
+      "ADDED_HIDDEN": "{count} tuotetta lisätty. Ne eivät ole varastossa, joten poista \"Vain varastossa\" käytöstä nähdäksesi ne.",
       "IN_STOCK_ONLY": "Vain varastossa",
       "NO_PRODUCT": "Tuotetta ei löytynyt",
       "COLUMNS": {
